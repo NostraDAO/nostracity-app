@@ -1,0 +1,41 @@
+{
+  "name": "nostracity-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.8.1",
+    "@emotion/styled": "^11.8.1",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@mui/icons-material": "^5.4.4",
+    "@mui/material": "^5.4.4",
+    "@popperjs/core": "^2.11.2",
+    "@types/dotenv": "^8.2.0",
+    "@walletconnect/web3-provider": "^1.7.3",
+    "dotenv": "^16.0.0",
+    "i18next": "^21.6.13",
+    "i18next-icu": "^2.0.3",
+    "i18next-react": "^0.2.2",
+    "next": "12.1.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-i18next": "^11.15.5",
+    "react-img-mapper-extended": "^1.0.0",
+    "web3": "^1.7.1",
+    "web3modal": "^1.9.5"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.21",
+    "@types/react": "17.0.39",
+    "eslint": "8.10.0",
+    "eslint-config-next": "12.1.0",
+    "typescript": "4.6.2"
+  }
+}
