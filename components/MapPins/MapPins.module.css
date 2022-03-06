@@ -1,0 +1,11 @@
+.mapPins {
+    position: relative;
+    width: 50%;
+    height: 500px;
+    z-index: 1400;
+    overflow: hidden;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

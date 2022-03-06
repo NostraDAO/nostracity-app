@@ -1,0 +1,17 @@
+.logoRoot{
+  margin-top: 24px;
+}
+
+.title {
+    font-family: Corleone;
+    color:#FFFFFF;
+    font-size: 2em;  
+  }
+  .title span {
+    color: #FF0000;
+  }
+
+  .logoSvg {  
+
+    filter: invert(92%) sepia(100%) saturate(5%) hue-rotate(137deg) brightness(104%) contrast(103%);
+    }
