@@ -6,10 +6,16 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Logo from "../Logo";
 import { makeStyles } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
+
+
+
 
 const useStyles = makeStyles(theme => ({
     root: {
+      "& .MuiTypography-body1": {
+        fontFamily: "DailyNews",
+        fontSize: "2.5em",
+      },
       "& .MuiPaper-root": {
         backgroundColor: "transparent",
       },
@@ -23,6 +29,7 @@ const useStyles = makeStyles(theme => ({
   }));
 
 export default function Sidebar() {
+  
     const classes = useStyles();
 
   return (

@@ -14,3 +14,15 @@
     align-items: center;
 
 }
+
+.profileBox button {
+    font-family: "DailyNews";
+    font-size: 1.2em;
+    margin-top: 10px;
+    width: 150px;
+    background-color: #93100D;
+}
+.profileBox button:hover {
+    background-color: #93100D;
+    filter: brightness(0.8);
+}
