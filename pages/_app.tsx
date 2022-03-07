@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import { MoralisProvider } from "react-moralis";
 import type { AppProps } from "next/app";
 import * as React from "react";
 import Head from "next/head";
@@ -9,21 +8,23 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider } from "@emotion/react";
 import theme from "./theme";
 import createEmotionCache from "./createEmotionCache";
-
+import {Web3ReactProvider} from '@web3-react/core';
+import {Web3Provider} from '@ethersproject/providers'
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
-  const appId = process.env.NEXT_PUBLIC_APP_ID;
-  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+  
 
   return (
     <CacheProvider value={emotionCache}>
-      <MoralisProvider appId={appId} serverUrl={serverUrl}>
+    <Web3ReactProvider getLibrary={(provider: any) => new Web3Provider(provider)} >
+
         <Component {...pageProps} />
-      </MoralisProvider>
+        </ Web3ReactProvider>
     </CacheProvider>
+   
   );
 }
 

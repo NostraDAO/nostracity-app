@@ -1,0 +1,17 @@
+.containerImg {
+    position:fixed;
+    width:100%;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    overflow:hidden;
+}
+
+.containerImg img {
+    overflow: hidden;
+    width: 100vw;
+    position: relative;
+    bottom:25%;
+    
+}
