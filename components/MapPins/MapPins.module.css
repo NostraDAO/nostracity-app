@@ -1,37 +1,10 @@
 .mapPins {
     position: relative;
     width: 50%;
-    height: 500px;
-    z-index: 1400;
+    z-index: 100;
     overflow: hidden;
     margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.mapPins a {
-    color: #93100D;
-}
-
-.mapPins a[name="barber"]{
-    position:absolute;
-    top: 34%;
-    left:44%;
-}
-.mapPins a[name="grocery"]{
-    position: absolute;
-    top: 36%;
-    left: 53%;
-}
-
-.mapPins a[name="diner"]{
-    position: absolute;
-    top: 27%;
-    left: 52%;
-}
-
-.mapPins a[name="bank"]{
-    position: absolute;
-    top: 20%;
 }

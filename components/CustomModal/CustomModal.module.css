@@ -1,0 +1,9 @@
+.customModal button {
+    margin-top: 16px;
+    background-color: #93100D;
+    color: white;
+}
+.customModal button:hover {
+    background-color: #93100D;
+    filter: brightness(0.8);
+}
