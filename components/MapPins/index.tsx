@@ -220,7 +220,7 @@ export default function MapPins() {
         approveTx = await daiContract.methods
           .approve(barber_address, totalValue.toString())
           .send({ from: selectedAccount })
-          .on("transactionHash", function (hash) {
+          .on("transactionHash", function (hash : any) {
             setBtnTextBarber("Approving...");
             setIsError(false);
           })
