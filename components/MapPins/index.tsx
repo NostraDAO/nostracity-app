@@ -16,6 +16,7 @@ import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
+declare var window: any
 
 const useStyles = makeStyles((theme) => ({
   root: {
