@@ -146,7 +146,7 @@ export default function MapPins() {
     }
   }, [selectedAccount, account]);
 
-  const handleOpen = (item) => {
+  const handleOpen = (item : string) => {
     if (item == "barber") {
       setIsOpenBarber(true);
     }
@@ -174,7 +174,7 @@ export default function MapPins() {
     console.log(e.target.value);
   };
 
-  const handleClose = (item) => {
+  const handleClose = (item : string) => {
     if (item == "barber") {
       setIsOpenBarber(false);
     }
@@ -484,7 +484,7 @@ export default function MapPins() {
     }
   }
 
-  async function Mint(item) {
+  async function Mint(item : string) {
     if (
       typeof window.ethereum !== "undefined" &&
       window.ethereum.selectedAddress
