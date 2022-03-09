@@ -4,7 +4,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
@@ -20,9 +21,10 @@ const style = {
 export const  AlertModal = ({
     isOpen,
     handleClose,
+    children
 }) => {
   return (
-    <Modal open={isOpen} handleClose={handleClose}>
+    <Modal open={isOpen} onClose={handleClose}>
       <Alert severity="warning">{children}!</Alert>
     </Modal>
   );

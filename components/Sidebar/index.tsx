@@ -6,6 +6,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Logo from "../Logo";
 import { makeStyles } from "@material-ui/core";
+import NoSsr from '@material-ui/core/NoSsr';
 
 
 
@@ -33,8 +34,8 @@ export default function Sidebar() {
     const classes = useStyles();
 
   return (
-      <div className={classes.root}>
-        
+    <NoSsr>
+      <div className={classes.root}>        
       <Drawer  variant="permanent" anchor="left">
         <Logo />
         <List>
@@ -64,5 +65,6 @@ export default function Sidebar() {
         </List>
       </Drawer>
       </div>
+    </NoSsr>
   );
 }
