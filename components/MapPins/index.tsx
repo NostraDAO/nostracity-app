@@ -169,7 +169,7 @@ export default function MapPins() {
     setIsOpenAlert(false);
   };
 
-  const handleQuantity = (e) => {
+  const handleQuantity = (e: React.MouseEvent<HTMLElement>) => {
     setNftQuantity(e.target.value);
     console.log(e.target.value);
   };
@@ -520,7 +520,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e)}
+            onChange={(e: React.MouseEvent<HTMLElement>) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -540,7 +540,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e)}
+            onChange={(e: React.MouseEvent<HTMLElement>) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -569,7 +569,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e)}
+            onChange={(e: React.MouseEvent<HTMLElement>) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
