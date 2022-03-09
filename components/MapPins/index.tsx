@@ -66,7 +66,7 @@ export default function MapPins() {
         .allowance(selectedAccount, barber_address)
         .call();
       console.log("allowanceTx", allowanceTx);
-    } catch (err) {
+    } catch (err:  any) {
       console.log("err on allowance transaction", err);
     } finally {
       console.log('barber price',mintPrice);
@@ -92,7 +92,7 @@ export default function MapPins() {
         .allowance(selectedAccount, grocery_address)
         .call();
       console.log("allowanceTx", allowanceTx);
-    } catch (err) {
+    } catch (err:  any) {
       console.log("err on allowance transaction", err);
     } finally {
       console.log('groceryprice',mintPrice);
@@ -119,7 +119,7 @@ export default function MapPins() {
         .call();
       console.log('dinerContract', dinerContract)
       console.log("allowanceTx", allowanceTx);
-    } catch (err) {
+    } catch (err:  any) {
       console.log("err on allowance transaction", err);
     } finally {
       console.log('dinerprice', mintPrice);
@@ -204,7 +204,7 @@ export default function MapPins() {
         .allowance(selectedAccount, barber_address)
         .call();
       console.log("allowanceTx", allowanceTx);
-    } catch (err) {
+    } catch (err:  any) {
       console.log("err on allowance transaction", err);
     } finally {
       allowanceTx < mintPrice ? setApprovedBarber(false) : setApprovedBarber(true);
@@ -229,7 +229,7 @@ export default function MapPins() {
             setBtnTextBarber("Mint");
             setIsError(false);
           })
-          .on("error", (err) => {
+          .on("error", (err: any) => {
             console.log("error", err);
             setBtnTextBarber("Approve");
             setIsError(true);
@@ -241,8 +241,8 @@ export default function MapPins() {
         if (allowanceTx >= mintPrice) {
           setBtnTextBarber("Mint");
         }
-      } catch (err) {
-        console.log(err);
+      } catch (err: any) {
+        console.log(err:  any);
         setApprovedBarber(false);
       } finally {
         if (approveTx) {
@@ -256,18 +256,18 @@ export default function MapPins() {
         let mintTx = await barberContract.methods
           .safeMint(selectedAccount, nftQuantity)
           .send({ from: selectedAccount })
-          .on("transactionHash", function (hash) {
+          .on("transactionHash", function (hash: any) {
             setBtnTextBarber("Minting...");
             setIsError(false);
           })
-          .on("receipt", (receipt) => {
+          .on("receipt", (receipt: any) => {
             console.log("receipt", receipt);
             setBtnTextBarber("Mint");
             setApprovedBarber(true);
             setNftQuantity(0);
             setIsError(false);
           })
-          .on("error", (err) => {
+          .on("error", (err:  any) => {
             console.log("err", err);
             setApprovedBarber(false);
             setBtnTextBarber("Mint");
@@ -276,7 +276,7 @@ export default function MapPins() {
               "There was an error on the mint transaction. Check your wallet and try again."
             );
           });
-      } catch (err) {
+      } catch (err:  any) {
         console.log("err mint", err);
       }
     }
@@ -301,7 +301,7 @@ export default function MapPins() {
         .allowance(selectedAccount, grocery_address)
         .call();
       console.log("allowanceTx", allowanceTx);
-    } catch (err) {
+    } catch (err:  any) {
       console.log("err on allowance transaction", err);
     } finally {
       allowanceTx < mintPrice ? setApprovedGrocery(false) : setApprovedGrocery(true);
@@ -317,17 +317,17 @@ export default function MapPins() {
         approveTx = await daiContract.methods
           .approve(grocery_address, totalValue.toString())
           .send({ from: selectedAccount })
-          .on("transactionHash", function (hash) {
+          .on("transactionHash", function (hash: any) {
             setBtnTextGrocery("Approving...");
             setIsError(false);
           })
-          .on("receipt", function (receipt) {
+          .on("receipt", function (receipt: any) {
             console.log("receipt", receipt);
             setApprovedGrocery(true);
             setBtnTextGrocery("Mint");
             setIsError(false);
           })
-          .on("error", (err) => {
+          .on("error", (err:  any) => {
             console.log("error", err);
             setBtnTextGrocery("Approve");
             setApprovedGrocery(false);
@@ -340,8 +340,8 @@ export default function MapPins() {
         if (allowanceTx >= mintPrice) {
           setBtnTextGrocery("Mint");
         }
-      } catch (err) {
-        console.log(err);
+      } catch (err:  any) {
+        console.log(err:  any);
         setApprovedGrocery(false);
       } finally {
         if (approveTx) {
@@ -355,18 +355,18 @@ export default function MapPins() {
         let mintTx = await groceryContract.methods
           .safeMint(selectedAccount, nftQuantity)
           .send({ from: selectedAccount })
-          .on("transactionHash", function (hash) {
+          .on("transactionHash", function (hash: any) {
             setBtnTextGrocery("Minting...");
             setIsError(false);
           })
-          .on("receipt", (receipt) => {
+          .on("receipt", (receipt: any) => {
             console.log("receipt", receipt);
             setBtnTextGrocery("Mint");
             setApprovedGrocery(true);
             setNftQuantity(0);
             setIsError(false);
           })
-          .on("error", (err) => {
+          .on("error", (err:  any) => {
             console.log("err", err);
             setApprovedGrocery(false);
             setBtnTextGrocery("Mint");
@@ -375,7 +375,7 @@ export default function MapPins() {
               "There was an error on the mint transaction. Check your wallet and try again."
             );
           });
-      } catch (err) {
+      } catch (err:  any) {
         console.log("err mint", err);
       }
     }
@@ -400,7 +400,7 @@ export default function MapPins() {
         .allowance(selectedAccount, diner_address)
         .call();
       console.log("allowanceTx", allowanceTx);
-    } catch (err) {
+    } catch (err:  any) {
       console.log("err on allowance transaction", err);
     } finally {
       allowanceTx < mintPrice ? setApprovedDiner(false) : setApprovedDiner(true);
@@ -416,17 +416,17 @@ export default function MapPins() {
         approveTx = await daiContract.methods
           .approve(diner_address, totalValue.toString())
           .send({ from: selectedAccount })
-          .on("transactionHash", function (hash) {
+          .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Approving...");
             setIsError(false);
           })
-          .on("receipt", function (receipt) {
+          .on("receipt", function (receipt: any) {
             console.log("receipt", receipt);
             setApprovedDiner(true);
             setBtnTextDiner("Mint");
             setIsError(false);
           })
-          .on("error", (err) => {
+          .on("error", (err:  any) => {
             console.log("error", err);
             setBtnTextDiner("Approve");
             setIsError(true);
@@ -438,8 +438,8 @@ export default function MapPins() {
         if (allowanceTx >= mintPrice) {
           setBtnTextDiner("Mint");
         }
-      } catch (err) {
-        console.log(err);
+      } catch (err:  any) {
+        console.log(err:  any);
         setApprovedDiner(false);
       } finally {
         if (approveTx) {
@@ -453,18 +453,18 @@ export default function MapPins() {
         let mintTx = await dinerContract.methods
           .safeMint(selectedAccount, nftQuantity)
           .send({ from: selectedAccount })
-          .on("transactionHash", function (hash) {
+          .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Minting...");
             setIsError(false);
           })
-          .on("receipt", (receipt) => {
+          .on("receipt", (receipt: any) => {
             console.log("receipt", receipt);
             setBtnTextDiner("Mint");
             setApprovedDiner(true);
             setNftQuantity(0);
             setIsError(false);
           })
-          .on("error", (err) => {
+          .on("error", (err:  any) => {
             console.log("err", err);
             setApprovedDiner(false);
             setBtnTextDiner("Mint");
@@ -473,7 +473,7 @@ export default function MapPins() {
               "There was an error on the mint transaction. Check your wallet and try again."
             );
           });
-      } catch (err) {
+      } catch (err:  any) {
         console.log("err mint", err);
       }
     }
