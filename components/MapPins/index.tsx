@@ -242,7 +242,7 @@ export default function MapPins() {
           setBtnTextBarber("Mint");
         }
       } catch (err: any) {
-        console.log(err:  any);
+        console.log(err);
         setApprovedBarber(false);
       } finally {
         if (approveTx) {
@@ -341,7 +341,7 @@ export default function MapPins() {
           setBtnTextGrocery("Mint");
         }
       } catch (err:  any) {
-        console.log(err:  any);
+        console.log(err);
         setApprovedGrocery(false);
       } finally {
         if (approveTx) {
@@ -439,7 +439,7 @@ export default function MapPins() {
           setBtnTextDiner("Mint");
         }
       } catch (err:  any) {
-        console.log(err:  any);
+        console.log(err);
         setApprovedDiner(false);
       } finally {
         if (approveTx) {
