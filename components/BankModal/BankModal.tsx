@@ -24,7 +24,7 @@ export const BankModal= ({
     handleClose,
     title,
     children,
-}) => {
+} :any) => {
   
 
   return (

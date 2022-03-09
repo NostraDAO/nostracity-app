@@ -27,7 +27,7 @@ export const CustomModal = ({
   buttonText,
   nftName,
   isApproved,
-}) => {
+} :any) => {
   return (
     <div>
       <Modal
