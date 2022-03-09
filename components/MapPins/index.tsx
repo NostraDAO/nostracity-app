@@ -518,7 +518,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>>) => handleQuantity(e.target.value)}
+            onChange={(e) => handleQuantity(e.target.value as number)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
