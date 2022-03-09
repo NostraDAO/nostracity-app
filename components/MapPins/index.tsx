@@ -52,9 +52,9 @@ export default function MapPins() {
 
   async function barberAllowance() {
     const web3 = new Web3(Web3.givenProvider);
-    const daiContract = new web3.eth.Contract(daiContractAbi, dai_address);
+    const daiContract = new web3.eth.Contract(daiContractAbi as any, dai_address);
     const barberContract = new web3.eth.Contract(
-      barberContractAbi,
+      barberContractAbi as any,
       barber_address
     );
     let allowanceTx;
@@ -106,7 +106,7 @@ export default function MapPins() {
     const web3 = new Web3(Web3.givenProvider);
     const daiContract = new web3.eth.Contract(daiContractAbi, dai_address);
     const dinerContract = new web3.eth.Contract(
-      dinerContractAbi,
+      dinerContractAbi as any,
       diner_address
     );
     let allowanceTx;
@@ -290,7 +290,7 @@ export default function MapPins() {
     const web3 = new Web3(Web3.givenProvider);
     const daiContract = new web3.eth.Contract(daiContractAbi, dai_address);
     const groceryContract = new web3.eth.Contract(
-      groceryContractAbi,
+      groceryContractAbi as any,
       grocery_address
     );
     let approveTx;
