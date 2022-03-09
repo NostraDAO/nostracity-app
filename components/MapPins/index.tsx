@@ -224,8 +224,7 @@ export default function MapPins() {
             setBtnTextBarber("Approving...");
             setIsError(false);
           })
-          .on("receipt", function (receipt) {
-            console.log("receipt", receipt);
+          .on("receipt", function (receipt : any) {
             setApprovedBarber(true);
             setBtnTextBarber("Mint");
             setIsError(false);
