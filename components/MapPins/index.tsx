@@ -170,8 +170,7 @@ export default function MapPins() {
   };
 
   const handleQuantity = (e: React.MouseEvent<HTMLElement>) => {
-    setNftQuantity(e.target.value);
-    console.log(e.target.value);
+    setNftQuantity((e.target as HTMLInputElement).value);
   };
 
   const handleClose = (item : string) => {
