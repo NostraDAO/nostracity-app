@@ -22,7 +22,7 @@ export const  AlertModal = ({
     isOpen,
     handleClose,
     children
-}) => {
+} :any ) => {
   return (
     <Modal open={isOpen} onClose={handleClose}>
       <Alert severity="warning">{children}!</Alert>
