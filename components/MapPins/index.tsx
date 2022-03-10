@@ -219,7 +219,7 @@ export default function MapPins() {
       try {
         let totalValue;
         console.log("mintPrice", mintPrice);
-        totalValue = quantity * mintPrice;
+        totalValue = quantity(mintPrice/10^18);
         console.log('nftQuantity', nftQuantity);
         console.log('quantity', quantity);
         console.log("totalValue", totalValue);
@@ -319,7 +319,7 @@ export default function MapPins() {
       try {
         let totalValue;
         console.log("mintPrice", mintPrice);
-        totalValue = quantity * mintPrice;
+         totalValue = quantity(mintPrice/10^18);
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
           .approve(grocery_address, totalValue.toString())
@@ -418,7 +418,7 @@ export default function MapPins() {
       try {
         let totalValue;
         console.log("mintPrice", mintPrice);
-        totalValue = quantity * mintPrice;
+         totalValue = quantity(mintPrice/10^18);
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
           .approve(diner_address, totalValue.toString())
