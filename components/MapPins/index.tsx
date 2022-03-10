@@ -538,7 +538,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e: React.MouseEvent<HTMLElement>) => handleQuantity(e)}
+            onChange={(e) => handleQuantity(e.target.value as any)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -567,7 +567,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e: React.MouseEvent<HTMLElement>) => handleQuantity(e)}
+            onChange={(e) => handleQuantity(e.target.value as any)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
