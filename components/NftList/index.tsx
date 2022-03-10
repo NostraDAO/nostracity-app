@@ -13,7 +13,7 @@ export default function NftList({ renderList, account }: any) {
     <div>
       <Stack direction="row">
         {account ? renderList.map(
-          (item) => {
+          (item: any) => {
             <>
               <div>
                 <div>Tomato</div>
