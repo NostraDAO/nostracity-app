@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider } from "@emotion/react";
-import theme from "./theme";
 import createEmotionCache from "./createEmotionCache";
 import {Web3ReactProvider} from '@web3-react/core';
 import Web3 from 'web3';
