@@ -32,7 +32,6 @@ export default function MapPins() {
   const [isOpenDiner, setIsOpenDiner] = useState(false);
   const [isOpenBank, setIsOpenBank] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
-  const [nftQuantity, setNftQuantity] = useState(0);
   const [hasMM, setHasMM] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,7 +42,8 @@ export default function MapPins() {
   const [btnTextGrocery, setBtnTextGrocery] = useState("Approve");
   const [btnTextDiner, setBtnTextDiner] = useState("Approve");
   const [selectedAccount, setSelectedAccount] = useState("");
-
+  
+  let nftQuantity;
   const classes = useStyles();
   const { account, active } = useWeb3React();
   const dai_address = "0x4C3827E3122ccd1553Be728b589962442DFe49Ed";
@@ -169,8 +169,8 @@ export default function MapPins() {
     setIsOpenAlert(false);
   };
 
-  const handleQuantity = (e: React.MouseEvent<HTMLElement>) => {
-    setNftQuantity((e.target as any).value);
+  const handleQuantity = (event) =>{
+    nftQuantity =event.target.value;
     console.log("Quantity",nftQuantity);
   };
 
@@ -271,7 +271,7 @@ export default function MapPins() {
             console.log("err", err);
             setApprovedBarber(false);
             setBtnTextBarber("Mint");
-            setNftQuantity(0);
+            nftQuantity = 0;
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
@@ -370,7 +370,7 @@ export default function MapPins() {
             console.log("err", err);
             setApprovedGrocery(false);
             setBtnTextGrocery("Mint");
-            setNftQuantity(0);
+            nftQuantity = 0;
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
@@ -468,7 +468,7 @@ export default function MapPins() {
             console.log("err", err);
             setApprovedDiner(false);
             setBtnTextDiner("Mint");
-            setNftQuantity(0);
+            nftQuantity = 0;
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
@@ -519,7 +519,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e.target.value as any)}
+            onChange={(e) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -539,7 +539,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e.target.value as any)}
+            onChange={(e) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -568,7 +568,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e.target.value as any)}
+            onChange={(e) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
