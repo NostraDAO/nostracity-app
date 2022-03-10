@@ -520,7 +520,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -540,7 +540,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -569,7 +569,7 @@ export default function MapPins() {
           <Input
             placeholder="How many nfts"
             type="number"
-            onChange={(e) => handleQuantity(e)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleQuantity(e)}
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
