@@ -46,10 +46,10 @@ export default function MapPins() {
 
   const classes = useStyles();
   const { account, active } = useWeb3React();
-  const dai_address = "0x81d5ea624DF2E5871728B09182b34aede41EA399";
-  const barber_address = "0x4c760e5a721631cA7c2060f4E277965E39DeC095";
-  const grocery_address = "0xe5Cfa462EF279392713B930c56244F0D71c0a395";
-  const diner_address = "0xf2AC2971EED4C7F8e4B596386FE7e01487E774e7";
+  const dai_address = "0xB77ac8E206f961429a2bb4c8409484e37C381cdf";
+  const barber_address = "0xa83E50BF9e79A2dB8a2fE6C33aF9F0A76A2337B3";
+  const grocery_address = "0xa83E50BF9e79A2dB8a2fE6C33aF9F0A76A2337B3";
+  const diner_address = "0xa83E50BF9e79A2dB8a2fE6C33aF9F0A76A2337B3";
 
   async function barberAllowance() {
     const web3 = new Web3(Web3.givenProvider);
