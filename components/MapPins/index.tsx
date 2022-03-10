@@ -46,10 +46,10 @@ export default function MapPins() {
 
   const classes = useStyles();
   const { account, active } = useWeb3React();
-  const dai_address = "0xB77ac8E206f961429a2bb4c8409484e37C381cdf";
-  const barber_address = "0xa83E50BF9e79A2dB8a2fE6C33aF9F0A76A2337B3";
-  const grocery_address = "0xa83E50BF9e79A2dB8a2fE6C33aF9F0A76A2337B3";
-  const diner_address = "0xa83E50BF9e79A2dB8a2fE6C33aF9F0A76A2337B3";
+  const dai_address = "0x4C3827E3122ccd1553Be728b589962442DFe49Ed";
+  const barber_address = "0x1C26daC2a2e9Bb057fCC061a1903491bA1B5630C";
+  const grocery_address = "0xDCd4B29BF96ca5Ff1e682D75a76e1BaF3c69DF5d";
+  const diner_address = "0x89B1ad110B7328A2169b1D6350C37687f037A58B";
 
   async function barberAllowance() {
     const web3 = new Web3(Web3.givenProvider);
@@ -171,6 +171,7 @@ export default function MapPins() {
 
   const handleQuantity = (e: React.MouseEvent<HTMLElement>) => {
     setNftQuantity((e.target as any).value);
+    console.log("Quantity",nftQuantity);
   };
 
   const handleClose = (item : string) => {
@@ -264,13 +265,13 @@ export default function MapPins() {
             console.log("receipt", receipt);
             setBtnTextBarber("Mint");
             setApprovedBarber(true);
-            setNftQuantity(0);
             setIsError(false);
           })
           .on("error", (err:  any) => {
             console.log("err", err);
             setApprovedBarber(false);
             setBtnTextBarber("Mint");
+            setNftQuantity(0);
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
@@ -363,13 +364,13 @@ export default function MapPins() {
             console.log("receipt", receipt);
             setBtnTextGrocery("Mint");
             setApprovedGrocery(true);
-            setNftQuantity(0);
             setIsError(false);
           })
           .on("error", (err:  any) => {
             console.log("err", err);
             setApprovedGrocery(false);
             setBtnTextGrocery("Mint");
+            setNftQuantity(0);
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
@@ -461,13 +462,13 @@ export default function MapPins() {
             console.log("receipt", receipt);
             setBtnTextDiner("Mint");
             setApprovedDiner(true);
-            setNftQuantity(0);
             setIsError(false);
           })
           .on("error", (err:  any) => {
             console.log("err", err);
             setApprovedDiner(false);
             setBtnTextDiner("Mint");
+            setNftQuantity(0);
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
