@@ -169,8 +169,9 @@ export default function MapPins() {
     setIsOpenAlert(false);
   };
 
-  const handleQuantity = (event: InputHTMLAttributes<HTMLInputElement>) =>{
-    nftQuantity =event.target.value;
+  const handleQuantity = (event) =>{
+    let target = event.target as Element;
+    nftQuantity = target.value;
     console.log("Quantity",nftQuantity);
   };
 
