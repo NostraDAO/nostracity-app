@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, InputHTMLAttributes } from "react";
 import styles from "./MapPins.module.css";
 import PushPin2FillIcon from "remixicon-react/Pushpin2FillIcon";
 import BankFillIcon from "remixicon-react/BankFillIcon";
