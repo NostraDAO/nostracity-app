@@ -19,7 +19,7 @@ const style = {
     boxShadow: 24,
     p: 4,
   };
-const nftlist = [];
+const nftlist: any[] = [];
 export default function NftOwnedModal({
     isOpen,
     handleClose,
