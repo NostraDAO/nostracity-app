@@ -43,7 +43,7 @@ export default function MapPins() {
   const [btnTextDiner, setBtnTextDiner] = useState("Approve");
   const [selectedAccount, setSelectedAccount] = useState("");
   
-  let nftQuantity;
+  let nftQuantity: any;
   const classes = useStyles();
   const { account, active } = useWeb3React();
   const dai_address = "0x4C3827E3122ccd1553Be728b589962442DFe49Ed";
