@@ -42,6 +42,7 @@ export default function MapPins() {
   const [btnTextGrocery, setBtnTextGrocery] = useState("Approve");
   const [btnTextDiner, setBtnTextDiner] = useState("Approve");
   const [selectedAccount, setSelectedAccount] = useState("");
+  const [quantity, setQuantity] = useState(0);
   
   let nftQuantity: any;
   const classes = useStyles();
@@ -61,7 +62,7 @@ export default function MapPins() {
     let allowanceTx;
     let mintPrice;
     try {
-      mintPrice = await barberContract.methods.getMintingPrice(account).call();
+      mintPrice = await barberContract.methods.getMintingPrice(account).call().call();
       allowanceTx = await daiContract.methods
         .allowance(selectedAccount, barber_address)
         .call();
@@ -139,10 +140,10 @@ export default function MapPins() {
   }
 
   useEffect(() => {
-    if (typeof window.ethereum !== "undefined") {
+    if (typeof window.ethereum !== "undefined" && account) {
       setHasMM(true);
       setSelectedAccount(window.ethereum.selectedAddress);
-      getMinimalAllowance();
+      // getMinimalAllowance();
     }
   }, [selectedAccount, account]);
 
@@ -172,6 +173,7 @@ export default function MapPins() {
   const handleQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
     let target = event.target;
     nftQuantity = target.value;
+    setQuantity(nftQuantity);
     console.log("Quantity",nftQuantity);
   };
 
@@ -217,11 +219,13 @@ export default function MapPins() {
       try {
         let totalValue;
         console.log("mintPrice", mintPrice);
-        totalValue = nftQuantity * mintPrice;
+        totalValue = quantity * mintPrice;
+        console.log('nftQuantity', nftQuantity);
+        console.log('quantity', quantity);
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
           .approve(barber_address, totalValue.toString())
-          .send({ from: selectedAccount })
+          .send({ from: account })
           .on("transactionHash", function (hash : any) {
             setBtnTextBarber("Approving...");
             setIsError(false);
@@ -255,9 +259,10 @@ export default function MapPins() {
     }
     if (approvedBarber) {
       try {
+        console.log('ssafemint barber', account, quantity);
         let mintTx = await barberContract.methods
-          .safeMint(selectedAccount, nftQuantity)
-          .send({ from: selectedAccount })
+          .safeMint(account, quantity)
+          .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextBarber("Minting...");
             setIsError(false);
@@ -314,7 +319,7 @@ export default function MapPins() {
       try {
         let totalValue;
         console.log("mintPrice", mintPrice);
-        totalValue = nftQuantity * mintPrice;
+        totalValue = quantity * mintPrice;
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
           .approve(grocery_address, totalValue.toString())
@@ -355,8 +360,8 @@ export default function MapPins() {
     if (approvedGrocery) {
       try {
         let mintTx = await groceryContract.methods
-          .safeMint(selectedAccount, nftQuantity)
-          .send({ from: selectedAccount })
+          .safeMint(account, quantity)
+          .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextGrocery("Minting...");
             setIsError(false);
@@ -413,7 +418,7 @@ export default function MapPins() {
       try {
         let totalValue;
         console.log("mintPrice", mintPrice);
-        totalValue = nftQuantity * mintPrice;
+        totalValue = quantity * mintPrice;
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
           .approve(diner_address, totalValue.toString())
@@ -453,8 +458,8 @@ export default function MapPins() {
     if (approvedDiner) {
       try {
         let mintTx = await dinerContract.methods
-          .safeMint(selectedAccount, nftQuantity)
-          .send({ from: selectedAccount })
+          .safeMint(account, quantity)
+          .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Minting...");
             setIsError(false);
