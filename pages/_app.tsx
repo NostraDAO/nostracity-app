@@ -13,7 +13,7 @@ import Web3 from 'web3';
 
 const clientSideEmotionCache = createEmotionCache();
 
-export default function MyApp(props) {
+export default function MyApp(props: AppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [provider, setProvider] = useState({});
   
