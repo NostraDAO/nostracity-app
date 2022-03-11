@@ -19,9 +19,9 @@ const diner_address = "0x89B1ad110B7328A2169b1D6350C37687f037A58B";
 export default function NftList({ account }: any) {
   const web3 = new Web3(Web3.givenProvider);
 
-  const [scissors, setScissors] = useState();
-  const [tomatoes, setTomatoes] = useState();
-  const [coffee, setCoffee] = useState();
+  const [scissors, setScissors] = useState(0);
+  const [tomatoes, setTomatoes] = useState(0);
+  const [coffee, setCoffee] = useState(0);
 
   async function renderCoffee() {
     const dinerContract = new web3.eth.Contract(
