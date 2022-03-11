@@ -33,21 +33,21 @@ export const BankModal= ({
   const [tvl, setTvl] = useState();
   const web3 = new Web3(Web3.givenProvider);
   const {account } = useWeb3React();
-  async function getTVL(){
-    const treasuryContract = new web3.eth.Contract(treasuryABI as any, treasury_address);
-    let getTVL;
-    try{
-    getTVL = await web3.treasuryContract.methods.getTotalTreasuryValue().call()
+  // async function getTVL(){
+  //   const treasuryContract = new web3.eth.Contract(treasuryABI as any, treasury_address);
+  //   let getTVL;
+  //   try{
+  //   getTVL = await web3.treasuryContract.methods.getTotalTreasuryValue().call()
     
-    }
-    catch(err: any){
-      console.log('getTVL error: ', err);
-    }
-    finally {
-      setTvl(getTVL);
-    }
+  //   }
+  //   catch(err: any){
+  //     console.log('getTVL error: ', err);
+  //   }
+  //   finally {
+  //     setTvl(getTVL);
+  //   }
     
-  }
+  // }
 
   useEffect(() => {
     // account ? geTVL(): 'Wallet not connected!';
