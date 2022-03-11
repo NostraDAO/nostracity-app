@@ -27,6 +27,7 @@ export const CustomModal = ({
   buttonText,
   nftName,
   isApproved,
+  isDisabled
 } :any) => {
   return (
     <div>
@@ -41,10 +42,10 @@ export const CustomModal = ({
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {title}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Box id="modal-modal-description" sx={{ mt: 2 }}>
             {children}
-          </Typography>          
-            <Button variant="outlined" onClick={handleMint}>
+          </Box>          
+            <Button variant="outlined" onClick={handleMint} disabled={isDisabled}>
               {buttonText} {nftName}
             </Button>
         </Box>
