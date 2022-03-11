@@ -35,7 +35,6 @@ export default function MapPins() {
   const [isOpenBank, setIsOpenBank] = useState(false);
   const [isOpenRank, setIsOpenRank] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
-  const [hasMM, setHasMM] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [approvedBarber, setApprovedBarber] = useState(false);
@@ -44,7 +43,6 @@ export default function MapPins() {
   const [btnTextBarber, setBtnTextBarber] = useState("Approve");
   const [btnTextGrocery, setBtnTextGrocery] = useState("Approve");
   const [btnTextDiner, setBtnTextDiner] = useState("Approve");
-  const [selectedAccount, setSelectedAccount] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [isApproving, setIsApproving] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
@@ -55,10 +53,10 @@ export default function MapPins() {
   const { account, active } = useWeb3React();
   const dai_address = "0x4C3827E3122ccd1553Be728b589962442DFe49Ed";
   const barber_address = "0x1C26daC2a2e9Bb057fCC061a1903491bA1B5630C";
-  const grocery_address = "0xDCd4B29BF96ca5Ff1e682D75a76e1BaF3c69DF5d";
+  const grocery_address = "0xe2284c96faEdF807B4850d271a01e68fF7a443aE";
   const diner_address = "0xee2e93C1E58BD5BC42eE0365401F2C586f4f1694";
 
-  async function barberAllowance() {
+  async function barberAllowanceChecker() {
     const web3 = new Web3(Web3.givenProvider);
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
@@ -73,14 +71,14 @@ export default function MapPins() {
     try {
       mintPrice = await barberContract.methods.getMintingPrice(account).call();
       allowanceTx = await daiContract.methods
-        .allowance(selectedAccount, barber_address)
+        .allowance(account, barber_address)
         .call();
-      console.log("allowanceTx", allowanceTx);
+      console.log("Barber allowanceTx", allowanceTx);
     } catch (err: any) {
       console.log("err on allowance transaction", err);
     } finally {
       console.log("barber price", mintPrice);
-      allowanceTx < mintPrice
+      allowanceTx <= mintPrice
         ? setApprovedBarber(false)
         : setApprovedBarber(true);
       approvedBarber == true
@@ -89,7 +87,7 @@ export default function MapPins() {
     }
   }
 
-  async function groceryAllowance() {
+  async function groceryAllowanceChecker() {
     const web3 = new Web3(Web3.givenProvider);
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
@@ -104,14 +102,14 @@ export default function MapPins() {
     try {
       mintPrice = await groceryContract.methods.getMintingPrice(account).call();
       allowanceTx = await daiContract.methods
-        .allowance(selectedAccount, grocery_address)
+        .allowance(account, grocery_address)
         .call();
-      console.log("allowanceTx", allowanceTx);
+      console.log("Grocery allowanceTx", allowanceTx);
     } catch (err: any) {
       console.log("err on allowance transaction", err);
     } finally {
       console.log("groceryprice", mintPrice);
-      allowanceTx < mintPrice
+      allowanceTx <= mintPrice
         ? setApprovedGrocery(false)
         : setApprovedGrocery(true);
       approvedGrocery == true
@@ -120,7 +118,7 @@ export default function MapPins() {
     }
   }
 
-  async function dinerAllowance() {
+  async function dinerAllowanceChecker() {
     const web3 = new Web3(Web3.givenProvider);
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
@@ -135,15 +133,14 @@ export default function MapPins() {
     try {
       mintPrice = await dinerContract.methods.getMintingPrice(account).call();
       allowanceTx = await daiContract.methods
-        .allowance(selectedAccount, diner_address)
+        .allowance(account, diner_address)
         .call();
-      console.log("dinerContract", dinerContract);
-      console.log("allowanceTx", allowanceTx);
+      console.log("Diner allowanceTx", allowanceTx);
     } catch (err: any) {
       console.log("err on allowance transaction", err);
     } finally {
       console.log("dinerprice", mintPrice);
-      allowanceTx < mintPrice
+      allowanceTx <= mintPrice
         ? setApprovedDiner(false)
         : setApprovedDiner(true);
       approvedDiner == true
@@ -153,20 +150,18 @@ export default function MapPins() {
   }
 
   async function getMinimalAllowance() {
-    if (selectedAccount) {
-      await barberAllowance();
-      await groceryAllowance();
-      await dinerAllowance();
+    if (account) {
+      await barberAllowanceChecker();
+      await groceryAllowanceChecker();
+      await dinerAllowanceChecker();
     }
   }
 
   useEffect(() => {
-    if (typeof window.ethereum !== "undefined" && account) {
-      setHasMM(true);
-      setSelectedAccount(window.ethereum.selectedAddress);
+    if (typeof window.ethereum !== "undefined") {
       getMinimalAllowance();
     }
-  }, [selectedAccount, account]);
+  }, [account]);
 
   const handleOpen = (item: string) => {
     if (item == "barber") {
@@ -203,7 +198,7 @@ export default function MapPins() {
 
   const handleClose = (item: string) => {
     if (item == "barber") {
-      setIsOpenBarber(false);
+      setIsOpenBarber(false); 
     }
     if (item == "grocery") {
       setIsOpenGrocery(false);
@@ -235,13 +230,13 @@ export default function MapPins() {
     try {
       mintPrice = await barberContract.methods.getMintingPrice(account).call();
       allowanceTx = await daiContract.methods
-        .allowance(selectedAccount, barber_address)
+        .allowance(account, barber_address)
         .call();
       console.log("allowanceTx", allowanceTx);
     } catch (err: any) {
       console.log("err on allowance transaction", err);
     } finally {
-      allowanceTx < mintPrice
+      allowanceTx <= mintPrice
         ? setApprovedBarber(false)
         : setApprovedBarber(true);
       approvedBarber == true
@@ -342,7 +337,7 @@ export default function MapPins() {
     try {
       mintPrice = await groceryContract.methods.getMintingPrice(account).call();
       allowanceTx = await daiContract.methods
-        .allowance(selectedAccount, grocery_address)
+        .allowance(account, grocery_address)
         .call();
       console.log("allowanceTx", allowanceTx);
     } catch (err: any) {
@@ -364,7 +359,7 @@ export default function MapPins() {
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
           .approve(grocery_address, totalValue.toString())
-          .send({ from: selectedAccount })
+          .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextGrocery("Approving...");
             setIsError(false);
@@ -448,7 +443,7 @@ export default function MapPins() {
     try {
       mintPrice = await dinerContract.methods.getMintingPrice(account).call();
       allowanceTx = await daiContract.methods
-        .allowance(selectedAccount, diner_address)
+        .allowance(account, diner_address)
         .call();
       console.log("allowanceTx", allowanceTx);
     } catch (err: any) {
@@ -470,7 +465,7 @@ export default function MapPins() {
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
           .approve(diner_address, totalValue.toString())
-          .send({ from: selectedAccount })
+          .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Approving...");
             setIsError(false);
