@@ -50,7 +50,7 @@ export const BankModal= ({
   }
 
   useEffect(() => {
-    account ? geTVL(): 'Wallet not connected!';
+    // account ? geTVL(): 'Wallet not connected!';
   }, [tvl])
 
   return (
