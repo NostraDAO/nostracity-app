@@ -137,7 +137,7 @@ useEffect(() => {
     getGroceryScore();
   }
 
-},[barberScore, groceryScore, dinerScore]);
+},[]);
 
   return (
     <div>
