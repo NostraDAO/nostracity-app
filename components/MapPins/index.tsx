@@ -641,10 +641,7 @@ export default function MapPins() {
         isOpen={isOpenRank}
         handleClose={() => handleClose("trophy")}
         title="Ranking"
-      >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-        cupiditate.
-      </RankingModal>
+      />
 
       <NoSsr>
         <div className={styles.mapPins}>
