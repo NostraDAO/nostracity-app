@@ -10,7 +10,7 @@ import dinerABI from "../../abi/DinerNFT.json";
 
 const barber_address = "0x1C26daC2a2e9Bb057fCC061a1903491bA1B5630C";
 const grocery_address = "0xDCd4B29BF96ca5Ff1e682D75a76e1BaF3c69DF5d";
-const diner_address = "0x89B1ad110B7328A2169b1D6350C37687f037A58B";
+const diner_address = "0xee2e93C1E58BD5BC42eE0365401F2C586f4f1694";
 
 
 
