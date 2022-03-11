@@ -474,7 +474,7 @@ export default function MapPins() {
           .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Approving...");
             setIsError(false);
-            setIrProcessing(true);
+            setIsProcessing(true);
           })
           .on("receipt", function (receipt: any) {
             console.log("receipt", receipt);
