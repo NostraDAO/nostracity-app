@@ -40,7 +40,7 @@ const { account, active } = useWeb3React();
           <Typography id="modal-modal-title" variant="h6" component="h2">
             My NFTs
           </Typography>
-           <NftList renderList={nftlist} account={account}  />
+           <NftList  account={account}  />
            
         </Box>
       </Modal>

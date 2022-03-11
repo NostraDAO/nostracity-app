@@ -2,9 +2,11 @@ import React, { useState, useEffect, InputHTMLAttributes } from "react";
 import styles from "./MapPins.module.css";
 import PushPin2FillIcon from "remixicon-react/Pushpin2FillIcon";
 import BankFillIcon from "remixicon-react/BankFillIcon";
+import TrophyLineIcon from "remixicon-react/TrophyLineIcon";
 import IconButton from "@material-ui/core/IconButton";
 import { CustomModal } from "../CustomModal/CustomModal";
 import { BankModal } from "../BankModal/BankModal";
+import { RankingModal } from "../RankingModal/RankingModal";
 import { makeStyles } from "@material-ui/core/styles";
 import daiContractAbi from "../../abi/DAIE.json";
 import barberContractAbi from "../../abi/BarberShopNFT.json";
@@ -31,6 +33,7 @@ export default function MapPins() {
   const [isOpenGrocery, setIsOpenGrocery] = useState(false);
   const [isOpenDiner, setIsOpenDiner] = useState(false);
   const [isOpenBank, setIsOpenBank] = useState(false);
+  const [isOpenRank, setIsOpenRank] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [hasMM, setHasMM] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -46,7 +49,6 @@ export default function MapPins() {
   const [isApproving, setIsApproving] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-
 
   let nftQuantity: any;
   const classes = useStyles();
@@ -179,6 +181,9 @@ export default function MapPins() {
     if (item == "bank") {
       setIsOpenBank(true);
     }
+    if(item == 'trophy'){
+      setIsOpenRank(true);
+    }
   };
 
   const handleAlert = () => {
@@ -209,6 +214,9 @@ export default function MapPins() {
     if (item == "bank") {
       setIsOpenBank(false);
     }
+    if(item == "trophy"){
+      setIsOpenRank(false);
+    }
   };
 
   async function mintBarber() {
@@ -224,24 +232,22 @@ export default function MapPins() {
     let approveTx;
     let allowanceTx;
     let mintPrice;
-      try {
-        mintPrice = await barberContract.methods
-          .getMintingPrice(account)
-          .call();
-        allowanceTx = await daiContract.methods
-          .allowance(selectedAccount, barber_address)
-          .call();
-        console.log("allowanceTx", allowanceTx);
-      } catch (err: any) {
-        console.log("err on allowance transaction", err);
-      } finally {
-        allowanceTx < mintPrice
-          ? setApprovedBarber(false)
-          : setApprovedBarber(true);
-        approvedBarber == true
-          ? setBtnTextBarber("Mint")
-          : setBtnTextBarber("Approve");
-      }
+    try {
+      mintPrice = await barberContract.methods.getMintingPrice(account).call();
+      allowanceTx = await daiContract.methods
+        .allowance(selectedAccount, barber_address)
+        .call();
+      console.log("allowanceTx", allowanceTx);
+    } catch (err: any) {
+      console.log("err on allowance transaction", err);
+    } finally {
+      allowanceTx < mintPrice
+        ? setApprovedBarber(false)
+        : setApprovedBarber(true);
+      approvedBarber == true
+        ? setBtnTextBarber("Mint")
+        : setBtnTextBarber("Approve");
+    }
     if (!approvedBarber) {
       try {
         let totalValue;
@@ -266,7 +272,7 @@ export default function MapPins() {
           })
           .on("error", (err: any) => {
             console.log("error", err);
-            console.log('reason', err.reason);
+            console.log("reason", err.reason);
             setBtnTextBarber("Approve");
             setIsError(true);
             setErrorMessage(
@@ -599,15 +605,6 @@ export default function MapPins() {
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
       </CustomModal>
 
-      <BankModal
-        isOpen={isOpenBank}
-        handleClose={() => handleClose("bank")}
-        title="Bank"
-      >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-        cupiditate.
-      </BankModal>
-
       <CustomModal
         isOpen={isOpenDiner}
         handleClose={() => handleClose("diner")}
@@ -630,6 +627,25 @@ export default function MapPins() {
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
       </CustomModal>
+
+      <BankModal
+        isOpen={isOpenBank}
+        handleClose={() => handleClose("bank")}
+        title="Bank"
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
+        cupiditate.
+      </BankModal>
+
+      <RankingModal
+        isOpen={isOpenRank}
+        handleClose={() => handleClose("trophy")}
+        title="Ranking"
+      >
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
+        cupiditate.
+      </RankingModal>
+
       <NoSsr>
         <div className={styles.mapPins}>
           <IconButton
@@ -666,6 +682,15 @@ export default function MapPins() {
             name="bank"
           >
             <BankFillIcon size="36px" />
+          </IconButton>
+
+          <IconButton
+            className={classes.root}
+            onClick={() => handleOpen("trophy")}
+            color="primary"
+            name="trophy"
+          >
+            <TrophyLineIcon size="36px" />
           </IconButton>
         </div>
       </NoSsr>
