@@ -137,7 +137,7 @@ useEffect(() => {
     getGroceryScore();
   }
 
-},[]);
+},[account]);
 
   return (
     <div>

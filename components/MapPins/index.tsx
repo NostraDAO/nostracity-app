@@ -464,7 +464,7 @@ export default function MapPins() {
         totalValue = quantity * mintPrice;
         console.log("totalValue", totalValue);
         approveTx = await daiContract.methods
-          .approve(diner_address, totalValue.toString())
+          .approve(diner_address, totalValue.toString()) //todo: fix when is more than 1 nft
           .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Approving...");
