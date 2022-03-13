@@ -226,7 +226,7 @@ export default function MapPins() {
 
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
-    setNftQuantity((event.target as HTMLInputElement).value);
+    setNftQuantity((event.target as HTMLInputElement).value.toNumber());
   };
 
   const handleClose = (item: string) => {
