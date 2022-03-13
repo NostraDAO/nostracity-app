@@ -588,6 +588,7 @@ export default function MapPins() {
         cupiditate.
         <span style={{ display: "block" }}>
           <Input
+            disabled={isProcessing}
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
