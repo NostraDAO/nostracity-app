@@ -589,7 +589,7 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e)
+              handleQuantity(e as any)
             }
           />
         </span>
@@ -612,7 +612,7 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e)
+              handleQuantity(e as any)
             }
           />
         </span>
@@ -635,7 +635,7 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e)
+              handleQuantity(e as any)
             }
           />
         </span>
