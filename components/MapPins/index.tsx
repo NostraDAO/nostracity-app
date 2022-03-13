@@ -43,12 +43,20 @@ export default function MapPins() {
   const [btnTextBarber, setBtnTextBarber] = useState("Approve");
   const [btnTextGrocery, setBtnTextGrocery] = useState("Approve");
   const [btnTextDiner, setBtnTextDiner] = useState("Approve");
-  const [quantity, setQuantity] = useState(0);
   const [isApproving, setIsApproving] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [allowanceValueBarber, setAllowanceValueBarber] = useState(0);
+  const [allowanceValueGrocery, setAllowanceValueGrocery] = useState(0);
+  const [allowanceValueDiner, setAllowanceValueDiner] = useState(0);
+  const [mintPriceBarber, setMintPriceBarber] = useState(0);
+  const [mintPriceGrocery, setMintPriceGrocery] = useState(0);
+  const [mintPriceDiner, setMintPriceDiner] = useState(0);
+  const [nftQuantity, setNftQuantity] = useState(0);
 
-  let nftQuantity: any;
+  let totalValueBarber: any;
+  let totalValueGrocery: any;
+  let totalValueDiner: any;
   const classes = useStyles();
   const { account, active } = useWeb3React();
   const dai_address = "0x4C3827E3122ccd1553Be728b589962442DFe49Ed";
@@ -73,17 +81,18 @@ export default function MapPins() {
       allowanceTx = await daiContract.methods
         .allowance(account, barber_address)
         .call();
-      console.log("Barber allowanceTx", allowanceTx);
+      setMintPriceBarber(mintPrice);
+      setAllowanceValueBarber(allowanceTx);
+      if (allowanceValueBarber >= mintPriceBarber) {
+        setApprovedBarber(true);
+        setBtnTextBarber("Mint");
+      } else {
+        setApprovedBarber(false);
+        setBtnTextBarber("Approve");
+      }
+
     } catch (err: any) {
-      console.log("err on allowance transaction", err);
-    } finally {
-      console.log("barber price", mintPrice);
-      allowanceTx <= mintPrice
-        ? setApprovedBarber(false)
-        : setApprovedBarber(true);
-      approvedBarber == true
-        ? setBtnTextBarber("Mint")
-        : setBtnTextBarber("Approve");
+      console.log('Error on getting mint price for Scissors or allowance of DAI: ', err.message);
     }
   }
 
@@ -104,17 +113,18 @@ export default function MapPins() {
       allowanceTx = await daiContract.methods
         .allowance(account, grocery_address)
         .call();
-      console.log("Grocery allowanceTx", allowanceTx);
+      setMintPriceGrocery(mintPrice);
+      setAllowanceValueGrocery(allowanceTx);
+      if (allowanceValueGrocery >= mintPriceGrocery) {
+        setApprovedGrocery(true);
+        setBtnTextGrocery("Mint");
+      } else {
+        setApprovedGrocery(false);
+        setBtnTextGrocery("Approve");
+      }
+
     } catch (err: any) {
-      console.log("err on allowance transaction", err);
-    } finally {
-      console.log("groceryprice", mintPrice);
-      allowanceTx <= mintPrice
-        ? setApprovedGrocery(false)
-        : setApprovedGrocery(true);
-      approvedGrocery == true
-        ? setBtnTextBarber("Mint")
-        : setBtnTextBarber("Approve");
+      console.log('Error on getting mint price for Tomatoes  or allowance of DAI: ', err.message);
     }
   }
 
@@ -135,17 +145,18 @@ export default function MapPins() {
       allowanceTx = await daiContract.methods
         .allowance(account, diner_address)
         .call();
-      console.log("Diner allowanceTx", allowanceTx);
+      setMintPriceDiner(mintPrice);
+      setAllowanceValueDiner(allowanceTx);
+      if (allowanceValueDiner >= mintPriceDiner) {
+        setApprovedDiner(true);
+        setBtnTextDiner("Mint");
+      } else {
+        setApprovedDiner(false);
+        setBtnTextDiner("Approve");
+      }
+
     } catch (err: any) {
-      console.log("err on allowance transaction", err);
-    } finally {
-      console.log("dinerprice", mintPrice);
-      allowanceTx <= mintPrice
-        ? setApprovedDiner(false)
-        : setApprovedDiner(true);
-      approvedDiner == true
-        ? setBtnTextDiner("Mint")
-        : setBtnTextDiner("Approve");
+      console.log('Error on getting mint price for Coffee or allowance of DAI: ', err.message);
     }
   }
 
@@ -161,22 +172,35 @@ export default function MapPins() {
     if (typeof window.ethereum !== "undefined") {
       getMinimalAllowance();
     }
-  }, [account]);
+  }, [account, allowanceValueBarber, allowanceValueGrocery, allowanceValueDiner]);
 
   const handleOpen = (item: string) => {
     if (item == "barber") {
       setIsOpenBarber(true);
+      if (allowanceValueBarber > 0) {
+        setBtnTextBarber("Mint");
+        setApprovedBarber(true);
+        console.log("handle open", approvedBarber);
+      }
     }
     if (item == "grocery") {
       setIsOpenGrocery(true);
+      if (allowanceValueGrocery > 0) {
+        setBtnTextGrocery("Mint");
+        setApprovedGrocery(true);
+      }
     }
     if (item == "diner") {
       setIsOpenDiner(true);
+      if (allowanceValueDiner > 0) {
+        setBtnTextDiner("Mint");
+        setApprovedDiner(true);
+      }
     }
     if (item == "bank") {
       setIsOpenBank(true);
     }
-    if(item == 'trophy'){
+    if (item == "trophy") {
       setIsOpenRank(true);
     }
   };
@@ -189,16 +213,13 @@ export default function MapPins() {
     setIsOpenAlert(false);
   };
 
-  const handleQuantity = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let target = event.target;
-    nftQuantity = target.value;
-    setQuantity(nftQuantity);
-    console.log("Quantity", nftQuantity);
+  const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    setNftQuantity(event.target.value);
   };
 
   const handleClose = (item: string) => {
     if (item == "barber") {
-      setIsOpenBarber(false); 
+      setIsOpenBarber(false);
     }
     if (item == "grocery") {
       setIsOpenGrocery(false);
@@ -209,12 +230,13 @@ export default function MapPins() {
     if (item == "bank") {
       setIsOpenBank(false);
     }
-    if(item == "trophy"){
+    if (item == "trophy") {
       setIsOpenRank(false);
     }
   };
 
   async function mintBarber() {
+    let approveTx;
     const web3 = new Web3(Web3.givenProvider);
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
@@ -224,35 +246,24 @@ export default function MapPins() {
       barberContractAbi as any,
       barber_address
     );
-    let approveTx;
-    let allowanceTx;
-    let mintPrice;
-    try {
-      mintPrice = await barberContract.methods.getMintingPrice(account).call();
-      allowanceTx = await daiContract.methods
-        .allowance(account, barber_address)
-        .call();
-      console.log("allowanceTx", allowanceTx);
-    } catch (err: any) {
-      console.log("err on allowance transaction", err);
-    } finally {
-      allowanceTx <= mintPrice
-        ? setApprovedBarber(false)
-        : setApprovedBarber(true);
-      approvedBarber == true
-        ? setBtnTextBarber("Mint")
-        : setBtnTextBarber("Approve");
+
+    //complete the function to get the total amount of nft
+    totalValueBarber = nftQuantity * mintPriceBarber;
+    if (allowanceValueBarber >= totalValueBarber) {
+      console.log('😒goes in here')
+      setApprovedBarber(true);
+      setBtnTextBarber("Mint");
+    } else {
+      setApprovedBarber(false);
+      setBtnTextBarber("Approve");
     }
+    console.log("approved on mintButton ", approvedBarber);
+
     if (!approvedBarber) {
       try {
-        let totalValue;
-        console.log("mintPrice", mintPrice);
-        totalValue = quantity * mintPrice;
-        console.log("nftQuantity", nftQuantity);
-        console.log("quantity", quantity);
-        console.log("totalValue", totalValue);
-        approveTx = await daiContract.methods
-          .approve(barber_address, totalValue.toString())
+        totalValueBarber = nftQuantity * mintPriceBarber;
+        approveTx = daiContract.methods
+          .approve(barber_address, totalValueBarber.toString())
           .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextBarber("Approving...");
@@ -267,7 +278,6 @@ export default function MapPins() {
           })
           .on("error", (err: any) => {
             console.log("error", err);
-            console.log("reason", err.reason);
             setBtnTextBarber("Approve");
             setIsError(true);
             setErrorMessage(
@@ -276,19 +286,18 @@ export default function MapPins() {
           });
       } catch (err: any) {
         console.log(err);
-        setApprovedBarber(false);
-      } finally {
-        if (approveTx && allowanceTx >= mintPrice) {
+        barberAllowanceChecker();
+        if (approvedBarber) {
           setApprovedBarber(true);
-          setBtnTextBarber("Mint");
+        } else {
+          setApprovedBarber(false);
         }
       }
     }
     if (approvedBarber) {
       try {
-        console.log("safemint barber", account, quantity);
-        let mintTx = await barberContract.methods
-          .safeMint(account, quantity)
+        let mintTx = barberContract.methods
+          .safeMint(account, nftQuantity)
           .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextBarber("Minting...");
@@ -298,15 +307,31 @@ export default function MapPins() {
           .on("receipt", (receipt: any) => {
             console.log("receipt", receipt);
             setBtnTextBarber("Mint");
-            setApprovedBarber(true);
+            barberAllowanceChecker();
+            console.log(
+              "allowance barber on receipt of mint",
+              allowanceValueBarber
+            );
+            // if (allowanceValueBarber >= totalValueBarber) {
+            //   setApprovedBarber(true);
+            //   setBtnTextBarber("Mint");
+            // } else {
+            //   setApprovedBarber(false);
+            //   setBtnTextBarber("Approve");
+            // }
+
             setIsError(false);
             setIsProcessing(false);
           })
           .on("error", (err: any) => {
             console.log("err", err);
-            setApprovedBarber(false);
-            setBtnTextBarber("Mint");
-            nftQuantity = 0;
+            if (allowanceValueBarber >= totalValueBarber) {
+              setApprovedBarber(true);
+              setBtnTextBarber("Mint");
+            } else {
+              setApprovedBarber(false);
+              setBtnTextBarber("Approve");
+            }
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
@@ -323,6 +348,8 @@ export default function MapPins() {
 
   async function mintGrocery() {
     const web3 = new Web3(Web3.givenProvider);
+    let approveTx;
+    let allowanceTx;
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
       dai_address
@@ -331,100 +358,89 @@ export default function MapPins() {
       groceryContractAbi as any,
       grocery_address
     );
-    let approveTx;
-    let allowanceTx;
-    let mintPrice;
-    try {
-      mintPrice = await groceryContract.methods.getMintingPrice(account).call();
-      allowanceTx = await daiContract.methods
-        .allowance(account, grocery_address)
-        .call();
-      console.log("allowanceTx", allowanceTx);
-    } catch (err: any) {
-      console.log("err on allowance transaction", err);
-    } finally {
-      allowanceTx < mintPrice
-        ? setApprovedGrocery(false)
-        : setApprovedGrocery(true);
-      approvedGrocery == true
-        ? setBtnTextGrocery("Mint")
-        : setBtnTextGrocery("Approve");
-    }
-
-    if (!approvedGrocery) {
-      try {
-        let totalValue;
-        console.log("mintPrice", mintPrice);
-        totalValue = quantity * mintPrice;
-        console.log("totalValue", totalValue);
-        approveTx = await daiContract.methods
-          .approve(grocery_address, totalValue.toString())
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextGrocery("Approving...");
-            setIsError(false);
-            setIsProcessing(true);
-          })
-          .on("receipt", function (receipt: any) {
-            console.log("receipt", receipt);
-            setApprovedGrocery(true);
-            setBtnTextGrocery("Mint");
-            setIsError(false);
-            setIsProcessing(false);
-          })
-          .on("error", (err: any) => {
-            console.log("error", err);
-            setBtnTextGrocery("Approve");
-            setApprovedGrocery(false);
-            setIsError(true);
-            setErrorMessage(
-              "There was an error on the approve transaction. Check your wallet and try again."
-            );
-          });
-      } catch (err: any) {
-        console.log(err);
-        setApprovedGrocery(false);
-      } finally {
-        if (approveTx && allowanceTx >= mintPrice) {
-          setApprovedGrocery(true);
-          setBtnTextGrocery("Mint");
-        }
-      }
-    }
-    if (approvedGrocery) {
-      try {
-        let mintTx = await groceryContract.methods
-          .safeMint(account, quantity)
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextGrocery("Minting...");
-            setIsError(false);
-            setIsProcessing(true);
-          })
-          .on("receipt", (receipt: any) => {
-            console.log("receipt", receipt);
-            setBtnTextGrocery("Mint");
-            setApprovedGrocery(true);
-            setIsError(false);
-            setIsProcessing(false);
-          })
-          .on("error", (err: any) => {
-            console.log("err", err);
-            setApprovedGrocery(false);
-            setBtnTextGrocery("Mint");
-            nftQuantity = 0;
-            setIsError(true);
-            setErrorMessage(
-              "There was an error on the mint transaction. Check your wallet and try again."
-            );
-          });
-      } catch (err: any) {
-        console.log("err mint", err);
-      }
-    }
-    if (!active) {
-      handleAlert();
-    }
+     //complete the function to get the total amount of nft
+     totalValueGrocery = nftQuantity * mintPriceGrocery;
+     if (allowanceValueGrocery >= totalValueGrocery) {
+       setApprovedGrocery(true);
+       setBtnTextGrocery("Mint");
+     } else {
+       setApprovedGrocery(false);
+       setBtnTextGrocery("Approve");
+     }
+ 
+     if (!approvedGrocery) {
+       try {
+         totalValueGrocery = nftQuantity * mintPriceGrocery;
+         approveTx = daiContract.methods
+           .approve(grocery_address, totalValueGrocery.toString())
+           .send({ from: account })
+           .on("transactionHash", function (hash: any) {
+             setBtnTextGrocery("Approving...");
+             setIsError(false);
+             setIsProcessing(true);
+           })
+           .on("receipt", function (receipt: any) {
+             setApprovedGrocery(true);
+             setBtnTextGrocery("Mint");
+             setIsError(false);
+             setIsProcessing(false);
+           })
+           .on("error", (err: any) => {
+             console.log("error", err);
+             setBtnTextGrocery("Approve");
+             setIsError(true);
+             setErrorMessage(
+               "There was an error on the approve transaction. Check your wallet and try again."
+             );
+           });
+       } catch (err: any) {
+         console.log(err);
+         groceryAllowanceChecker();
+         if (approvedGrocery) {
+           setApprovedGrocery(true);
+         } else {
+           setApprovedGrocery(false);
+         }
+       }
+     }
+     if (approvedGrocery) {
+       try {
+         let mintTx = groceryContract.methods
+           .safeMint(account, nftQuantity)
+           .send({ from: account })
+           .on("transactionHash", function (hash: any) {
+             setBtnTextGrocery("Minting...");
+             setIsError(false);
+             setIsProcessing(true);
+           })
+           .on("receipt", (receipt: any) => {
+             console.log("receipt", receipt);
+             setBtnTextGrocery("Mint");
+             groceryAllowanceChecker();
+             setIsError(false);
+             setIsProcessing(false);
+           })
+           .on("error", (err: any) => {
+             console.log("err", err);
+             if (allowanceValueGrocery >= totalValueGrocery) {
+               setApprovedGrocery(true);
+               setBtnTextGrocery("Mint");
+             } else {
+               setApprovedGrocery(false);
+               setBtnTextGrocery("Approve");
+             }
+             setIsError(true);
+             setErrorMessage(
+               "There was an error on the mint transaction. Check your wallet and try again."
+             );
+           });
+       } catch (err: any) {
+         console.log("err mint", err);
+       }
+     }
+     if (!active) {
+       handleAlert();
+     }
   }
 
   async function mintDiner() {
@@ -473,10 +489,15 @@ export default function MapPins() {
           })
           .on("receipt", function (receipt: any) {
             console.log("receipt", receipt);
-            setApprovedDiner(true);
-            setBtnTextDiner("Mint");
             setIsError(false);
             setIsProcessing(false);
+            if (totalValue <= allowanceTx) {
+              setApprovedDiner(true);
+              setBtnTextDiner("Mint");
+            } else {
+              setApprovedDiner(false);
+              setBtnTextDiner("Approve");
+            }
           })
           .on("error", (err: any) => {
             console.log("error", err);
@@ -517,7 +538,6 @@ export default function MapPins() {
             console.log("err", err);
             setApprovedDiner(false);
             setBtnTextDiner("Mint");
-            nftQuantity = 0;
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
