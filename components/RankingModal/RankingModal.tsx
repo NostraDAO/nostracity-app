@@ -59,7 +59,6 @@ export const RankingModal= ({
     catch(err: any){
       console.log('barberScore: ', err);
     }finally{
-      console.log('getScore: ', getScore);
       setBarberScore(getScore);
     }
   }
@@ -72,7 +71,6 @@ export const RankingModal= ({
     catch(err: any){
       console.log('groceryScore: ', err);
     }finally{
-      console.log('getScore: ', getScore);
       setGroceryScore(getScore);
     }
   }
@@ -85,7 +83,6 @@ export const RankingModal= ({
     catch(err: any){
       console.log('dinerScore: ', err);
     }finally{
-      console.log('getScore: ', getScore);
       setDinerScore(getScore);
     }
   }

@@ -178,6 +178,7 @@ export default function MapPins() {
     if (typeof window.ethereum !== "undefined") {
       getMinimalAllowance();
     }
+  
   }, [
     account,
     allowanceValueBarber,
@@ -191,7 +192,6 @@ export default function MapPins() {
       if (allowanceValueBarber > 0) {
         setBtnTextBarber("Mint");
         setApprovedBarber(true);
-        console.log("handle open", approvedBarber);
       }
     }
     if (item == "grocery") {
@@ -277,6 +277,8 @@ export default function MapPins() {
     if (!approvedBarber) {
       try {
         totalValueBarber = nftQuantity * mintPriceBarber;
+        console.log('AQUI', totalValueBarber);
+        console.log('type', typeof totalValueBarber)  
         approveTx = daiContract.methods
           .approve(barber_address, totalValueBarber.toString())
           .send({ from: account })
