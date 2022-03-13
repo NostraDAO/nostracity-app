@@ -457,6 +457,7 @@ export default function MapPins() {
 
   async function mintDiner() {
     const web3 = new Web3(Web3.givenProvider);
+    let approveTx;
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
       dai_address
