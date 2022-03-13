@@ -52,7 +52,7 @@ export default function MapPins() {
   const [mintPriceBarber, setMintPriceBarber] = useState(0);
   const [mintPriceGrocery, setMintPriceGrocery] = useState(0);
   const [mintPriceDiner, setMintPriceDiner] = useState(0);
-  const [nftQuantity, setNftQuantity] = useState(0);
+  const [nftQuantity, setNftQuantity] = useState(null);
 
   let totalValueBarber: any;
   let totalValueGrocery: any;
@@ -225,11 +225,9 @@ export default function MapPins() {
   };
 
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if(event.target.value <= "0"){
-       setErrorMessage('You cannot approve 0 DAI, please add a valid value ');
-    }else {
-      setNftQuantity(Number((event.target as HTMLInputElement).value));
-    }
+
+    setNftQuantity(Number((event.target as HTMLInputElement).value));
+    console.log('😀 nftQuantity', nftQuantity)
 
   };
 
@@ -549,20 +547,27 @@ export default function MapPins() {
   }
 
   async function Mint(item: string) {
-    if (
-      typeof window.ethereum !== "undefined" &&
-      window.ethereum.selectedAddress
-    ) {
-      if (item == "Barber") {
-        await mintBarber();
+    if (nftQuantity === 0 || null) {
+      setIsError(true);
+      setErrorMessage("This is an invalid value for approving or minting. Please add at least 1")
+    } else {
+      if (
+        typeof window.ethereum !== "undefined" &&
+        window.ethereum.selectedAddress
+      ) {
+        if (item == "Barber") {
+          await mintBarber();
+        }
+        if (item == "Grocery") {
+          await mintGrocery();
+        }
+        if (item == "Diner") {
+          await mintDiner();
+        }
       }
-      if (item == "Grocery") {
-        await mintGrocery();
-      }
-      if (item == "Diner") {
-        await mintDiner();
-      }
+
     }
+
   }
 
   return (
@@ -614,6 +619,7 @@ export default function MapPins() {
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
+
       </CustomModal>
 
       <CustomModal
