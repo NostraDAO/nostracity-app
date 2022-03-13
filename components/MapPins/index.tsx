@@ -225,8 +225,12 @@ export default function MapPins() {
   };
 
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if(event.target.value <= "0"){
+       setErrorMessage('You cannot approve 0 DAI, please add a valid value ');
+    }else {
+      setNftQuantity(Number((event.target as HTMLInputElement).value));
+    }
 
-    setNftQuantity(Number((event.target as HTMLInputElement).value));
   };
 
   const handleClose = (item: string) => {
@@ -258,6 +262,7 @@ export default function MapPins() {
       barberContractAbi as any,
       barber_address
     );
+    barberContract.handleRevert = true;
 
     //complete the function to get the total amount of nft
     totalValueBarber = nftQuantity * mintPriceBarber;
@@ -324,14 +329,6 @@ export default function MapPins() {
               "allowance barber on receipt of mint",
               allowanceValueBarber
             );
-            // if (allowanceValueBarber >= totalValueBarber) {
-            //   setApprovedBarber(true);
-            //   setBtnTextBarber("Mint");
-            // } else {
-            //   setApprovedBarber(false);
-            //   setBtnTextBarber("Approve");
-            // }
-
             setIsError(false);
             setIsProcessing(false);
           })
