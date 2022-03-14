@@ -178,7 +178,6 @@ export default function MapPins() {
     if (typeof window.ethereum !== "undefined") {
       getMinimalAllowance();
     }
-  
   }, [
     account,
     allowanceValueBarber,
@@ -225,10 +224,8 @@ export default function MapPins() {
   };
 
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
-
     setNftQuantity(Number((event.target as HTMLInputElement).value));
-    console.log('😀 nftQuantity', nftQuantity)
-
+    console.log("😀 nftQuantity", nftQuantity);
   };
 
   const handleClose = (item: string) => {
@@ -273,14 +270,16 @@ export default function MapPins() {
       setBtnTextBarber("Approve");
     }
     console.log("approved on mintButton ", approvedBarber);
+    let bnBarber;
+    var BN = web3.utils.BN;
+    bnBarber = new BN(totalValueBarber.toString());
+    let weiBarber = web3.utils.toWei(bnBarber);
 
     if (!approvedBarber) {
       try {
         totalValueBarber = nftQuantity * mintPriceBarber;
-        console.log('AQUI', totalValueBarber);
-        console.log('type', typeof totalValueBarber)  
         approveTx = daiContract.methods
-          .approve(barber_address, totalValueBarber.toString())
+          .approve(barber_address, weiBarber)
           .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextBarber("Approving...");
@@ -376,12 +375,14 @@ export default function MapPins() {
       setApprovedGrocery(false);
       setBtnTextGrocery("Approve");
     }
-
+    let bnGrocery;
+    var BN = web3.utils.BN;
+    bnGrocery = new BN(totalValueGrocery.toString());
+    let weiGrocery = web3.utils.toWei(bnGrocery);
     if (!approvedGrocery) {
       try {
-        totalValueGrocery = nftQuantity * mintPriceGrocery;
         approveTx = daiContract.methods
-          .approve(grocery_address, totalValueGrocery.toString())
+          .approve(grocery_address, weiGrocery)
           .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextGrocery("Approving...");
@@ -472,12 +473,15 @@ export default function MapPins() {
       setApprovedDiner(false);
       setBtnTextDiner("Approve");
     }
-
+    //convert into big number and then into wei
+    let bnDiner;
+    var BN = web3.utils.BN;
+    bnDiner = new BN(totalValueDiner.toString());
+    let weiDiner = web3.utils.toWei(bnDiner);
     if (!approvedDiner) {
       try {
-        totalValueDiner = nftQuantity * mintPriceDiner;
         approveTx = daiContract.methods
-          .approve(diner_address, totalValueDiner.toString())
+          .approve(diner_address, weiDiner)
           .send({ from: account })
           .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Approving...");
@@ -551,12 +555,21 @@ export default function MapPins() {
   async function Mint(item: string) {
     if (nftQuantity === 0 || null) {
       setIsError(true);
-      setErrorMessage("This is an invalid value for approving or minting. Please add at least 1")
+      setErrorMessage(
+        "This is an invalid value for approving or minting. Please add at least 1"
+      );
+    }
+    if (nftQuantity === 50) {
+      setIsError(true);
+      setErrorMessage(
+        "The max number of nfts on this season is 50."
+      );
     } else {
       if (
         typeof window.ethereum !== "undefined" &&
         window.ethereum.selectedAddress
       ) {
+        setIsError(false);
         if (item == "Barber") {
           await mintBarber();
         }
@@ -567,9 +580,7 @@ export default function MapPins() {
           await mintDiner();
         }
       }
-
     }
-
   }
 
   return (
@@ -622,7 +633,6 @@ export default function MapPins() {
           />
         </span>
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
-
       </CustomModal>
 
       <CustomModal
