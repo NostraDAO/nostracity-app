@@ -14,11 +14,12 @@ import groceryContractAbi from "../../abi/GroceryStoreNFT.json";
 import dinerContractAbi from "../../abi/DinerNFT.json";
 
 import NoSsr from "@material-ui/core/NoSsr";
-// import Web3 from "web3";
 const Web3 = require("web3");
 import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
+import Tooltip from "@mui/material/Tooltip";
+
 declare var window: any;
 
 const useStyles = makeStyles((theme) => ({
@@ -561,9 +562,7 @@ export default function MapPins() {
     }
     if (nftQuantity === 50) {
       setIsError(true);
-      setErrorMessage(
-        "The max number of nfts on this season is 50."
-      );
+      setErrorMessage("The max number of nfts on this season is 50.");
     } else {
       if (
         typeof window.ethereum !== "undefined" &&
@@ -583,6 +582,12 @@ export default function MapPins() {
     }
   }
 
+  const barberText =
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem sed tenetur blanditiis repellendus, nobis perspiciatis culpa soluta amet in numquam voluptatibus harum odit, dolorum nulla voluptates voluptatum impedit sunt quo. ";
+  const groceryText =
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem sed tenetur blanditiis repellendus, nobis perspiciatis culpa soluta amet in numquam voluptatibus harum odit, dolorum nulla voluptates voluptatum impedit sunt quo. ";
+    const dinerText =
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem sed tenetur blanditiis repellendus, nobis perspiciatis culpa soluta amet in numquam voluptatibus harum odit, dolorum nulla voluptates voluptatum impedit sunt quo. ";
   return (
     <>
       <AlertModal isOpen={isOpenAlert} handleClose={() => handleAlertClose()}>
@@ -675,6 +680,7 @@ export default function MapPins() {
 
       <NoSsr>
         <div className={styles.mapPins}>
+          <Tooltip title={barberText} arrow>
           <IconButton
             className={classes.root}
             onClick={() => handleOpen("barber")}
@@ -683,16 +689,18 @@ export default function MapPins() {
           >
             <PushPin2FillIcon size="36px" />
           </IconButton>
-
-          <IconButton
-            className={classes.root}
-            onClick={() => handleOpen("grocery")}
-            color="primary"
-            name="grocery"
-          >
-            <PushPin2FillIcon size="36px" />
-          </IconButton>
-
+          </Tooltip>
+          <Tooltip title={groceryText} arrow>
+            <IconButton
+              className={classes.root}
+              onClick={() => handleOpen("grocery")}
+              color="primary"
+              name="grocery"
+            >
+              <PushPin2FillIcon size="36px" />
+            </IconButton>
+          </Tooltip>
+            <Tooltip title={dinerText} arrow>
           <IconButton
             className={classes.root}
             onClick={() => handleOpen("diner")}
@@ -701,6 +709,7 @@ export default function MapPins() {
           >
             <PushPin2FillIcon size="36px" />
           </IconButton>
+          </Tooltip>
 
           <IconButton
             className={classes.root}

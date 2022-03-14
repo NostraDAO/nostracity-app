@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
       },
       "& .MuiDrawer-paperAnchorLeft":{
         left: "unset",
+        marginLeft: "3%"
       }
     }
   }));

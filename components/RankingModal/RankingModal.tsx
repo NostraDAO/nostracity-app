@@ -20,7 +20,7 @@ import dinerABI from  '../../abi/DinerNFT.json';
 const barber_address = "0x1C26daC2a2e9Bb057fCC061a1903491bA1B5630C";
 const grocery_address = "0xe2284c96faEdF807B4850d271a01e68fF7a443aE";
 const diner_address = "0xee2e93C1E58BD5BC42eE0365401F2C586f4f1694";
-
+import styles from './RankingModal.module.css';
 
 
 const style = {
@@ -30,9 +30,9 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "60%",
   height:"60%",
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: '#F3DFC1',
   boxShadow: 24,
+  fontFamily: "OldNewspaperTypes",
   p: 4,
 };
 
@@ -92,7 +92,7 @@ export const RankingModal= ({
 
   const TableContent = () => {
    return ( 
-   <TableContainer >
+   <TableContainer  className={styles.rankingModal}>
            <Table sx={{ minWidth: 650 }} aria-label="simple table">
            <TableHead>
            <TableRow>
@@ -138,7 +138,7 @@ useEffect(() => {
 
   return (
     <div>
-      <Modal
+      <Modal className={styles.rankingModal}
         open={isOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"

@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import treasuryABI from '../../abi/Treasury.json';
+import styles from './BankModal.module.css';
 
 const treasury_address = "";
 
@@ -16,9 +17,9 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "60%",
   height:"60%",
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: '#F3DFC1',
   boxShadow: 24,
+  fontFamily: "OldNewspaperTypes",
   p: 4,
 };
 
@@ -55,7 +56,7 @@ export const BankModal= ({
 
   return (
     <div>
-      <Modal
+      <Modal className={styles.bankModal}
         open={isOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"

@@ -13,9 +13,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "80%",
   height: "80%",
-  bgcolor: "background.paper",
+  bgcolor: "#F3DFC1",
   boxShadow: 24,
   p: 4,
+  fontFamily: "OldNewspaperTypes"
 };
 
 export const CustomModal = ({
@@ -39,7 +40,7 @@ export const CustomModal = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography align="center"  variant="h2" component="h2">
             {title}
           </Typography>
           <Box id="modal-modal-description" sx={{ mt: 2 }}>

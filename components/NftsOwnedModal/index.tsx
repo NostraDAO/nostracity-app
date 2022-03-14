@@ -15,8 +15,9 @@ const style = {
     transform: "translate(-50%, -50%)",
     width: "30%",
     height: "30%",
-    bgcolor: "background.paper",
+    bgcolor: "#F3DFC1",
     boxShadow: 24,
+    fontFamily : "OldNewspaperTypes",
     p: 4,
   };
 const nftlist: any[] = [];

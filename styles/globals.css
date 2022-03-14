@@ -37,3 +37,8 @@
     font-family: "DailyNews";
     src: local("DailyNews1915"), url("../public/assets/fonts/DailyNews1915.ttf") format("truetype");
 }
+
+@font-face {
+    font-family: "OldNewspaperTypes";
+    src: local("OldNewspaperTypes"), url("../public/assets/fonts/OldNewspaperTypes.ttf") format("truetype");
+}

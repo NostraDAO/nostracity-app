@@ -2,8 +2,16 @@
     margin-top: 16px;
     background-color: #93100D;
     color: white;
+    font-family: DailyNews;
+    font-size:2em;
+    letter-spacing: 5px;
 }
 .customModal button:hover {
     background-color: #93100D;
     filter: brightness(0.8);
+}
+.customModal h2 {
+    font-family: DailyNews;
+    font-size: 5.5em;
+    letter-spacing: 5px;
 }
