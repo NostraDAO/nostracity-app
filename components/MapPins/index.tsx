@@ -52,7 +52,7 @@ export default function MapPins() {
   const [mintPriceBarber, setMintPriceBarber] = useState(0);
   const [mintPriceGrocery, setMintPriceGrocery] = useState(0);
   const [mintPriceDiner, setMintPriceDiner] = useState(0);
-  const [nftQuantity, setNftQuantity] = useState<number | null>(null);
+  const [nftQuantity, setNftQuantity] = useState<number>();
 
   let totalValueBarber: any;
   let totalValueGrocery: any;
