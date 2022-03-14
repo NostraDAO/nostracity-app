@@ -52,7 +52,7 @@ export default function MapPins() {
   const [mintPriceBarber, setMintPriceBarber] = useState(0);
   const [mintPriceGrocery, setMintPriceGrocery] = useState(0);
   const [mintPriceDiner, setMintPriceDiner] = useState(0);
-  const [nftQuantity, setNftQuantity] = useState<number>();
+  const [nftQuantity, setNftQuantity] = useState<number>(0);
 
   let totalValueBarber: any;
   let totalValueGrocery: any;
@@ -260,7 +260,7 @@ export default function MapPins() {
     barberContract.handleRevert = true;
 
     //complete the function to get the total amount of nft
-    totalValueBarber = nftQuantity? * mintPriceBarber;
+    totalValueBarber = nftQuantity * mintPriceBarber;
     if (allowanceValueBarber >= totalValueBarber) {
       console.log("😒goes in here");
       setApprovedBarber(true);
@@ -366,7 +366,7 @@ export default function MapPins() {
       grocery_address
     );
     //complete the function to get the total amount of nft
-    totalValueGrocery = nftQuantity? * mintPriceGrocery;
+    totalValueGrocery = nftQuantity * mintPriceGrocery;
     if (allowanceValueGrocery >= totalValueGrocery) {
       setApprovedGrocery(true);
       setBtnTextGrocery("Mint");
@@ -464,7 +464,7 @@ export default function MapPins() {
       diner_address
     );
     //complete the function to get the total amount of nft
-    totalValueDiner = nftQuantity? * mintPriceDiner;
+    totalValueDiner = nftQuantity * mintPriceDiner;
     if (allowanceValueDiner >= totalValueDiner) {
       setApprovedDiner(true);
       setBtnTextDiner("Mint");
