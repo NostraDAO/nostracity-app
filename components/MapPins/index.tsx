@@ -260,7 +260,7 @@ export default function MapPins() {
     barberContract.handleRevert = true;
 
     //complete the function to get the total amount of nft
-    totalValueBarber = nftQuantity * mintPriceBarber;
+    totalValueBarber = nftQuantity? * mintPriceBarber;
     if (allowanceValueBarber >= totalValueBarber) {
       console.log("😒goes in here");
       setApprovedBarber(true);
@@ -277,7 +277,6 @@ export default function MapPins() {
 
     if (!approvedBarber) {
       try {
-        totalValueBarber = nftQuantity * mintPriceBarber;
         approveTx = daiContract.methods
           .approve(barber_address, weiBarber)
           .send({ from: account })
@@ -367,7 +366,7 @@ export default function MapPins() {
       grocery_address
     );
     //complete the function to get the total amount of nft
-    totalValueGrocery = nftQuantity * mintPriceGrocery;
+    totalValueGrocery = nftQuantity? * mintPriceGrocery;
     if (allowanceValueGrocery >= totalValueGrocery) {
       setApprovedGrocery(true);
       setBtnTextGrocery("Mint");
@@ -465,7 +464,7 @@ export default function MapPins() {
       diner_address
     );
     //complete the function to get the total amount of nft
-    totalValueDiner = nftQuantity * mintPriceDiner;
+    totalValueDiner = nftQuantity? * mintPriceDiner;
     if (allowanceValueDiner >= totalValueDiner) {
       setApprovedDiner(true);
       setBtnTextDiner("Mint");
