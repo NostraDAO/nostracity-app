@@ -33,6 +33,8 @@ export default function ProfileWallet() {
         console.log(chainId);
         setWrongNetworkAlert(true);
         deactivate();
+      }else {
+        return;
       }
     }
   }, []);
