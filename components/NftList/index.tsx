@@ -65,7 +65,7 @@ export default function NftList({ account }: any) {
   return (
     <Container fixed>
     <Box>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{justifyContent: 'center'}} >
         {account ? (
           <>
             <div>

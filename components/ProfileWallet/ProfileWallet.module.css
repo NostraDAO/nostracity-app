@@ -4,8 +4,11 @@
     align-items: flex-end;
     justify-content: center;
     padding: 20px;
-    position: relative;
+    position: absolute;
+    top: 0;
+    right:0;
     z-index: 1300;
+    font-family: OldNewspaperTypes;
 }
 
 .profileBox {

@@ -21,6 +21,7 @@ const style = {
   boxShadow: 24,
   fontFamily: "OldNewspaperTypes",
   p: 4,
+  textAlign: "center"
 };
 
 

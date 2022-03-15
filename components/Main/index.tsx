@@ -9,7 +9,7 @@ import Background from '../Background'
 export default function Main() {
 
   return (
-    <div>
+    <div className={styles.mainRoot}>
       <Sidebar />
       <ProfileWallet />
       <MapPins />

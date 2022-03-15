@@ -46,7 +46,7 @@ export default function Sidebar() {
               href="http://bit.ly/NostraCity"
               target="_blank"
             >
-              <ListItemText primary="Documentation" />
+              <ListItemText primary="Docs" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>

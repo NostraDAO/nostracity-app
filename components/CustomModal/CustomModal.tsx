@@ -16,7 +16,8 @@ const style = {
   bgcolor: "#F3DFC1",
   boxShadow: 24,
   p: 4,
-  fontFamily: "OldNewspaperTypes"
+  fontFamily: "OldNewspaperTypes",
+  textAlign: "center"
 };
 
 export const CustomModal = ({

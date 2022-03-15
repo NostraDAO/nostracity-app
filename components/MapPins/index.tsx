@@ -39,6 +39,8 @@ export default function MapPins() {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isSucessful, setIsSucessful] = useState(false);
+  const [sucessfulMessage, setSucessfulMessage] = useState("");
   const [approvedBarber, setApprovedBarber] = useState(false);
   const [approvedGrocery, setApprovedGrocery] = useState(false);
   const [approvedDiner, setApprovedDiner] = useState(false);
@@ -55,6 +57,7 @@ export default function MapPins() {
   const [mintPriceGrocery, setMintPriceGrocery] = useState(0);
   const [mintPriceDiner, setMintPriceDiner] = useState(0);
   const [nftQuantity, setNftQuantity] = useState<number>(0);
+  const [lockInput, setLockInput] = useState(false);
 
   let totalValueBarber: any;
   let totalValueGrocery: any;
@@ -79,10 +82,10 @@ export default function MapPins() {
     let allowanceTx;
     let mintPrice;
     try {
-      mintPrice = await barberContract.methods.getMintingPrice(account).call();
+      mintPrice = await barberContract.methods.getMintingPrice(account).call() / 10 ** 18;
       allowanceTx = await daiContract.methods
         .allowance(account, barber_address)
-        .call();
+        .call()  / 10 ** 18;
       setMintPriceBarber(mintPrice);
       setAllowanceValueBarber(allowanceTx);
       if (allowanceValueBarber >= mintPriceBarber) {
@@ -113,10 +116,10 @@ export default function MapPins() {
     let allowanceTx;
     let mintPrice;
     try {
-      mintPrice = await groceryContract.methods.getMintingPrice(account).call();
+      mintPrice = await groceryContract.methods.getMintingPrice(account).call() / 10 ** 18;
       allowanceTx = await daiContract.methods
         .allowance(account, grocery_address)
-        .call();
+        .call() / 10 ** 18;
       setMintPriceGrocery(mintPrice);
       setAllowanceValueGrocery(allowanceTx);
       if (allowanceValueGrocery >= mintPriceGrocery) {
@@ -147,12 +150,13 @@ export default function MapPins() {
     let allowanceTx;
     let mintPrice;
     try {
-      mintPrice = await dinerContract.methods.getMintingPrice(account).call();
+      mintPrice = await dinerContract.methods.getMintingPrice(account).call() / 10 ** 18;
       allowanceTx = await daiContract.methods
         .allowance(account, diner_address)
-        .call();
+        .call() / 10 ** 18;
       setMintPriceDiner(mintPrice);
       setAllowanceValueDiner(allowanceTx);
+      console.log("😒", allowanceValueDiner, mintPriceDiner);
       if (allowanceValueDiner >= mintPriceDiner) {
         setApprovedDiner(true);
         setBtnTextDiner("Mint");
@@ -190,24 +194,15 @@ export default function MapPins() {
   const handleOpen = (item: string) => {
     if (item == "barber") {
       setIsOpenBarber(true);
-      if (allowanceValueBarber > 0) {
-        setBtnTextBarber("Mint");
-        setApprovedBarber(true);
-      }
+      barberAllowanceChecker();
     }
     if (item == "grocery") {
       setIsOpenGrocery(true);
-      if (allowanceValueGrocery > 0) {
-        setBtnTextGrocery("Mint");
-        setApprovedGrocery(true);
-      }
+      groceryAllowanceChecker();
     }
     if (item == "diner") {
       setIsOpenDiner(true);
-      if (allowanceValueDiner > 0) {
-        setBtnTextDiner("Mint");
-        setApprovedDiner(true);
-      }
+      dinerAllowanceChecker();
     }
     if (item == "bank") {
       setIsOpenBank(true);
@@ -228,6 +223,10 @@ export default function MapPins() {
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setNftQuantity(Number((event.target as HTMLInputElement).value));
     console.log("😀 nftQuantity", nftQuantity);
+    setIsError(false);
+    setErrorMessage("");
+    setIsSucessful(false);
+    setSucessfulMessage("");
   };
 
   const handleClose = (item: string) => {
@@ -259,24 +258,10 @@ export default function MapPins() {
       barberContractAbi as any,
       barber_address
     );
-    barberContract.handleRevert = true;
-
+    barberAllowanceChecker();
     //complete the function to get the total amount of nft
     totalValueBarber = nftQuantity * mintPriceBarber;
-    if (allowanceValueBarber >= totalValueBarber) {
-      console.log("😒goes in here");
-      setApprovedBarber(true);
-      setBtnTextBarber("Mint");
-    } else {
-      setApprovedBarber(false);
-      setBtnTextBarber("Approve");
-    }
-    console.log("approved on mintButton ", approvedBarber);
-    let bnBarber;
-    var BN = web3.utils.BN;
-    bnBarber = new BN(totalValueBarber.toString());
-    let weiBarber = web3.utils.toWei(bnBarber);
-
+    let weiBarber = web3.utils.toWei(totalValueBarber.toString());
     if (!approvedBarber) {
       try {
         approveTx = daiContract.methods
@@ -285,18 +270,24 @@ export default function MapPins() {
           .on("transactionHash", function (hash: any) {
             setBtnTextBarber("Approving...");
             setIsError(false);
+            setLockInput(true);
             setIsProcessing(true);
           })
           .on("receipt", function (receipt: any) {
             setApprovedBarber(true);
             setBtnTextBarber("Mint");
             setIsError(false);
+            setLockInput(false);
             setIsProcessing(false);
+            setIsSucessful(true);
+            setSucessfulMessage("Approval for usage of DAI sucessful!");
+            barberAllowanceChecker();
           })
           .on("error", (err: any) => {
             console.log("error", err);
             setBtnTextBarber("Approve");
             setIsError(true);
+            setLockInput(false);
             setErrorMessage(
               "There was an error on the approve transaction. Check your wallet and try again."
             );
@@ -304,11 +295,6 @@ export default function MapPins() {
       } catch (err: any) {
         console.log(err);
         barberAllowanceChecker();
-        if (approvedBarber) {
-          setApprovedBarber(true);
-        } else {
-          setApprovedBarber(false);
-        }
       }
     }
     if (approvedBarber) {
@@ -319,35 +305,33 @@ export default function MapPins() {
           .on("transactionHash", function (hash: any) {
             setBtnTextBarber("Minting...");
             setIsError(false);
+            setLockInput(true);
             setIsProcessing(true);
           })
           .on("receipt", (receipt: any) => {
             console.log("receipt", receipt);
             setBtnTextBarber("Mint");
-            barberAllowanceChecker();
-            console.log(
-              "allowance barber on receipt of mint",
-              allowanceValueBarber
-            );
             setIsError(false);
+            setLockInput(false);
             setIsProcessing(false);
+            setIsSucessful(true);
+            setSucessfulMessage("Scissor minted successfully!!");
+            barberAllowanceChecker();
           })
           .on("error", (err: any) => {
             console.log("err", err);
-            if (allowanceValueBarber >= totalValueBarber) {
-              setApprovedBarber(true);
-              setBtnTextBarber("Mint");
-            } else {
-              setApprovedBarber(false);
-              setBtnTextBarber("Approve");
-            }
+            barberAllowanceChecker();
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
             );
+            setLockInput(false);
+            setIsProcessing(false);
           });
       } catch (err: any) {
         console.log("err mint", err);
+        setLockInput(false);
+        setIsProcessing(false);
       }
     }
     if (!active) {
@@ -367,19 +351,10 @@ export default function MapPins() {
       groceryContractAbi as any,
       grocery_address
     );
+    groceryAllowanceChecker();
     //complete the function to get the total amount of nft
     totalValueGrocery = nftQuantity * mintPriceGrocery;
-    if (allowanceValueGrocery >= totalValueGrocery) {
-      setApprovedGrocery(true);
-      setBtnTextGrocery("Mint");
-    } else {
-      setApprovedGrocery(false);
-      setBtnTextGrocery("Approve");
-    }
-    let bnGrocery;
-    var BN = web3.utils.BN;
-    bnGrocery = new BN(totalValueGrocery.toString());
-    let weiGrocery = web3.utils.toWei(bnGrocery);
+    let weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
     if (!approvedGrocery) {
       try {
         approveTx = daiContract.methods
@@ -389,12 +364,16 @@ export default function MapPins() {
             setBtnTextGrocery("Approving...");
             setIsError(false);
             setIsProcessing(true);
+            setLockInput(true);
           })
           .on("receipt", function (receipt: any) {
             setApprovedGrocery(true);
             setBtnTextGrocery("Mint");
             setIsError(false);
+            setLockInput(false);
             setIsProcessing(false);
+            setIsSucessful(true);
+            setSucessfulMessage("Approval for usage of DAI sucessful!");
           })
           .on("error", (err: any) => {
             console.log("error", err);
@@ -403,15 +382,14 @@ export default function MapPins() {
             setErrorMessage(
               "There was an error on the approve transaction. Check your wallet and try again."
             );
+            setLockInput(false);
+            setIsProcessing(false);
           });
       } catch (err: any) {
         console.log(err);
+        setLockInput(false);
+        setIsProcessing(false);
         groceryAllowanceChecker();
-        if (approvedGrocery) {
-          setApprovedGrocery(true);
-        } else {
-          setApprovedGrocery(false);
-        }
       }
     }
     if (approvedGrocery) {
@@ -422,6 +400,7 @@ export default function MapPins() {
           .on("transactionHash", function (hash: any) {
             setBtnTextGrocery("Minting...");
             setIsError(false);
+            setLockInput(true);
             setIsProcessing(true);
           })
           .on("receipt", (receipt: any) => {
@@ -429,24 +408,26 @@ export default function MapPins() {
             setBtnTextGrocery("Mint");
             groceryAllowanceChecker();
             setIsError(false);
+            setLockInput(false);
             setIsProcessing(false);
+            setIsSucessful(true);
+            setSucessfulMessage("Tomatoe minted sucessfully!");
+            groceryAllowanceChecker();
           })
           .on("error", (err: any) => {
             console.log("err", err);
-            if (allowanceValueGrocery >= totalValueGrocery) {
-              setApprovedGrocery(true);
-              setBtnTextGrocery("Mint");
-            } else {
-              setApprovedGrocery(false);
-              setBtnTextGrocery("Approve");
-            }
+            groceryAllowanceChecker();
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
             );
+            setLockInput(false);
+            setIsProcessing(false);
           });
       } catch (err: any) {
         console.log("err mint", err);
+        setIsProcessing(false);
+        setLockInput(false);
       }
     }
     if (!active) {
@@ -465,20 +446,12 @@ export default function MapPins() {
       dinerContractAbi as any,
       diner_address
     );
+    dinerAllowanceChecker();
     //complete the function to get the total amount of nft
     totalValueDiner = nftQuantity * mintPriceDiner;
-    if (allowanceValueDiner >= totalValueDiner) {
-      setApprovedDiner(true);
-      setBtnTextDiner("Mint");
-    } else {
-      setApprovedDiner(false);
-      setBtnTextDiner("Approve");
-    }
+    console.log("😊", allowanceValueDiner, totalValueDiner);
     //convert into big number and then into wei
-    let bnDiner;
-    var BN = web3.utils.BN;
-    bnDiner = new BN(totalValueDiner.toString());
-    let weiDiner = web3.utils.toWei(bnDiner);
+    let weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
       try {
         approveTx = daiContract.methods
@@ -487,30 +460,33 @@ export default function MapPins() {
           .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Approving...");
             setIsError(false);
+            setLockInput(true);
             setIsProcessing(true);
           })
           .on("receipt", function (receipt: any) {
             setApprovedDiner(true);
             setBtnTextDiner("Mint");
             setIsError(false);
+            setLockInput(false);
             setIsProcessing(false);
+            setIsSucessful(true);
+            setSucessfulMessage("Approval for usage of DAI sucessful!");
+            dinerAllowanceChecker();
           })
           .on("error", (err: any) => {
             console.log("error", err);
-            setBtnTextDiner("Approve");
+            dinerAllowanceChecker();
             setIsError(true);
             setErrorMessage(
               "There was an error on the approve transaction. Check your wallet and try again."
             );
+            setIsProcessing(false);
+            setLockInput(false);
           });
       } catch (err: any) {
         console.log(err);
-        dinerAllowanceChecker();
-        if (approvedDiner) {
-          setApprovedDiner(true);
-        } else {
-          setApprovedDiner(false);
-        }
+        setIsProcessing(false);
+        setLockInput(false);
       }
     }
     if (approvedDiner) {
@@ -521,24 +497,24 @@ export default function MapPins() {
           .on("transactionHash", function (hash: any) {
             setBtnTextDiner("Minting...");
             setIsError(false);
+            setLockInput(true);
             setIsProcessing(true);
           })
           .on("receipt", (receipt: any) => {
             console.log("receipt", receipt);
             setBtnTextDiner("Mint");
-            dinerAllowanceChecker();
             setIsError(false);
+            setLockInput(false);
             setIsProcessing(false);
+            setIsSucessful(true);
+            setSucessfulMessage("Coffee minted sucessfully!");
+            dinerAllowanceChecker();
           })
           .on("error", (err: any) => {
             console.log("err", err);
-            if (allowanceValueDiner >= totalValueDiner) {
-              setApprovedDiner(true);
-              setBtnTextDiner("Mint");
-            } else {
-              setApprovedDiner(false);
-              setBtnTextDiner("Approve");
-            }
+            dinerAllowanceChecker();
+            setIsProcessing(false);
+            setLockInput(false);
             setIsError(true);
             setErrorMessage(
               "There was an error on the mint transaction. Check your wallet and try again."
@@ -546,6 +522,8 @@ export default function MapPins() {
           });
       } catch (err: any) {
         console.log("err mint", err);
+        setIsProcessing(false);
+        setLockInput(false);
       }
     }
     if (!active) {
@@ -559,10 +537,6 @@ export default function MapPins() {
       setErrorMessage(
         "This is an invalid value for approving or minting. Please add at least 1"
       );
-    }
-    if (nftQuantity === 50) {
-      setIsError(true);
-      setErrorMessage("The max number of nfts on this season is 50.");
     } else {
       if (
         typeof window.ethereum !== "undefined" &&
@@ -582,12 +556,27 @@ export default function MapPins() {
     }
   }
 
+  function handleNftPriceQuantity(item) {
+    switch (item) {
+      case "barber": {
+        let total = mintPriceBarber * nftQuantity + " DAI";
+        return total;
+      }
+      case "grocery": {
+        return mintPriceGrocery * nftQuantity + " DAI";
+      }
+      case "diner": {
+        return mintPriceDiner * nftQuantity + " DAI";
+      }
+    }
+  }
+
   const barberText =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem sed tenetur blanditiis repellendus, nobis perspiciatis culpa soluta amet in numquam voluptatibus harum odit, dolorum nulla voluptates voluptatum impedit sunt quo. ";
+    "Hector Barbershop - Managed by the Colombo Family. Click to buy scissors.";
   const groceryText =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem sed tenetur blanditiis repellendus, nobis perspiciatis culpa soluta amet in numquam voluptatibus harum odit, dolorum nulla voluptates voluptatum impedit sunt quo. ";
-    const dinerText =
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem sed tenetur blanditiis repellendus, nobis perspiciatis culpa soluta amet in numquam voluptatibus harum odit, dolorum nulla voluptates voluptatum impedit sunt quo. ";
+    "Rome Grocery Store - Managed by the Gambino Family. Click to buy tomatoes.";
+  const dinerText =
+    "Olympus Diner - Managed by the Genovese Family. Click to buy coffees.";
   return (
     <>
       <AlertModal isOpen={isOpenAlert} handleClose={() => handleAlertClose()}>
@@ -602,11 +591,16 @@ export default function MapPins() {
         isDisabled={isProcessing}
         nftName="Barber"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-        cupiditate.
+        <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
+          Welcome, my good fella, to the Hector Barbershop. In order to become a
+          made-man in the Colombo family - click on “Approve” button below, and
+          then “Mint”, in order to get your scissors. Those scissors will come
+          in handy later, so keep ‘em safe and join the Colombo Family on
+          discord for more.
+        </p>
         <span style={{ display: "block" }}>
           <Input
-            disabled={isProcessing}
+            disabled={lockInput}
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -614,6 +608,10 @@ export default function MapPins() {
             }
           />
         </span>
+        <span style={{ display: "inline-block", marginTop: "8px" }}>
+          Value of DAI for the minting: {handleNftPriceQuantity("barber")}
+        </span>
+        {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
       </CustomModal>
 
@@ -626,10 +624,16 @@ export default function MapPins() {
         isDisabled={isProcessing}
         nftName="Tomatoes"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-        cupiditate.
+        <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
+          Welcome, my good fella, to the Rome Grocery Store. In order to become
+          a made-man in the Genovese family - click on “Approve” button below,
+          and then “Mint”, in order to get your tomatoes. Those tomatoes will
+          come in handy later, so keep ‘em safe and join the Colombo Family on
+          discord for more.{" "}
+        </p>
         <span style={{ display: "block" }}>
           <Input
+            disabled={lockInput}
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -637,6 +641,10 @@ export default function MapPins() {
             }
           />
         </span>
+        <span style={{ display: "inline-block", marginTop: "8px" }}>
+          Value of DAI for the minting: {handleNftPriceQuantity("grocery")}
+        </span>
+        {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
       </CustomModal>
 
@@ -649,10 +657,16 @@ export default function MapPins() {
         isDisabled={isProcessing}
         nftName="Coffee"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-        cupiditate.
+        <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
+          Welcome, my good fella, to the Olympus Diner. In order to become a
+          made-man in the Genovese family - click on “Approve” button below, and
+          then “Mint”, in order to get your coffees. Those coffees will come in
+          handy later, so keep ‘em safe and join the Colombo Family on discord
+          for more.{" "}
+        </p>
         <span style={{ display: "block" }}>
           <Input
+            disabled={lockInput}
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -660,9 +674,13 @@ export default function MapPins() {
             }
           />
         </span>
+
+        <span style={{ display: "inline-block", marginTop: "8px" }}>
+          Value of DAI for the minting: {handleNftPriceQuantity("diner")}
+        </span>
+        {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
       </CustomModal>
-
       <BankModal
         isOpen={isOpenBank}
         handleClose={() => handleClose("bank")}
@@ -673,22 +691,22 @@ export default function MapPins() {
       </BankModal>
 
       <RankingModal
+        name="rank"
         isOpen={isOpenRank}
         handleClose={() => handleClose("trophy")}
         title="Ranking"
       />
-
       <NoSsr>
         <div className={styles.mapPins}>
           <Tooltip title={barberText} arrow>
-          <IconButton
-            className={classes.root}
-            onClick={() => handleOpen("barber")}
-            color="primary"
-            name="barber"
-          >
-            <PushPin2FillIcon size="36px" />
-          </IconButton>
+            <IconButton
+              className={classes.root}
+              onClick={() => handleOpen("barber")}
+              color="primary"
+              name="barber"
+            >
+              <PushPin2FillIcon size="36px" />
+            </IconButton>
           </Tooltip>
           <Tooltip title={groceryText} arrow>
             <IconButton
@@ -700,15 +718,15 @@ export default function MapPins() {
               <PushPin2FillIcon size="36px" />
             </IconButton>
           </Tooltip>
-            <Tooltip title={dinerText} arrow>
-          <IconButton
-            className={classes.root}
-            onClick={() => handleOpen("diner")}
-            color="primary"
-            name="diner"
-          >
-            <PushPin2FillIcon size="36px" />
-          </IconButton>
+          <Tooltip title={dinerText} arrow>
+            <IconButton
+              className={classes.root}
+              onClick={() => handleOpen("diner")}
+              color="primary"
+              name="diner"
+            >
+              <PushPin2FillIcon size="36px" />
+            </IconButton>
           </Tooltip>
 
           <IconButton
@@ -724,7 +742,7 @@ export default function MapPins() {
             className={classes.root}
             onClick={() => handleOpen("trophy")}
             color="primary"
-            name="trophy"
+            name="rank"
           >
             <TrophyLineIcon size="36px" />
           </IconButton>
