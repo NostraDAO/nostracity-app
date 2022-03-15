@@ -30,10 +30,10 @@ export default function ProfileWallet() {
         "Unsupported chain. Please connect to Avalanche MainNet"
       );
 
-      if (chainId == '43113') {
+      if (chainId == '43113' && chainId != 'undefined') {
         setConnected(true);
         console.log("here");
-      } if(chainId != '43113') {
+      } if(chainId != '43113' && chainId != 'undefined') {
         console.log(chainId);
         setWrongNetworkAlert(true);
         deactivate();
