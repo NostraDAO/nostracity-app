@@ -22,7 +22,7 @@ export default function ProfileWallet() {
   const [networkMessage, setNetworkMessage] = useState("");
   const [connected, setConnected] = useState(false)
   const [connectedMessage, setConnectedMessage] = useState('');
-  const [isDisabled, setIsDisabled] = useState(false);
+
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -30,23 +30,22 @@ export default function ProfileWallet() {
         "Unsupported chain. Please connect to Avalanche MainNet"
       );
 
-      if (chainId == '43113' ||  chainId == 'undefined') {
-        setIsDisabled(false);
-      } if(chainId != '43113' && chainId != 'undefined') {
+      if (chainId == '43113') {
+        setConnected(true);
+        console.log("here");
+      } if(chainId != '43113') {
         console.log(chainId);
         setWrongNetworkAlert(true);
         deactivate();
-        setIsDisabled(true);
       }
     }
-  }, []);
+  }, [chainId]);
 
   const login = () => {
     if (window.ethereum !== undefined) {
       setConnectedMessage('You connected sucessfully')
       activate(new InjectedConnector({}));
-        setConnected(true);
-      
+     
     }
    
   };
@@ -67,7 +66,7 @@ export default function ProfileWallet() {
   };
 
   const handleCloseConnected = () => {
-    connected == false
+   connected == false
       ? setConnected(true)
       : setConnected(false);
   };
@@ -84,7 +83,7 @@ export default function ProfileWallet() {
               Connected!
             </Button>
           ) : (
-            <Button onClick={login} variant="contained" color="primary" >
+            <Button onClick={login} variant="contained" color="primary">
               Connect your wallet
             </Button>
           )}
