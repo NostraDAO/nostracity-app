@@ -20,8 +20,9 @@ export default function ProfileWallet() {
   const [nftOpen, setNftOpen] = useState(false);
   const [wrongNetworkAlert, setWrongNetworkAlert] = useState(false);
   const [networkMessage, setNetworkMessage] = useState("");
-  const [connected, setConnected] = useState(false);
-  const [connectedMessage, setConnectedMessage] = useState("");
+  const [connected, setConnected] = useState(false)
+  const [connectedMessage, setConnectedMessage] = useState('');
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -29,26 +30,30 @@ export default function ProfileWallet() {
         "Unsupported chain. Please connect to Avalanche MainNet"
       );
 
-      if (chainId !== "43113") {
+      if (chainId == '43113' ||  chainId == 'undefined') {
+        setIsDisabled(false);
+      } if(chainId !== '43113' && chainId != 'undefined') {
         console.log(chainId);
         setWrongNetworkAlert(true);
         deactivate();
-      }else {
-        return;
+        setIsDisabled(true);
       }
     }
   }, []);
 
   const login = () => {
-    if (window.ethereum !== undefined && window.ethereum.isConnected()) {
-      setConnectedMessage("You connected sucessfully");
+    if (window.ethereum !== undefined) {
+      setConnectedMessage('You connected sucessfully')
       activate(new InjectedConnector({}));
-      setConnected(true);
+        setConnected(true);
+      
     }
+   
   };
 
   const logout = () => {
     deactivate();
+
   };
 
   const handleNftOpen = () => {
@@ -62,7 +67,9 @@ export default function ProfileWallet() {
   };
 
   const handleCloseConnected = () => {
-    connected == false ? setConnected(true) : setConnected(false);
+    connected == false
+      ? setConnected(true)
+      : setConnected(false);
   };
   return (
     <>
@@ -77,11 +84,7 @@ export default function ProfileWallet() {
               Connected!
             </Button>
           ) : (
-            <Button
-              onClick={login}
-              variant="contained"
-              color="primary"
-            >
+            <Button onClick={login} variant="contained" color="primary" >
               Connect your wallet
             </Button>
           )}
