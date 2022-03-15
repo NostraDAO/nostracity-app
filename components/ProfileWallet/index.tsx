@@ -6,8 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import {
-  InjectedConnector,
-  networkChanged,
+  InjectedConnector
 } from "@web3-react/injected-connector";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Web3 from "web3";
