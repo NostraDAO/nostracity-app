@@ -12,6 +12,7 @@ import { AlertModal } from "../AlertModal/AlertModal";
 import Web3 from "web3";
 
 const web3 = new Web3(Web3.givenProvider);
+declare var window: any;
 
 import NftsOwnedModal from "../NftsOwnedModal";
 
