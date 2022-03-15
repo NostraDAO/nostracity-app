@@ -32,7 +32,7 @@ export default function ProfileWallet() {
 
       if (chainId == '43113' ||  chainId == 'undefined') {
         setIsDisabled(false);
-      } if(chainId !== '43113' && chainId != 'undefined') {
+      } if(chainId != '43113' && chainId != 'undefined') {
         console.log(chainId);
         setWrongNetworkAlert(true);
         deactivate();
