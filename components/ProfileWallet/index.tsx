@@ -34,7 +34,7 @@ export default function ProfileWallet() {
         setNetwork(networkId);
         if (network != 43113) {
           setWrongNetworkAlert(true);
-          deactivate(new InjectedConnector());
+          deactivate();
         } 
         
       });
@@ -50,7 +50,7 @@ export default function ProfileWallet() {
   };
 
   const logout = () => {
-    deactivate(new InjectedConnector());
+    deactivate();
   };
 
   const handleNftOpen = () => {
