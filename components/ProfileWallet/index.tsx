@@ -5,9 +5,7 @@ import Button from "@material-ui/core/Button";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
-import {
-  InjectedConnector
-} from "@web3-react/injected-connector";
+import { InjectedConnector } from "@web3-react/injected-connector";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Web3 from "web3";
 
@@ -18,34 +16,32 @@ import NftsOwnedModal from "../NftsOwnedModal";
 
 export default function ProfileWallet() {
   const router = useRouter();
-  const { active, account, activate, deactivate } = useWeb3React();
+  const { active, account, activate, deactivate, chainId } = useWeb3React();
   const [nftOpen, setNftOpen] = useState(false);
   const [wrongNetworkAlert, setWrongNetworkAlert] = useState(false);
   const [networkMessage, setNetworkMessage] = useState("");
   const [network, setNetwork] = useState();
 
-  
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
       setNetworkMessage(
         "Unsupported chain. Please connect to Avalanche MainNet"
       );
-      window.ethereum.on("networkChanged", function (networkId) {
-        setNetwork(networkId);
-        if (network != 43113) {
-          setWrongNetworkAlert(true);
-          deactivate();
-        } 
-        
-      });
+
+      if (chainId === 43113) {
+        console.log("here");
+      } else {
+        setWrongNetworkAlert(true);
+        deactivate();
+      }
     }
-  });
+  }, [chainId]);
 
   const login = () => {
-    if (network == 43113) {
+    if (window.ethereum !== undefined) {
       activate(new InjectedConnector({}));
-    } else {
-      setWrongNetworkAlert(true);
+      if (window.ethereum.isConnected()) {
+      }
     }
   };
 
@@ -58,7 +54,9 @@ export default function ProfileWallet() {
   };
 
   const handleClose = () => {
-    wrongNetworkAlert == false ? setWrongNetworkAlert(true) : setWrongNetworkAlert(false);
+    wrongNetworkAlert == false
+      ? setWrongNetworkAlert(true)
+      : setWrongNetworkAlert(false);
   };
   return (
     <>
