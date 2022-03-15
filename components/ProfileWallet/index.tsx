@@ -20,6 +20,8 @@ export default function ProfileWallet() {
   const [nftOpen, setNftOpen] = useState(false);
   const [wrongNetworkAlert, setWrongNetworkAlert] = useState(false);
   const [networkMessage, setNetworkMessage] = useState("");
+  const [connected, setConnected] = useState(false);
+  const [connectedMessage, setConnectedMessage] = useState("");
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -27,18 +29,19 @@ export default function ProfileWallet() {
         "Unsupported chain. Please connect to Avalanche MainNet"
       );
 
-      if (chainId === 43113) {
-        console.log("here");
-      } else {
+      if (chainId !== "43113") {
+        console.log(chainId);
         setWrongNetworkAlert(true);
         deactivate();
       }
     }
-  }, [chainId]);
+  }, []);
 
   const login = () => {
-    if (window.ethereum !== undefined) {
+    if (window.ethereum !== undefined && window.ethereum.isConnected()) {
+      setConnectedMessage("You connected sucessfully");
       activate(new InjectedConnector({}));
+      setConnected(true);
     }
   };
 
@@ -55,6 +58,10 @@ export default function ProfileWallet() {
       ? setWrongNetworkAlert(true)
       : setWrongNetworkAlert(false);
   };
+
+  const handleCloseConnected = () => {
+    connected == false ? setConnected(true) : setConnected(false);
+  };
   return (
     <>
       <div className={styles.profile}>
@@ -68,7 +75,11 @@ export default function ProfileWallet() {
               Connected!
             </Button>
           ) : (
-            <Button onClick={login} variant="contained" color="primary">
+            <Button
+              onClick={login}
+              variant="contained"
+              color="primary"
+            >
               Connect your wallet
             </Button>
           )}
@@ -84,6 +95,9 @@ export default function ProfileWallet() {
       <NftsOwnedModal isOpen={nftOpen} handleClose={() => handleNftOpen()} />
       <AlertModal isOpen={wrongNetworkAlert} handleClose={() => handleClose()}>
         {networkMessage}
+      </AlertModal>
+      <AlertModal isOpen={connected} handleClose={() => handleCloseConnected()}>
+        {connectedMessage}
       </AlertModal>
     </>
   );
