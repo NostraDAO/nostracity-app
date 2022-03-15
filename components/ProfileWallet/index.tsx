@@ -20,7 +20,6 @@ export default function ProfileWallet() {
   const [nftOpen, setNftOpen] = useState(false);
   const [wrongNetworkAlert, setWrongNetworkAlert] = useState(false);
   const [networkMessage, setNetworkMessage] = useState("");
-  const [network, setNetwork] = useState();
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -40,8 +39,6 @@ export default function ProfileWallet() {
   const login = () => {
     if (window.ethereum !== undefined) {
       activate(new InjectedConnector({}));
-      if (window.ethereum.isConnected()) {
-      }
     }
   };
 
