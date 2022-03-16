@@ -6,3 +6,26 @@
 .rankingModal table {
     font-family: DailyNews;
 }
+
+.rankingModal h2 {
+    font-family: DailyNews;
+    font-sizE: 5.5em;
+}
+
+.rankingModal button {
+    margin-top: 16px;
+    background-color: #93100D;
+    color: white;
+    font-family: DailyNews;
+    font-size:2em;
+    letter-spacing: 5px;
+}
+.rankingModal button:hover {
+    background-color: #93100D;
+    filter: brightness(0.8);
+}
+.rankingModal h2 {
+    font-family: DailyNews;
+    font-size: 5.5em;
+    letter-spacing: 5px;
+}

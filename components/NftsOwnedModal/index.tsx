@@ -7,6 +7,9 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import styles from './NftOwnedModal.module.css'
 import NftList from "../NftList"
+import CloseIcon from "@mui/icons-material/Close";
+import Grid from "@material-ui/core/Grid";
+import IconButton from "@mui/material/IconButton";
 
 const style = {
     position: "absolute",
@@ -38,6 +41,11 @@ const { account, active } = useWeb3React();
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+        <Grid container justify="flex-end" alignItems="center">
+            <IconButton onClick={handleClose} size="small">
+              <CloseIcon />
+            </IconButton>
+          </Grid>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             My NFTs
           </Typography>
