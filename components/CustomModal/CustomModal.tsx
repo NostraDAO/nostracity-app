@@ -46,7 +46,7 @@ export const CustomModal = ({
       >
         <Box sx={style}>
         <Grid container justify="flex-end" alignItems="center">
-            <IconButton onClick={handleClose}>
+            <IconButton onClick={handleClose} size="small">
               <CloseIcon />
             </IconButton>
           </Grid>
