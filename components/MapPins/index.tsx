@@ -349,7 +349,7 @@ export default function MapPins() {
           barberAllowanceChecker();
         }
       } else {
-        setError(true);
+        setIsError(true);
         setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
         setIsProcessing(true);
       }
