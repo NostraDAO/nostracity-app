@@ -12,6 +12,17 @@ import daiContractAbi from "../../abi/DAIE.json";
 import barberContractAbi from "../../abi/BarberShopNFT.json";
 import groceryContractAbi from "../../abi/GroceryStoreNFT.json";
 import dinerContractAbi from "../../abi/DinerNFT.json";
+import {
+  diner_address,
+  barber_address,
+  grocery_address,
+  dai_address,
+} from "../../constants/adresses/contracts";
+import {
+  getBarberLimit,
+  getGroceryLimit,
+  getDinerLimit,
+} from "../../utils/nftLimitFunctions";
 
 import NoSsr from "@material-ui/core/NoSsr";
 const Web3 = require("web3");
@@ -58,16 +69,15 @@ export default function MapPins() {
   const [mintPriceDiner, setMintPriceDiner] = useState(0);
   const [nftQuantity, setNftQuantity] = useState<number>(0);
   const [lockInput, setLockInput] = useState(false);
+  const [barberLimit, setBarberLimit] = useState<number>(0);
+  const [groceryLimit, setGroceryLimit] = useState<number>(0);
+  const [dinerLimit, setDinerLimit] = useState<number>(0);
 
   let totalValueBarber: any;
   let totalValueGrocery: any;
   let totalValueDiner: any;
   const classes = useStyles();
   const { account, active } = useWeb3React();
-  const dai_address = "0x4C3827E3122ccd1553Be728b589962442DFe49Ed";
-  const barber_address = "0x1C26daC2a2e9Bb057fCC061a1903491bA1B5630C";
-  const grocery_address = "0xe2284c96faEdF807B4850d271a01e68fF7a443aE";
-  const diner_address = "0xee2e93C1E58BD5BC42eE0365401F2C586f4f1694";
 
   async function barberAllowanceChecker() {
     const web3 = new Web3(Web3.givenProvider);
@@ -82,10 +92,12 @@ export default function MapPins() {
     let allowanceTx;
     let mintPrice;
     try {
-      mintPrice = await barberContract.methods.getMintingPrice(account).call() / 10 ** 18;
-      allowanceTx = await daiContract.methods
-        .allowance(account, barber_address)
-        .call()  / 10 ** 18;
+      mintPrice =
+        (await barberContract.methods.getMintingPrice(account).call()) /
+        10 ** 18;
+      allowanceTx =
+        (await daiContract.methods.allowance(account, barber_address).call()) /
+        10 ** 18;
       setMintPriceBarber(mintPrice);
       setAllowanceValueBarber(allowanceTx);
       if (allowanceValueBarber >= mintPriceBarber) {
@@ -116,10 +128,12 @@ export default function MapPins() {
     let allowanceTx;
     let mintPrice;
     try {
-      mintPrice = await groceryContract.methods.getMintingPrice(account).call() / 10 ** 18;
-      allowanceTx = await daiContract.methods
-        .allowance(account, grocery_address)
-        .call() / 10 ** 18;
+      mintPrice =
+        (await groceryContract.methods.getMintingPrice(account).call()) /
+        10 ** 18;
+      allowanceTx =
+        (await daiContract.methods.allowance(account, grocery_address).call()) /
+        10 ** 18;
       setMintPriceGrocery(mintPrice);
       setAllowanceValueGrocery(allowanceTx);
       if (allowanceValueGrocery >= mintPriceGrocery) {
@@ -150,10 +164,12 @@ export default function MapPins() {
     let allowanceTx;
     let mintPrice;
     try {
-      mintPrice = await dinerContract.methods.getMintingPrice(account).call() / 10 ** 18;
-      allowanceTx = await daiContract.methods
-        .allowance(account, diner_address)
-        .call() / 10 ** 18;
+      mintPrice =
+        (await dinerContract.methods.getMintingPrice(account).call()) /
+        10 ** 18;
+      allowanceTx =
+        (await daiContract.methods.allowance(account, diner_address).call()) /
+        10 ** 18;
       setMintPriceDiner(mintPrice);
       setAllowanceValueDiner(allowanceTx);
       console.log("😒", allowanceValueDiner, mintPriceDiner);
@@ -181,14 +197,28 @@ export default function MapPins() {
   }
 
   useEffect(() => {
-    if (typeof window.ethereum !== "undefined") {
+    if (typeof window.ethereum !== "undefined" && account) {
       getMinimalAllowance();
+      getBarberLimit().then((amount) => {
+        setBarberLimit(amount);
+      });
+
+      getGroceryLimit().then((amount) => {
+        setGroceryLimit(amount);
+      });
+
+      getDinerLimit().then((amount) => {
+        setDinerLimit(amount);
+      });
     }
   }, [
     account,
     allowanceValueBarber,
     allowanceValueGrocery,
     allowanceValueDiner,
+    barberLimit,
+    groceryLimit,
+    dinerLimit
   ]);
 
   const handleOpen = (item: string) => {
@@ -222,12 +252,25 @@ export default function MapPins() {
 
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setNftQuantity(Number((event.target as HTMLInputElement).value));
-    console.log("😀 nftQuantity", nftQuantity);
     setIsError(false);
     setErrorMessage("");
     setIsSucessful(false);
     setSucessfulMessage("");
   };
+
+  function handleNftLimit (item){
+      switch (item){
+        case 'grocery': {
+          return nftQuantity <= groceryLimit  ? true : false;
+        }
+        case 'diner': {
+          return nftQuantity <= dinerLimit ? true : false;
+        }
+        case 'barber': {
+          return nftQuantity <= barberLimit ? true : false;
+        }
+      }
+  }
 
   const handleClose = (item: string) => {
     if (item == "barber") {
@@ -262,6 +305,8 @@ export default function MapPins() {
     //complete the function to get the total amount of nft
     totalValueBarber = nftQuantity * mintPriceBarber;
     let weiBarber = web3.utils.toWei(totalValueBarber.toString());
+   console.log('nftlimit,', handleNftLimit('barber'))
+    
     if (!approvedBarber) {
       try {
         approveTx = daiContract.methods
