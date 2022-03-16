@@ -218,7 +218,7 @@ export default function MapPins() {
     allowanceValueDiner,
     barberLimit,
     groceryLimit,
-    dinerLimit
+    dinerLimit,
   ]);
 
   const handleOpen = (item: string) => {
@@ -252,25 +252,25 @@ export default function MapPins() {
 
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setNftQuantity(Number((event.target as HTMLInputElement).value));
-    
     setIsError(false);
     setErrorMessage("");
     setIsSucessful(false);
     setSucessfulMessage("");
+    setIsProcessing(false);
   };
 
-  function handleNftLimit (item){
-      switch (item){
-        case 'grocery': {
-          return nftQuantity <= groceryLimit  ? true : false;
-        }
-        case 'diner': {
-          return nftQuantity <= dinerLimit ? true : false;
-        }
-        case 'barber': {
-          return nftQuantity <= barberLimit ? true : false;
-        }
+  function handleNftLimit(item) {
+    switch (item) {
+      case "grocery": {
+        return nftQuantity <= groceryLimit ? true : false;
       }
+      case "diner": {
+        return nftQuantity <= dinerLimit ? true : false;
+      }
+      case "barber": {
+        return nftQuantity <= barberLimit ? true : false;
+      }
+    }
   }
 
   const handleClose = (item: string) => {
@@ -304,84 +304,102 @@ export default function MapPins() {
     );
     barberAllowanceChecker();
     //complete the function to get the total amount of nft
+    if (nftQuantity >= barberLimit) {
+      console.log("total amou", barberLimit);
+      setIsError(true);
+      setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
+      setIsProcessing(true);
+    }
     totalValueBarber = nftQuantity * mintPriceBarber;
     let weiBarber = web3.utils.toWei(totalValueBarber.toString());
-   console.log('nftlimit,', handleNftLimit('barber'))
-    
+
     if (!approvedBarber) {
-      try {
-        approveTx = daiContract.methods
-          .approve(barber_address, weiBarber)
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextBarber("Approving...");
-            setIsError(false);
-            setLockInput(true);
-            setIsProcessing(true);
-          })
-          .on("receipt", function (receipt: any) {
-            setApprovedBarber(true);
-            setBtnTextBarber("Mint");
-            setIsError(false);
-            setLockInput(false);
-            setIsProcessing(false);
-            setIsSucessful(true);
-            setSucessfulMessage("Approval for usage of DAI sucessful!");
-            barberAllowanceChecker();
-          })
-          .on("error", (err: any) => {
-            console.log("error", err);
-            setBtnTextBarber("Approve");
-            setIsError(true);
-            setLockInput(false);
-            setErrorMessage(
-              "There was an error on the approve transaction. Check your wallet and try again."
-            );
-          });
-      } catch (err: any) {
-        console.log(err);
-        barberAllowanceChecker();
+      if (nftQuantity <= barberLimit) {
+        try {
+          approveTx = daiContract.methods
+            .approve(barber_address, weiBarber)
+            .send({ from: account })
+            .on("transactionHash", function (hash: any) {
+              setBtnTextBarber("Approving...");
+              setIsError(false);
+              setLockInput(true);
+              setIsProcessing(true);
+            })
+            .on("receipt", function (receipt: any) {
+              setApprovedBarber(true);
+              setBtnTextBarber("Mint");
+              setIsError(false);
+              setLockInput(false);
+              setIsProcessing(false);
+              setIsSucessful(true);
+              setSucessfulMessage("Approval for usage of DAI sucessful!");
+              barberAllowanceChecker();
+            })
+            .on("error", (err: any) => {
+              console.log("error", err);
+              setBtnTextBarber("Approve");
+              setIsError(true);
+              setLockInput(false);
+              setErrorMessage(
+                "There was an error on the approve transaction. Check your wallet and try again."
+              );
+            });
+        } catch (err: any) {
+          console.log(err);
+          barberAllowanceChecker();
+        }
+      } else {
+        setError(true);
+        setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
+        setIsProcessing(true);
       }
     }
     if (approvedBarber) {
-      try {
-        let mintTx = barberContract.methods
-          .safeMint(account, nftQuantity)
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextBarber("Minting...");
-            setIsError(false);
-            setLockInput(true);
-            setIsProcessing(true);
-          })
-          .on("receipt", (receipt: any) => {
-            console.log("receipt", receipt);
-            setBtnTextBarber("Mint");
-            setIsError(false);
-            setLockInput(false);
-            setIsProcessing(false);
-            setIsSucessful(true);
-            setSucessfulMessage("Scissor minted successfully!!");
-            barberAllowanceChecker();
-          })
-          .on("error", (err: any) => {
-            console.log("err", err);
-            barberAllowanceChecker();
-            setIsError(true);
-            setErrorMessage(
-              "There was an error on the mint transaction. Check your wallet and try again."
-            );
-            setLockInput(false);
-            setIsProcessing(false);
-          });
-      } catch (err: any) {
-        console.log("err mint", err);
-        setLockInput(false);
-        setIsProcessing(false);
+      if (nftQuantity <= barberLimit) {
+        try {
+          let mintTx = barberContract.methods
+            .safeMint(account, nftQuantity)
+            .send({ from: account })
+            .on("transactionHash", function (hash: any) {
+              setBtnTextBarber("Minting...");
+              setIsError(false);
+              setLockInput(true);
+              setIsProcessing(true);
+            })
+            .on("receipt", (receipt: any) => {
+              console.log("receipt", receipt);
+              setBtnTextBarber("Mint");
+              setIsError(false);
+              setLockInput(false);
+              setIsProcessing(false);
+              setIsSucessful(true);
+              setSucessfulMessage("Scissor minted successfully!!");
+              barberAllowanceChecker();
+            })
+            .on("error", (err: any) => {
+              console.log("err", err);
+              barberAllowanceChecker();
+              setIsError(true);
+              setErrorMessage(
+                "There was an error on the mint transaction. Check your wallet and try again."
+              );
+              setLockInput(false);
+              setIsProcessing(false);
+            });
+        } catch (err: any) {
+          console.log("err mint", err);
+          setLockInput(false);
+          setIsProcessing(false);
+        }
+
+        if (!active) {
+          handleAlert();
+        }
+      } else {
+        setIsError(true);
+        setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
+        setIsProcessing(true);
       }
-    }
-    if (!active) {
-      handleAlert();
     }
   }
 
@@ -402,82 +420,95 @@ export default function MapPins() {
     totalValueGrocery = nftQuantity * mintPriceGrocery;
     let weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
     if (!approvedGrocery) {
-      try {
-        approveTx = daiContract.methods
-          .approve(grocery_address, weiGrocery)
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextGrocery("Approving...");
-            setIsError(false);
-            setIsProcessing(true);
-            setLockInput(true);
-          })
-          .on("receipt", function (receipt: any) {
-            setApprovedGrocery(true);
-            setBtnTextGrocery("Mint");
-            setIsError(false);
-            setLockInput(false);
-            setIsProcessing(false);
-            setIsSucessful(true);
-            setSucessfulMessage("Approval for usage of DAI sucessful!");
-          })
-          .on("error", (err: any) => {
-            console.log("error", err);
-            setBtnTextGrocery("Approve");
-            setIsError(true);
-            setErrorMessage(
-              "There was an error on the approve transaction. Check your wallet and try again."
-            );
-            setLockInput(false);
-            setIsProcessing(false);
-          });
-      } catch (err: any) {
-        console.log(err);
-        setLockInput(false);
-        setIsProcessing(false);
-        groceryAllowanceChecker();
+      if (nftQuantity <= groceryLimit) {
+        try {
+          approveTx = daiContract.methods
+            .approve(grocery_address, weiGrocery)
+            .send({ from: account })
+            .on("transactionHash", function (hash: any) {
+              setBtnTextGrocery("Approving...");
+              setIsError(false);
+              setIsProcessing(true);
+              setLockInput(true);
+            })
+            .on("receipt", function (receipt: any) {
+              setApprovedGrocery(true);
+              setBtnTextGrocery("Mint");
+              setIsError(false);
+              setLockInput(false);
+              setIsProcessing(false);
+              setIsSucessful(true);
+              setSucessfulMessage("Approval for usage of DAI sucessful!");
+            })
+            .on("error", (err: any) => {
+              console.log("error", err);
+              setBtnTextGrocery("Approve");
+              setIsError(true);
+              setErrorMessage(
+                "There was an error on the approve transaction. Check your wallet and try again."
+              );
+              setLockInput(false);
+              setIsProcessing(false);
+            });
+        } catch (err: any) {
+          console.log(err);
+          setLockInput(false);
+          setIsProcessing(false);
+          groceryAllowanceChecker();
+        }
+      } else {
+        setIsError(true);
+        setErrorMessage(`Nft limit exceeded on this account: ${groceryLimit}`);
+        setIsProcessing(true);
       }
     }
     if (approvedGrocery) {
-      try {
-        let mintTx = groceryContract.methods
-          .safeMint(account, nftQuantity)
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextGrocery("Minting...");
-            setIsError(false);
-            setLockInput(true);
-            setIsProcessing(true);
-          })
-          .on("receipt", (receipt: any) => {
-            console.log("receipt", receipt);
-            setBtnTextGrocery("Mint");
-            groceryAllowanceChecker();
-            setIsError(false);
-            setLockInput(false);
-            setIsProcessing(false);
-            setIsSucessful(true);
-            setSucessfulMessage("Tomatoe minted sucessfully!");
-            groceryAllowanceChecker();
-          })
-          .on("error", (err: any) => {
-            console.log("err", err);
-            groceryAllowanceChecker();
-            setIsError(true);
-            setErrorMessage(
-              "There was an error on the mint transaction. Check your wallet and try again."
-            );
-            setLockInput(false);
-            setIsProcessing(false);
-          });
-      } catch (err: any) {
-        console.log("err mint", err);
-        setIsProcessing(false);
-        setLockInput(false);
+      if (nftQuantity <= groceryLimit) {
+        try {
+          let mintTx = groceryContract.methods
+            .safeMint(account, nftQuantity)
+            .send({ from: account })
+            .on("transactionHash", function (hash: any) {
+              setBtnTextGrocery("Minting...");
+              setIsError(false);
+              setLockInput(true);
+              setIsProcessing(true);
+            })
+            .on("receipt", (receipt: any) => {
+              console.log("receipt", receipt);
+              setBtnTextGrocery("Mint");
+              groceryAllowanceChecker();
+              setIsError(false);
+              setLockInput(false);
+              setIsProcessing(false);
+              setIsSucessful(true);
+              setSucessfulMessage("Tomatoe minted sucessfully!");
+              groceryAllowanceChecker();
+            })
+            .on("error", (err: any) => {
+              console.log("err", err);
+              groceryAllowanceChecker();
+              setIsError(true);
+              setErrorMessage(
+                "There was an error on the mint transaction. Check your wallet and try again."
+              );
+              setLockInput(false);
+              setIsProcessing(false);
+            });
+        } catch (err: any) {
+          console.log("err mint", err);
+          setIsProcessing(false);
+          setLockInput(false);
+        }
+
+        if (!active) {
+          handleAlert();
+        }
+      } else {
+        setIsError(true);
+        setErrorMessage(`Nft limit exceeded on this account: ${groceryLimit}`);
+        setIsProcessing(true);
       }
-    }
-    if (!active) {
-      handleAlert();
     }
   }
 
@@ -499,77 +530,89 @@ export default function MapPins() {
     //convert into big number and then into wei
     let weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
-      try {
-        approveTx = daiContract.methods
-          .approve(diner_address, weiDiner)
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextDiner("Approving...");
-            setIsError(false);
-            setLockInput(true);
-            setIsProcessing(true);
-          })
-          .on("receipt", function (receipt: any) {
-            setApprovedDiner(true);
-            setBtnTextDiner("Mint");
-            setIsError(false);
-            setLockInput(false);
-            setIsProcessing(false);
-            setIsSucessful(true);
-            setSucessfulMessage("Approval for usage of DAI sucessful!");
-            dinerAllowanceChecker();
-          })
-          .on("error", (err: any) => {
-            console.log("error", err);
-            dinerAllowanceChecker();
-            setIsError(true);
-            setErrorMessage(
-              "There was an error on the approve transaction. Check your wallet and try again."
-            );
-            setIsProcessing(false);
-            setLockInput(false);
-          });
-      } catch (err: any) {
-        console.log(err);
-        setIsProcessing(false);
-        setLockInput(false);
+      if (nftQuantity <= dinerLimit) {
+        try {
+          approveTx = daiContract.methods
+            .approve(diner_address, weiDiner)
+            .send({ from: account })
+            .on("transactionHash", function (hash: any) {
+              setBtnTextDiner("Approving...");
+              setIsError(false);
+              setLockInput(true);
+              setIsProcessing(true);
+            })
+            .on("receipt", function (receipt: any) {
+              setApprovedDiner(true);
+              setBtnTextDiner("Mint");
+              setIsError(false);
+              setLockInput(false);
+              setIsProcessing(false);
+              setIsSucessful(true);
+              setSucessfulMessage("Approval for usage of DAI sucessful!");
+              dinerAllowanceChecker();
+            })
+            .on("error", (err: any) => {
+              console.log("error", err);
+              dinerAllowanceChecker();
+              setIsError(true);
+              setErrorMessage(
+                "There was an error on the approve transaction. Check your wallet and try again."
+              );
+              setIsProcessing(false);
+              setLockInput(false);
+            });
+        } catch (err: any) {
+          console.log(err);
+          setIsProcessing(false);
+          setLockInput(false);
+        }
+      } else {
+        setIsError(true);
+        setErrorMessage(`Nft limit exceeded on this account: ${dinerLimit}`);
+        setIsProcessing(true);
       }
     }
     if (approvedDiner) {
-      try {
-        let mintTx = dinerContract.methods
-          .safeMint(account, nftQuantity)
-          .send({ from: account })
-          .on("transactionHash", function (hash: any) {
-            setBtnTextDiner("Minting...");
-            setIsError(false);
-            setLockInput(true);
-            setIsProcessing(true);
-          })
-          .on("receipt", (receipt: any) => {
-            console.log("receipt", receipt);
-            setBtnTextDiner("Mint");
-            setIsError(false);
-            setLockInput(false);
-            setIsProcessing(false);
-            setIsSucessful(true);
-            setSucessfulMessage("Coffee minted sucessfully!");
-            dinerAllowanceChecker();
-          })
-          .on("error", (err: any) => {
-            console.log("err", err);
-            dinerAllowanceChecker();
-            setIsProcessing(false);
-            setLockInput(false);
-            setIsError(true);
-            setErrorMessage(
-              "There was an error on the mint transaction. Check your wallet and try again."
-            );
-          });
-      } catch (err: any) {
-        console.log("err mint", err);
-        setIsProcessing(false);
-        setLockInput(false);
+      if (nftQuantity <= dinerLimit) {
+        try {
+          let mintTx = dinerContract.methods
+            .safeMint(account, nftQuantity)
+            .send({ from: account })
+            .on("transactionHash", function (hash: any) {
+              setBtnTextDiner("Minting...");
+              setIsError(false);
+              setLockInput(true);
+              setIsProcessing(true);
+            })
+            .on("receipt", (receipt: any) => {
+              console.log("receipt", receipt);
+              setBtnTextDiner("Mint");
+              setIsError(false);
+              setLockInput(false);
+              setIsProcessing(false);
+              setIsSucessful(true);
+              setSucessfulMessage("Coffee minted sucessfully!");
+              dinerAllowanceChecker();
+            })
+            .on("error", (err: any) => {
+              console.log("err", err);
+              dinerAllowanceChecker();
+              setIsProcessing(false);
+              setLockInput(false);
+              setIsError(true);
+              setErrorMessage(
+                "There was an error on the mint transaction. Check your wallet and try again."
+              );
+            });
+        } catch (err: any) {
+          console.log("err mint", err);
+          setIsProcessing(false);
+          setLockInput(false);
+        }
+      } else {
+        setIsError(true);
+        setErrorMessage(`Nft limit exceeded on this account: ${dinerLimit}`);
+        setIsProcessing(true);
       }
     }
     if (!active) {
