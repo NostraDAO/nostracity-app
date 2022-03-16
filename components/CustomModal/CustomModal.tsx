@@ -5,6 +5,10 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Input from "@mui/material/Input";
 import styles from "./CustomModal.module.css";
+import CloseIcon from '@mui/icons-material/Close';
+import Grid from "@material-ui/core/Grid";
+import IconButton from '@mui/material/IconButton';
+
 
 const style = {
   position: "absolute",
@@ -41,6 +45,11 @@ export const CustomModal = ({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+        <Grid container justify="flex-end" alignItems="center">
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Grid>
           <Typography align="center"  variant="h2" component="h2">
             {title}
           </Typography>
