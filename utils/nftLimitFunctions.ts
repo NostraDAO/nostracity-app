@@ -9,6 +9,7 @@ import {
   barber_address,
   dai_address,
 } from "../constants/adresses/contracts";
+declare var window: any
 
 
 export async function getBarberLimit() {
