@@ -252,6 +252,7 @@ export default function MapPins() {
 
   const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
     setNftQuantity(Number((event.target as HTMLInputElement).value));
+    
     setIsError(false);
     setErrorMessage("");
     setIsSucessful(false);
