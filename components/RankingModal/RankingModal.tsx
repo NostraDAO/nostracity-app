@@ -42,9 +42,10 @@ const style = {
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const web3 = new Web3(Web3.givenProvider);
   const { account } = useWeb3React();
-  const [barberScore, setBarberScore] = useState();
-  const [groceryScore, setGroceryScore] = useState();
-  const [dinerScore, setDinerScore] = useState();
+  const [barberScore, setBarberScore] = useState({});
+  const [groceryScore, setGroceryScore] = useState({});
+  const [dinerScore, setDinerScore] = useState({});
+  const [rankArray, setRankArray] = useState([]);
 
   async function getBarberScore() {
     const barberContract = new web3.eth.Contract(
@@ -53,11 +54,11 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     );
     let getScore;
     try {
-      getScore = await barberContract.methods.getCurrentScore().call();
+      getScore =
+        (await barberContract.methods.getCurrentScore().call()) / 10 ** 18;
+      setBarberScore({ business: "Barber", score: getScore });
     } catch (err: any) {
       console.log("barberScore: ", err);
-    } finally {
-      setBarberScore(getScore);
     }
   }
   async function getGroceryScore() {
@@ -67,29 +68,44 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     );
     let getScore;
     try {
-      getScore = await groceryContract.methods.getCurrentScore().call();
+      getScore =
+        (await groceryContract.methods.getCurrentScore().call()) / 10 ** 18;
+      setGroceryScore({ business: "Grocery", score: getScore });
     } catch (err: any) {
       console.log("groceryScore: ", err);
-    } finally {
-      setGroceryScore(getScore);
     }
   }
   async function getDinerScore() {
     const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
     let getScore;
     try {
-      getScore = await dinerContract.methods.getCurrentScore().call();
+      getScore =
+        (await dinerContract.methods.getCurrentScore().call()) / 10 ** 18;
+      setDinerScore({ business: "Diner", score: getScore });
     } catch (err: any) {
       console.log("dinerScore: ", err);
-    } finally {
-      setDinerScore(getScore);
     }
   }
-  function handleRanking() {}
+
+  async function handleRanking() {
+    await getDinerScore();
+    await getBarberScore();
+    await getGroceryScore();
+    let ar = [dinerScore, barberScore, groceryScore];
+    ar.sort(function (a, b) {
+      if(a.score < b.score) { return  1}
+      if(a.score > b.score) { return -1}
+
+      return 0;
+    })
+    setRankArray([...ar])
+    return ar;
+  }
 
   const TableContent = () => {
     return (
       <TableContainer className={styles.rankingModal}>
+        
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -98,24 +114,14 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
+          {rankArray.map((item, index) => (
+          <TableRow key={index}>
               <TableCell component="th" scope="row">
-                Barber
+                {item.business}
               </TableCell>
-              <TableCell align="right">{barberScore}</TableCell>
+              <TableCell align="right">{item.score}</TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                Diner
-              </TableCell>
-              <TableCell align="right">{dinerScore}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                Grocery
-              </TableCell>
-              <TableCell align="right">{groceryScore}</TableCell>
-            </TableRow>
+        ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -124,11 +130,9 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
   useEffect(() => {
     if (account) {
-      getDinerScore();
-      getBarberScore();
-      getGroceryScore();
+      handleRanking();
     }
-  }, [account]);
+  }, [account, rankArray]);
 
   return (
     <div>
@@ -140,7 +144,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Grid container justify="flex-end" alignItems="center">
+          <Grid container justifyContent="flex-end" alignItems="center">
             <IconButton onClick={handleClose} size="small">
               <CloseIcon />
             </IconButton>
