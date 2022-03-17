@@ -1,5 +1,4 @@
 import Web3 from "web3";
-import daiContractAbi from "../abi/DAIE.json";
 import barberContractAbi from "../abi/BarberShopNFT.json";
 import groceryContractAbi from "../abi/GroceryStoreNFT.json";
 import dinerContractAbi from "../abi/DinerNFT.json";
@@ -7,7 +6,6 @@ import {
   diner_address,
   grocery_address,
   barber_address,
-  dai_address,
 } from "../constants/adresses/contracts";
 declare var window: any
 

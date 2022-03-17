@@ -5,11 +5,6 @@
 				"internalType": "address",
 				"name": "DAI",
 				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "vault",
-				"type": "address"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -305,19 +300,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTokenImageIdentifier",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "pure",
 		"type": "function"
 	},
 	{
