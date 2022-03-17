@@ -67,7 +67,9 @@ export default function MapPins() {
   const [mintPriceBarber, setMintPriceBarber] = useState(0);
   const [mintPriceGrocery, setMintPriceGrocery] = useState(0);
   const [mintPriceDiner, setMintPriceDiner] = useState(0);
-  const [nftQuantity, setNftQuantity] = useState<number>(0);
+  const [barberQuantity, setBarberQuantity] = useState<number>(0);
+  const [groceryQuantity, setGroceryQuantity] = useState<number>(0);
+  const [dinerQuantity, setDinerQuantity] = useState<number>(0);
   const [lockInput, setLockInput] = useState(false);
   const [barberLimit, setBarberLimit] = useState<number>(0);
   const [groceryLimit, setGroceryLimit] = useState<number>(0);
@@ -225,14 +227,17 @@ export default function MapPins() {
     if (item == "barber") {
       setIsOpenBarber(true);
       barberAllowanceChecker();
+      setBarberQuantity(0);
     }
     if (item == "grocery") {
       setIsOpenGrocery(true);
       groceryAllowanceChecker();
+      setGroceryQuantity(0);
     }
     if (item == "diner") {
       setIsOpenDiner(true);
       dinerAllowanceChecker();
+      setDinerQuantity(0);
     }
     if (item == "bank") {
       setIsOpenBank(true);
@@ -250,8 +255,23 @@ export default function MapPins() {
     setIsOpenAlert(false);
   };
 
-  const handleQuantity = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    setNftQuantity(Number((event.target as HTMLInputElement).value));
+  const handleQuantity = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    item: string
+  ) => {
+    switch (item) {
+      case "barber": {
+        setBarberQuantity(Number((event.target as HTMLInputElement).value));
+      }
+      case "grocery": {
+        setGroceryQuantity(Number((event.target as HTMLInputElement).value));
+        
+      }
+      case "diner": {
+        setDinerQuantity(Number((event.target as HTMLInputElement).value));
+
+      }
+    }
     setIsError(false);
     setErrorMessage("");
     setIsSucessful(false);
@@ -259,29 +279,29 @@ export default function MapPins() {
     setIsProcessing(false);
   };
 
-  function handleNftLimit(item) {
-    switch (item) {
-      case "grocery": {
-        return nftQuantity <= groceryLimit ? true : false;
-      }
-      case "diner": {
-        return nftQuantity <= dinerLimit ? true : false;
-      }
-      case "barber": {
-        return nftQuantity <= barberLimit ? true : false;
-      }
-    }
-  }
+ 
 
   const handleClose = (item: string) => {
     if (item == "barber") {
       setIsOpenBarber(false);
+      setIsError(false);
+      setErrorMessage("");
+      setBarberQuantity(0);
     }
     if (item == "grocery") {
       setIsOpenGrocery(false);
+      setIsError(false);
+      setErrorMessage("");
+      setGroceryQuantity(0);
+
+
     }
     if (item == "diner") {
       setIsOpenDiner(false);
+      setIsError(false);
+      setErrorMessage("");
+      setDinerQuantity(0);
+
     }
     if (item == "bank") {
       setIsOpenBank(false);
@@ -304,17 +324,17 @@ export default function MapPins() {
     );
     barberAllowanceChecker();
     //complete the function to get the total amount of nft
-    if (nftQuantity >= barberLimit) {
+    if (barberQuantity >= barberLimit) {
       console.log("total amou", barberLimit);
       setIsError(true);
       setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
       setIsProcessing(true);
     }
-    totalValueBarber = nftQuantity * mintPriceBarber;
+    totalValueBarber = barberQuantity * mintPriceBarber;
     let weiBarber = web3.utils.toWei(totalValueBarber.toString());
 
     if (!approvedBarber) {
-      if (nftQuantity <= barberLimit) {
+      if (barberQuantity <= barberLimit) {
         try {
           approveTx = daiContract.methods
             .approve(barber_address, weiBarber)
@@ -355,10 +375,10 @@ export default function MapPins() {
       }
     }
     if (approvedBarber) {
-      if (nftQuantity <= barberLimit) {
+      if (barberQuantity <= barberLimit) {
         try {
           let mintTx = barberContract.methods
-            .safeMint(account, nftQuantity)
+            .safeMint(account, barberQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
               setBtnTextBarber("Minting...");
@@ -417,10 +437,10 @@ export default function MapPins() {
     );
     groceryAllowanceChecker();
     //complete the function to get the total amount of nft
-    totalValueGrocery = nftQuantity * mintPriceGrocery;
+    totalValueGrocery = groceryQuantity * mintPriceGrocery;
     let weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
     if (!approvedGrocery) {
-      if (nftQuantity <= groceryLimit) {
+      if (groceryQuantity <= groceryLimit) {
         try {
           approveTx = daiContract.methods
             .approve(grocery_address, weiGrocery)
@@ -463,10 +483,10 @@ export default function MapPins() {
       }
     }
     if (approvedGrocery) {
-      if (nftQuantity <= groceryLimit) {
+      if (groceryQuantity <= groceryLimit) {
         try {
           let mintTx = groceryContract.methods
-            .safeMint(account, nftQuantity)
+            .safeMint(account, groceryQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
               setBtnTextGrocery("Minting...");
@@ -525,12 +545,12 @@ export default function MapPins() {
     );
     dinerAllowanceChecker();
     //complete the function to get the total amount of nft
-    totalValueDiner = nftQuantity * mintPriceDiner;
+    totalValueDiner = dinerQuantity * mintPriceDiner;
     console.log("😊", allowanceValueDiner, totalValueDiner);
     //convert into big number and then into wei
     let weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
-      if (nftQuantity <= dinerLimit) {
+      if (dinerQuantity <= dinerLimit) {
         try {
           approveTx = daiContract.methods
             .approve(diner_address, weiDiner)
@@ -573,10 +593,10 @@ export default function MapPins() {
       }
     }
     if (approvedDiner) {
-      if (nftQuantity <= dinerLimit) {
+      if (dinerQuantity <= dinerLimit) {
         try {
           let mintTx = dinerContract.methods
-            .safeMint(account, nftQuantity)
+            .safeMint(account, dinerQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
               setBtnTextDiner("Minting...");
@@ -621,7 +641,7 @@ export default function MapPins() {
   }
 
   async function Mint(item: string) {
-    if (nftQuantity === 0 || null) {
+    if (`${item}Quantity` === 0 || null) {
       setIsError(true);
       setErrorMessage(
         "This is an invalid value for approving or minting. Please add at least 1"
@@ -648,14 +668,13 @@ export default function MapPins() {
   function handleNftPriceQuantity(item) {
     switch (item) {
       case "barber": {
-        let total = mintPriceBarber * nftQuantity + " DAI";
-        return total;
+        return  mintPriceBarber * barberQuantity + " DAI";  
       }
       case "grocery": {
-        return mintPriceGrocery * nftQuantity + " DAI";
+        return mintPriceGrocery * groceryQuantity + " DAI";
       }
       case "diner": {
-        return mintPriceDiner * nftQuantity + " DAI";
+        return mintPriceDiner * dinerQuantity + " DAI";
       }
     }
   }
@@ -693,7 +712,7 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e as any)
+              handleQuantity(e as any, 'barber')
             }
           />
         </span>
@@ -726,7 +745,7 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e as any)
+              handleQuantity(e as any, 'grocery')
             }
           />
         </span>
@@ -759,7 +778,7 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e as any)
+              handleQuantity(e as any, 'diner')
             }
           />
         </span>
