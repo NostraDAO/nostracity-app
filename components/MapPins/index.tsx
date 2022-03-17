@@ -641,12 +641,25 @@ export default function MapPins() {
   }
 
   async function Mint(item: string) {
-    if (`${item}Quantity` === 0 || null) {
+    if (barberQuantity === 0 || null) {
       setIsError(true);
       setErrorMessage(
         "This is an invalid value for approving or minting. Please add at least 1"
       );
-    } else {
+    }
+    if (groceryQuantity === 0 || null) {
+      setIsError(true);
+      setErrorMessage(
+        "This is an invalid value for approving or minting. Please add at least 1"
+      );
+    } 
+    if (dinerQuantity === 0 || null) {
+      setIsError(true);
+      setErrorMessage(
+        "This is an invalid value for approving or minting. Please add at least 1"
+      );
+    }
+    else {
       if (
         typeof window.ethereum !== "undefined" &&
         window.ethereum.selectedAddress
