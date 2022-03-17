@@ -5,13 +5,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import treasuryABI from "../../abi/Treasury.json";
 import styles from "./BankModal.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
+import treasuryABI from "../../abi/Treasury.json";
 
-const treasury_address = "";
+import { treasury_address } from "../../constants/adresses/contracts";
+
+declare var window: any
 
 const style = {
   position: "absolute",
@@ -29,27 +31,32 @@ const style = {
 
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const [tvl, setTvl] = useState();
-  const web3 = new Web3(Web3.givenProvider);
   const { account } = useWeb3React();
-  // async function getTVL(){
-  //   const treasuryContract = new web3.eth.Contract(treasuryABI as any, treasury_address);
-  //   let getTVL;
-  //   try{
-  //   getTVL = await web3.treasuryContract.methods.getTotalTreasuryValue().call()
 
-  //   }
-  //   catch(err: any){
-  //     console.log('getTVL error: ', err);
-  //   }
-  //   finally {
-  //     setTvl(getTVL);
-  //   }
-
-  // }
+  async function getTVL() {
+    const web3 = new Web3(Web3.givenProvider);
+    const treasuryContract = new web3.eth.Contract(
+      treasuryABI as any,
+      treasury_address
+    );
+    console.log('treasuryContract', treasuryContract)
+    let treasuryBalance
+    try {
+      treasuryBalance = await treasuryContract.methods.getTotalTreasuryValue().call()
+      console.log('treasuryBalance', treasuryBalance);
+    } catch (err: any) {
+      console.log("getTVL error: ", err);
+    } finally {
+      setTvl(treasuryBalance);
+    }
+  }
 
   useEffect(() => {
-    // account ? geTVL(): 'Wallet not connected!';
-  }, [tvl]);
+    if(typeof window.ethereum !== "undefined"){
+      account ? getTVL() : "Wallet not connected!";
+    }
+    console.log(tvl);
+  }, [account]);
 
   return (
     <div>
@@ -70,7 +77,7 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
             {title}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Total Treasury Value : $ {tvl}
+            Total Treasury Value : $ {tvl} DAI
           </Typography>
         </Box>
       </Modal>

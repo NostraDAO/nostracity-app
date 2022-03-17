@@ -120,7 +120,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   }
 
   async function handleRanking() {
-    await getWalletOwnsNft();
+    // await getWalletOwnsNft();
     await getDinerScore();
     await getBarberScore();
     await getGroceryScore();
