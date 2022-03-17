@@ -87,25 +87,62 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     }
   }
 
+  async function getWalletOwnsNft() {
+    const barberContract = new web3.eth.Contract(
+      barberABI as any,
+      barber_address
+    );
+
+    const dinerContract = new web3.eth.Contract(
+      dinerABI as any, 
+      diner_address);
+
+    const groceryContract = new web3.eth.Contract(
+      groceryABI as any,
+      grocery_address
+    );
+    try {
+      let barberOwner = await barberContract.methods
+        .walletOfOwner(account)
+        .call();
+      let groceryOwner = await groceryContract.methods
+        .walletOfOwner(account)
+        .call();
+      let dinerOwner = await dinerContract.methods
+        .walletOfOwner(account)
+        .call();
+      console.log(barberOwner);
+      console.log(groceryOwner);
+      console.log(dinerOwner);
+    } catch (err: any) {
+      console.log(err);
+    }
+  }
+
   async function handleRanking() {
+    await getWalletOwnsNft();
     await getDinerScore();
     await getBarberScore();
     await getGroceryScore();
+
     let ar = [dinerScore, barberScore, groceryScore];
     ar.sort(function (a, b) {
-      if(a.score < b.score) { return  1}
-      if(a.score > b.score) { return -1}
+      if (a.score < b.score) {
+        return 1;
+      }
+      if (a.score > b.score) {
+        return -1;
+      }
 
       return 0;
-    })
-    setRankArray([...ar])
+    });
+    setRankArray([...ar]);
     return ar;
   }
 
   const TableContent = () => {
     return (
       <TableContainer className={styles.rankingModal}>
-        
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -114,14 +151,14 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-          {rankArray.map((item, index) => (
-          <TableRow key={index}>
-              <TableCell component="th" scope="row">
-                {item.business}
-              </TableCell>
-              <TableCell align="right">{item.score}</TableCell>
-            </TableRow>
-        ))}
+            {rankArray.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  {item.business}
+                </TableCell>
+                <TableCell align="right">{item.score}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
