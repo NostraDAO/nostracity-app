@@ -61,7 +61,7 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Grid container justify="flex-end" alignItems="center">
+          <Grid container justifyContent="flex-end" alignItems="center">
             <IconButton onClick={handleClose} size="small">
               <CloseIcon />
             </IconButton>
