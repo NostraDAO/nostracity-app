@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Drawer } from "@material-ui/core";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -7,7 +7,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Logo from "../Logo";
 import { makeStyles } from "@material-ui/core";
 import NoSsr from '@material-ui/core/NoSsr';
-
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
 
 
 
@@ -31,6 +33,14 @@ const useStyles = makeStyles(theme => ({
   }));
 
 export default function Sidebar() {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   
     const classes = useStyles();
 
@@ -59,13 +69,27 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component="button"  onClick={handleClick}>
               <ListItemText primary="Socials" />
             </ListItemButton>
           </ListItem>
         </List>
       </Drawer>
+     
       </div>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
+      </Menu>
     </NoSsr>
   );
 }
