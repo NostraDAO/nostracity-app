@@ -133,7 +133,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any, Scores) => {
     await getGroceryScore();
 
     let ar = [dinerScore, barberScore, groceryScore];
-    ar.sort((a, b ) => b.score - a.score);
+    ar.sort((a, b ):Scores => b.score - a.score);
     setRankArray([...ar]);
     return ar;
   }
