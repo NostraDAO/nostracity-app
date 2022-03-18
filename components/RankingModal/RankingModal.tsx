@@ -55,9 +55,9 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const [groceryScore, setGroceryScore] = useState<Score>();
   const [dinerScore, setDinerScore] = useState<Score>();
   const [rankArray, setRankArray] = useState<Scores>([]);
-  const [barberOwner, setBarberOwner] = useState();
-  const [groceryOwner, setGroceryOwner] = useState();
-  const [dinerOwner, setDinerOwner] = useState();
+  const [barberOwner, setBarberOwner] = useState<any[]>([]);
+  const [groceryOwner, setGroceryOwner] = useState<any[]>([]);
+  const [dinerOwner, setDinerOwner] = useState<any[]>([]);
   const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
   async function getBarberScore() {
