@@ -39,11 +39,9 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
       treasuryABI as any,
       treasury_address
     );
-    console.log('treasuryContract', treasuryContract)
     let treasuryBalance
     try {
       treasuryBalance = await treasuryContract.methods.getTotalTreasuryValue().call()
-      console.log('treasuryBalance', treasuryBalance);
     } catch (err: any) {
       console.log("getTVL error: ", err);
     } finally {
@@ -52,10 +50,13 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   }
 
   useEffect(() => {
-    if(typeof window.ethereum !== "undefined"){
+    let active = true;
+    if(typeof window.ethereum !== "undefined" && active){
       account ? getTVL() : "Wallet not connected!";
     }
-    console.log(tvl);
+    return () => {
+      active = false;
+    }
   }, [account]);
 
   return (

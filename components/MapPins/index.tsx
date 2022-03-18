@@ -199,7 +199,8 @@ export default function MapPins() {
   }
 
   useEffect(() => {
-    if (typeof window.ethereum !== "undefined" && account) {
+    let passed = true;
+    if (typeof window.ethereum !== "undefined" && account && passed) {
       getMinimalAllowance();
       getBarberLimit().then((amount) => {
         setBarberLimit(amount);
@@ -212,6 +213,9 @@ export default function MapPins() {
       getDinerLimit().then((amount) => {
         setDinerLimit(amount);
       });
+    }
+    return () => {
+      passed = false;
     }
   }, [
     account,

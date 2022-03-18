@@ -20,9 +20,11 @@ import barberABI from "../../abi/BarberShopNFT.json";
 import groceryABI from "../../abi/GroceryStoreNFT.json";
 import dinerABI from "../../abi/DinerNFT.json";
 
-const barber_address = "0x1C26daC2a2e9Bb057fCC061a1903491bA1B5630C";
-const grocery_address = "0xe2284c96faEdF807B4850d271a01e68fF7a443aE";
-const diner_address = "0xee2e93C1E58BD5BC42eE0365401F2C586f4f1694";
+import {
+  barber_address,
+  grocery_address,
+  diner_address,
+} from "../../constants/adresses/contracts";
 import styles from "./RankingModal.module.css";
 
 const style = {
@@ -53,6 +55,10 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const [groceryScore, setGroceryScore] = useState<Score>();
   const [dinerScore, setDinerScore] = useState<Score>();
   const [rankArray, setRankArray] = useState<Scores>([]);
+  const [barberOwner, setBarberOwner] = useState<Array>();
+  const [groceryOwner, setGroceryOwner] = useState<Array>();
+  const [dinerOwner, setDinerOwner] = useState<Array>();
+  const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
   async function getBarberScore() {
     const barberContract = new web3.eth.Contract(
@@ -94,49 +100,77 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     }
   }
 
-  async function getWalletOwnsNft() {
+  async function getOwnedBarber() {
     const barberContract = new web3.eth.Contract(
       barberABI as any,
       barber_address
     );
 
+    try {
+      setBarberOwner(
+        await barberContract.methods.walletOfOwner(account).call());
+        barberOwner.length > 0 ? setOwnsNft(true) : false;
+    } catch (e: any) {
+      console.log(e);
+    }
+  }
+
+  async function getOwnedDiner() {
     const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
 
+    try {
+      setDinerOwner(await dinerContract.methods.walletOfOwner(account).call());
+      dinerOwner.length > 0 ? setOwnsNft(true) : false;
+
+    } catch (e: any) {
+      console.log(e);
+    }
+  }
+
+  async function getOwnedGrocery() {
     const groceryContract = new web3.eth.Contract(
       groceryABI as any,
       grocery_address
     );
+
     try {
-      let barberOwner = await barberContract.methods
-        .walletOfOwner(account)
-        .call();
-      let groceryOwner = await groceryContract.methods
-        .walletOfOwner(account)
-        .call();
-      let dinerOwner = await dinerContract.methods
-        .walletOfOwner(account)
-        .call();
-      console.log(barberOwner);
-      console.log(groceryOwner);
-      console.log(dinerOwner);
+      setGroceryOwner(
+        await groceryContract.methods.walletOfOwner(account).call()
+      );
+      groceryOwner.length > 0 ? setOwnsNft(true) : false;
     } catch (err: any) {
       console.log(err);
     }
   }
 
-  async function handleRanking() {
-    // await getWalletOwnsNft();
-    await getDinerScore();
-    await getBarberScore();
-    await getGroceryScore();
+  async function getOwnedNfts(){
+    await getOwnedBarber();
+    await getOwnedDiner();
+    await getOwnedGrocery();
+  }
+
+  async function getListScored(){
     let ar: Score[] = [];
     if (dinerScore && barberScore && groceryScore) {
       ar = [dinerScore, barberScore, groceryScore];
       ar.sort((a, b) => b.score - a.score);
       setRankArray([...ar]);
 
-      return ar;
     }
+  }
+  async function handleRanking() {
+    if (account) {
+      await getOwnedNfts();
+      await getDinerScore();
+      await getBarberScore();
+      await getGroceryScore();
+      await getListScored();
+      
+    }
+   
+    
+      
+  
   }
 
   const TableContent = () => {
@@ -150,14 +184,21 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rankArray.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell component="th" scope="row">
-                  {item.business}
-                </TableCell>
-                <TableCell align="right">{item.score}</TableCell>
+            {ownsNft ? (
+              rankArray.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">
+                    {item.business}
+                  </TableCell>
+                  <TableCell align="right">{item.score}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell component="th" scope="row"></TableCell>
+                <TableCell align="right"></TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -165,10 +206,14 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   };
 
   useEffect(() => {
-    if (account) {
+    let active = true;
+    if (typeof window.ethereum !== "undefined") {
       handleRanking();
     }
-  }, []);
+    return () => {
+      active = false;
+    };
+  },[]);
 
   return (
     <div>
