@@ -132,8 +132,8 @@ export const RankingModal = ({ isOpen, handleClose, title }: any, Scores) => {
     await getBarberScore();
     await getGroceryScore();
 
-    let ar = [dinerScore, barberScore, groceryScore];
-    ar.sort((a, b ):Scores => b.score - a.score);
+    let ar: Scores[] = [dinerScore, barberScore, groceryScore];
+    ar.sort((a, b ) => b.score - a.score);
     setRankArray([...ar]);
     return ar;
   }
