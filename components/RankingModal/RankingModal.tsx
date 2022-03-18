@@ -46,12 +46,12 @@ interface Scores {
 }
 
 
-export const RankingModal = ({ isOpen, handleClose, title }: any) => {
+export const RankingModal = ({ isOpen, handleClose, title }: any, Scores) => {
   const web3 = new Web3(Web3.givenProvider);
   const { account } = useWeb3React();
-  const [barberScore, setBarberScore] = useState<Scores>();
-  const [groceryScore, setGroceryScore] = useState<Scores>();
-  const [dinerScore, setDinerScore] = useState<Scores>();
+  const [barberScore, setBarberScore] = useState<Scores>({});
+  const [groceryScore, setGroceryScore] = useState<Scores>({});
+  const [dinerScore, setDinerScore] = useState<Scores>({});
   const [rankArray, setRankArray] = useState([]);
 
   async function getBarberScore() {
@@ -133,7 +133,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getGroceryScore();
 
     let ar = [dinerScore, barberScore, groceryScore];
-    ar.sort(function (a, b) {
+    ar.sort(function (a, b ):Score {
       if (a.score < b.score) {
         return 1;
       }
