@@ -42,11 +42,9 @@ const style = {
 interface Score {
   business: string;
   score: number;
-
 }
 
-interface Scores extends Array<Score>{}
-
+interface Scores extends Array<Score> {}
 
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const web3 = new Web3(Web3.givenProvider);
@@ -54,7 +52,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const [barberScore, setBarberScore] = useState<Score>();
   const [groceryScore, setGroceryScore] = useState<Score>();
   const [dinerScore, setDinerScore] = useState<Score>();
-  const [rankArray, setRankArray] = useState([]);
+  const [rankArray, setRankArray] = useState<Scores>([]);
 
   async function getBarberScore() {
     const barberContract = new web3.eth.Contract(
@@ -102,9 +100,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       barber_address
     );
 
-    const dinerContract = new web3.eth.Contract(
-      dinerABI as any, 
-      diner_address);
+    const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
 
     const groceryContract = new web3.eth.Contract(
       groceryABI as any,
@@ -133,14 +129,14 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getDinerScore();
     await getBarberScore();
     await getGroceryScore();
-    if(dinerScore && barberScore && groceryScore ){
-      let ar: Score[] = [];
-      ar= [dinerScore, barberScore, groceryScore];
-    ar.sort((a, b ) => b.score - a.score);
-    setRankArray([...ar]);
-    return ar;
+    let ar: Score[] = [];
+    if (dinerScore && barberScore && groceryScore) {
+      ar = [dinerScore, barberScore, groceryScore];
+      ar.sort((a, b) => b.score - a.score);
+      setRankArray([...ar]);
+
+      return ar;
     }
-    
   }
 
   const TableContent = () => {
@@ -172,7 +168,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     if (account) {
       handleRanking();
     }
-  }, [account, rankArray]);
+  }, []);
 
   return (
     <div>
