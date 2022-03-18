@@ -7,10 +7,7 @@ import Container from "@mui/material/Container";
 import barberABI from "../../abi/BarberShopNFT.json";
 import groceryABI from "../../abi/GroceryStoreNFT.json";
 import dinerABI from "../../abi/DinerNFT.json";
-
-const barber_address = "0x1C26daC2a2e9Bb057fCC061a1903491bA1B5630C";
-const grocery_address = "0xe2284c96faEdF807B4850d271a01e68fF7a443aE";
-const diner_address = "0xee2e93C1E58BD5BC42eE0365401F2C586f4f1694";
+import {barber_address, diner_address, grocery_address} from '../../constants/adresses/contracts'
 
 
 
