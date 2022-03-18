@@ -45,7 +45,7 @@ interface Score {
 
 }
 
-interface Scores extends Array<Score>{}
+interface Scores extends Array<Score | undefined >{}
 
 
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
