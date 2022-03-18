@@ -155,7 +155,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       setOwnsNft(true);
     }
     else {
-      setOwnNft(false);
+      setOwnsNft(false);
     }
   }
 
