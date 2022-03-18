@@ -47,6 +47,7 @@ interface Score {
 }
 
 interface Scores extends Array<Score> {}
+declare var window: any;
 
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const web3 = new Web3(Web3.givenProvider);
@@ -55,9 +56,9 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const [groceryScore, setGroceryScore] = useState<Score>();
   const [dinerScore, setDinerScore] = useState<Score>();
   const [rankArray, setRankArray] = useState<Scores>([]);
-  const [barberOwner, setBarberOwner] = useState<Array>();
-  const [groceryOwner, setGroceryOwner] = useState<Array>();
-  const [dinerOwner, setDinerOwner] = useState<Array>();
+  const [barberOwner, setBarberOwner] = useState<any[]>([]);
+  const [groceryOwner, setGroceryOwner] = useState<any[]>([]);
+  const [dinerOwner, setDinerOwner] = useState<any[]>([]);
   const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
   async function getBarberScore() {
@@ -109,7 +110,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     try {
       setBarberOwner(
         await barberContract.methods.walletOfOwner(account).call());
-        barberOwner.length > 0 ? setOwnsNft(true) : false;
+        barberOwner?.length > 0 ? setOwnsNft(true) : false;
     } catch (e: any) {
       console.log(e);
     }
@@ -120,7 +121,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
     try {
       setDinerOwner(await dinerContract.methods.walletOfOwner(account).call());
-      dinerOwner.length > 0 ? setOwnsNft(true) : false;
+      dinerOwner?.length > 0 ? setOwnsNft(true) : false;
 
     } catch (e: any) {
       console.log(e);
@@ -137,7 +138,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       setGroceryOwner(
         await groceryContract.methods.walletOfOwner(account).call()
       );
-      groceryOwner.length > 0 ? setOwnsNft(true) : false;
+      groceryOwner?.length > 0 ? setOwnsNft(true) : false;
     } catch (err: any) {
       console.log(err);
     }
