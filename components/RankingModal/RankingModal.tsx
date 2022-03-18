@@ -45,7 +45,7 @@ interface Score {
 
 }
 
-interface Scores extends Array<Score | undefined >{}
+interface Scores extends Array<Score>{}
 
 
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
@@ -134,7 +134,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getBarberScore();
     await getGroceryScore();
 
-    let ar: Scores[] = [dinerScore, barberScore, groceryScore]!;
+    let ar: Scores[] = [dinerScore!, barberScore!, groceryScore!];
     ar.sort((a, b ) => b.score - a.score);
     setRankArray([...ar]);
     return ar;
