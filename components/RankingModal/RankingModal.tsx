@@ -109,7 +109,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     try {
       setBarberOwner(
         await barberContract.methods.walletOfOwner(account).call());
-        barberOwner.length > 0 ? setOwnsNft(true) : false;
+        barberOwner?.length > 0 ? setOwnsNft(true) : false;
     } catch (e: any) {
       console.log(e);
     }
@@ -120,7 +120,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
     try {
       setDinerOwner(await dinerContract.methods.walletOfOwner(account).call());
-      dinerOwner.length > 0 ? setOwnsNft(true) : false;
+      dinerOwner?.length > 0 ? setOwnsNft(true) : false;
 
     } catch (e: any) {
       console.log(e);
@@ -137,7 +137,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       setGroceryOwner(
         await groceryContract.methods.walletOfOwner(account).call()
       );
-      groceryOwner.length > 0 ? setOwnsNft(true) : false;
+      groceryOwner?.length > 0 ? setOwnsNft(true) : false;
     } catch (err: any) {
       console.log(err);
     }
