@@ -110,7 +110,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     try {
       setBarberOwner(
         await barberContract.methods.walletOfOwner(account).call());
-        barberOwner?.length > 0 ? setOwnsNft(true) : false;
     } catch (e: any) {
       console.log(e);
     }
@@ -121,7 +120,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
     try {
       setDinerOwner(await dinerContract.methods.walletOfOwner(account).call());
-      dinerOwner?.length > 0 ? setOwnsNft(true) : false;
 
     } catch (e: any) {
       console.log(e);
@@ -138,7 +136,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       setGroceryOwner(
         await groceryContract.methods.walletOfOwner(account).call()
       );
-      groceryOwner?.length > 0 ? setOwnsNft(true) : false;
     } catch (err: any) {
       console.log(err);
     }
@@ -148,11 +145,23 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getOwnedBarber();
     await getOwnedDiner();
     await getOwnedGrocery();
+    await getCheckedNft()
+    await getListScored();
+
+  }
+  
+  async function getCheckedNft(){
+    if(barberOwner?.length > 0 || groceryOwner?.length > 0 || dinerOwner?.length > 0){
+      setOwnsNft(true);
+    }
+    else {
+      setOwnNft(false);
+    }
   }
 
   async function getListScored(){
     let ar: Score[] = [];
-    if (dinerScore && barberScore && groceryScore) {
+    if (dinerScore && barberScore && groceryScore && ownsNft) {
       ar = [dinerScore, barberScore, groceryScore];
       ar.sort((a, b) => b.score - a.score);
       setRankArray([...ar]);
@@ -165,7 +174,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       await getDinerScore();
       await getBarberScore();
       await getGroceryScore();
-      await getListScored();
       
     }
    
@@ -210,6 +218,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     let active = true;
     if (typeof window.ethereum !== "undefined") {
       handleRanking();
+      console.log("ownenft", ownsNft)
     }
     return () => {
       active = false;
