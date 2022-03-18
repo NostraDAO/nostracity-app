@@ -39,11 +39,13 @@ const style = {
   textAlign: "center",
 };
 
-interface Scores {
+interface Score {
   business: string;
   score: number;
 
 }
+
+interface Scores extends Array<Score>{}
 
 
 export const RankingModal = ({ isOpen, handleClose, title }: any, Scores) => {
