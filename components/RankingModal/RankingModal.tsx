@@ -47,6 +47,7 @@ interface Score {
 }
 
 interface Scores extends Array<Score> {}
+declare var window: any;
 
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const web3 = new Web3(Web3.givenProvider);
