@@ -48,12 +48,12 @@ interface Score {
 interface Scores extends Array<Score>{}
 
 
-export const RankingModal = ({ isOpen, handleClose, title }: any, Scores) => {
+export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const web3 = new Web3(Web3.givenProvider);
   const { account } = useWeb3React();
-  const [barberScore, setBarberScore] = useState<Scores>();
-  const [groceryScore, setGroceryScore] = useState<Scores>();
-  const [dinerScore, setDinerScore] = useState<Scores>();
+  const [barberScore, setBarberScore] = useState<Score>();
+  const [groceryScore, setGroceryScore] = useState<Score>();
+  const [dinerScore, setDinerScore] = useState<Score>();
   const [rankArray, setRankArray] = useState([]);
 
   async function getBarberScore() {
