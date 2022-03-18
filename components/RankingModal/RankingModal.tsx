@@ -49,9 +49,9 @@ interface Scores {
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const web3 = new Web3(Web3.givenProvider);
   const { account } = useWeb3React();
-  const [barberScore, setBarberScore] = useState<Scores>({});
-  const [groceryScore, setGroceryScore] = useState<Scores>({});
-  const [dinerScore, setDinerScore] = useState<Scores>({});
+  const [barberScore, setBarberScore] = useState<Scores>();
+  const [groceryScore, setGroceryScore] = useState<Scores>();
+  const [dinerScore, setDinerScore] = useState<Scores>();
   const [rankArray, setRankArray] = useState([]);
 
   async function getBarberScore() {
