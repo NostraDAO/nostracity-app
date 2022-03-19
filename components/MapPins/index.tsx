@@ -353,7 +353,6 @@ export default function MapPins() {
               setApprovedBarber(true);
               setBtnTextBarber("Mint");
               setIsError(false);
-              setLockInput(false);
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Approval for usage of DAI sucessful!");
@@ -370,12 +369,14 @@ export default function MapPins() {
             });
         } catch (err: any) {
           console.log(err);
+          setLockInput(false);
           barberAllowanceChecker();
         }
       } else {
         setIsError(true);
         setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
         setIsProcessing(true);
+        setLockInput(false);
       }
     }
     if (approvedBarber) {
@@ -459,7 +460,6 @@ export default function MapPins() {
               setApprovedGrocery(true);
               setBtnTextGrocery("Mint");
               setIsError(false);
-              setLockInput(false);
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Approval for usage of DAI sucessful!");
@@ -484,6 +484,8 @@ export default function MapPins() {
         setIsError(true);
         setErrorMessage(`Nft limit exceeded on this account: ${groceryLimit}`);
         setIsProcessing(true);
+        setLockInput(false);
+
       }
     }
     if (approvedGrocery) {
@@ -532,6 +534,7 @@ export default function MapPins() {
         setIsError(true);
         setErrorMessage(`Nft limit exceeded on this account: ${groceryLimit}`);
         setIsProcessing(true);
+        setLockInput(false);
       }
     }
   }
@@ -569,7 +572,6 @@ export default function MapPins() {
               setApprovedDiner(true);
               setBtnTextDiner("Mint");
               setIsError(false);
-              setLockInput(false);
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Approval for usage of DAI sucessful!");
@@ -594,6 +596,8 @@ export default function MapPins() {
         setIsError(true);
         setErrorMessage(`Nft limit exceeded on this account: ${dinerLimit}`);
         setIsProcessing(true);
+        setLockInput(false);
+
       }
     }
     if (approvedDiner) {
@@ -637,6 +641,8 @@ export default function MapPins() {
         setIsError(true);
         setErrorMessage(`Nft limit exceeded on this account: ${dinerLimit}`);
         setIsProcessing(true);
+        setLockInput(false);
+
       }
     }
     if (!active) {
