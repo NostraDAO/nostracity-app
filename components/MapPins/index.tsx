@@ -291,21 +291,21 @@ export default function MapPins() {
       setIsError(false);
       setErrorMessage("");
       setBarberQuantity(0);
+      setSucessfulMessage('');
     }
     if (item == "grocery") {
       setIsOpenGrocery(false);
       setIsError(false);
       setErrorMessage("");
       setGroceryQuantity(0);
-
-
+      setSucessfulMessage('');
     }
     if (item == "diner") {
       setIsOpenDiner(false);
       setIsError(false);
       setErrorMessage("");
       setDinerQuantity(0);
-
+      setSucessfulMessage('');
     }
     if (item == "bank") {
       setIsOpenBank(false);
