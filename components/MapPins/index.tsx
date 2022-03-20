@@ -30,6 +30,10 @@ import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
 import Tooltip from "@mui/material/Tooltip";
+import barberImg from '../../public/assets/images/barbershop.png'
+import groceryImg from '../../public/assets/images/grocery_store.png'
+import dinerImg from '../../public/assets/images/diner.png'
+
 
 declare var window: any;
 
@@ -721,6 +725,7 @@ export default function MapPins() {
         buttonText={btnTextBarber}
         isDisabled={isProcessing}
         nftName="Barber"
+        background={barberImg.src}
       >
         <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
           Welcome, my good fella, to the Hector Barbershop. In order to become a
@@ -754,6 +759,8 @@ export default function MapPins() {
         buttonText={btnTextGrocery}
         isDisabled={isProcessing}
         nftName="Tomatoes"
+        background={groceryImg.src}
+
       >
         <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
           Welcome, my good fella, to the Rome Grocery Store. In order to become
@@ -787,6 +794,7 @@ export default function MapPins() {
         buttonText={btnTextDiner}
         isDisabled={isProcessing}
         nftName="Coffee"
+        background={dinerImg.src}
       >
         <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
           Welcome, my good fella, to the Olympus Diner. In order to become a

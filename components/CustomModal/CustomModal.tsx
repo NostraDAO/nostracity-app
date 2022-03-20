@@ -10,24 +10,13 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from '@mui/material/IconButton';
 
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "80%",
-  height: "80%",
-  bgcolor: "#F3DFC1",
-  boxShadow: 24,
-  p: 4,
-  fontFamily: "OldNewspaperTypes",
-  textAlign: "center"
-};
+
 
 export const CustomModal = ({
   isOpen,
   handleClose,
   title,
+  background,
   children,
   handleMint,
   buttonText,
@@ -35,6 +24,24 @@ export const CustomModal = ({
   isApproved,
   isDisabled
 } :any) => {
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "90%",
+    height: "90%",
+    bgcolor: "#F3DFC1",
+    boxShadow: 24,
+    p: 4,
+    fontFamily: "OldNewspaperTypes",
+    textAlign: "center",
+    backgroundImage: `url(${background})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  };
+
   return (
     <div>
       <Modal
