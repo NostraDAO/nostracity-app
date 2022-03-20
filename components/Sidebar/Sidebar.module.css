@@ -1,0 +1,8 @@
+.customMenu ul {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+}
+.customMenu li {
+    font-family: DailyNews;
+}

@@ -10,7 +10,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-
+import styles from "./Sidebar.module.css"
 
 
 const useStyles = makeStyles(theme => ({
@@ -18,6 +18,8 @@ const useStyles = makeStyles(theme => ({
       "& .MuiTypography-body1": {
         fontFamily: "DailyNews",
         fontSize: "2.5em",
+        letterSpacing: "5px"
+
       },
       "& .MuiPaper-root": {
         backgroundColor: "transparent",
@@ -28,6 +30,22 @@ const useStyles = makeStyles(theme => ({
       "& .MuiDrawer-paperAnchorLeft":{
         left: "unset",
         marginLeft: "3%"
+      }
+    },
+    customMenu: {
+      "& .MuiMenu-list": {
+        display: "flex",
+        flexDirection: "column",
+        padding: "16px",
+        fontFamily: "DailyNews",
+        fontSize: "2.5em",
+        background: "#F3DFC1"
+      },
+      "& .MuiMenuItem-root" : {
+        fontFamily: "DailyNews",
+        fontSize: "0.8em",
+        letterSpacing: "5px"
+
       }
     }
   }));
@@ -78,7 +96,7 @@ export default function Sidebar() {
      
       </div>
       <Menu
-        id="basic-menu"
+      className={classes.customMenu}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -86,9 +104,11 @@ export default function Sidebar() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem component="a" href="https://twitter.com/Nostra_City" target="_blank" onClick={handleClose}>Twitter</MenuItem>
+        <MenuItem component="a" href="https://discord.gg/nostracityhq" target="_blank" onClick={handleClose}>Discord</MenuItem>
+        <MenuItem component="a" href="https://t.me/NostraCity" target="_blank" onClick={handleClose}>Telegram</MenuItem>
+        <MenuItem component="a" href="https://medium.com/@nostracity" target="_blank" onClick={handleClose}>Medium</MenuItem>
+
       </Menu>
     </NoSsr>
   );
