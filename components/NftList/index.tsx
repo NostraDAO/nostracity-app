@@ -7,11 +7,15 @@ import Container from "@mui/material/Container";
 import barberABI from "../../abi/BarberShopNFT.json";
 import groceryABI from "../../abi/GroceryStoreNFT.json";
 import dinerABI from "../../abi/DinerNFT.json";
-import {barber_address, diner_address, grocery_address} from '../../constants/adresses/contracts'
+import {
+  barber_address,
+  diner_address,
+  grocery_address,
+} from "../../constants/adresses/contracts";
 
-
-
-
+import coffeeImage from '../../public/assets/images/coffee.png'
+import tomatoImage from '../../public/assets/images/tomato.png'
+import scissorImage from '../../public/assets/images/scissors.png'
 
 export default function NftList({ account }: any) {
   const web3 = new Web3(Web3.givenProvider);
@@ -21,10 +25,7 @@ export default function NftList({ account }: any) {
   const [coffee, setCoffee] = useState(0);
 
   async function renderCoffee() {
-    const dinerContract = new web3.eth.Contract(
-      dinerABI as any,
-      diner_address
-    );
+    const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
     let nftCounter = await dinerContract.methods.walletOfOwner(account).call();
     console.log("", nftCounter);
     nftCounter.length >= 1 ? setCoffee(nftCounter.length) : setCoffee(0);
@@ -35,11 +36,13 @@ export default function NftList({ account }: any) {
       groceryABI as any,
       grocery_address
     );
-    let nftCounter = await groceryContract.methods.walletOfOwner(account).call();
+    let nftCounter = await groceryContract.methods
+      .walletOfOwner(account)
+      .call();
     console.log("", nftCounter);
     nftCounter.length >= 1 ? setTomatoes(nftCounter.length) : setTomatoes(0);
   }
-  
+
   async function renderScissors() {
     const barberContract = new web3.eth.Contract(
       barberABI as any,
@@ -49,40 +52,42 @@ export default function NftList({ account }: any) {
     console.log("", nftCounter);
     nftCounter.length >= 1 ? setScissors(nftCounter.length) : setScissors(0);
   }
-  
+
   useEffect(() => {
-    if(account){
+    if (account) {
       renderScissors();
       renderTomatoes();
       renderCoffee();
     }
-    
-  },[scissors, coffee, tomatoes]);
+  }, [scissors, coffee, tomatoes]);
 
   return (
     <Container fixed>
-    <Box>
-      <Stack direction="row" spacing={2} sx={{justifyContent: 'center'}} >
-        {account ? (
-          <>
-            <div>
-              <div>Tomato</div>
-              <div>{tomatoes}</div>
-            </div>
-            <div>
-              <div>Scissor</div>
-              <div>{scissors}</div>
-            </div>
-            <div>
-              <div>Coffee</div>
-              <div>{coffee}</div>
-            </div>
-          </>
-        ) : (
-          "Account not connected!"
-        )}
-      </Stack>
-    </Box>
+      <Box>
+        <Stack direction="row" spacing={2} sx={{ justifyContent: "center", alignItems: "center"}}>
+          {account ? (
+            <>
+              <div style={{height: "150px"}}>
+                <div><img src={tomatoImage.src} alt="tomato" width="100px" height="108px" /></div>
+                <div>Tomato</div>
+                <div>{tomatoes}</div>
+              </div>
+              <div style={{height: "150px"}}>
+              <div><img src={coffeeImage.src} alt="tomato" width="100px" height="108px" /></div>
+                <div>Scissor</div>
+                <div>{scissors}</div>
+              </div>
+              <div style={{height: "150px"}}>
+              <div><img src={scissorImage.src} alt="tomato" width="100px" height="108px" /></div>
+                <div>Coffee</div>
+                <div>{coffee}</div>
+              </div>
+            </>
+          ) : (
+            "Account not connected!"
+          )}
+        </Stack>
+      </Box>
     </Container>
   );
 }

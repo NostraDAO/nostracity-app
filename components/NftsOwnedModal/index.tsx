@@ -16,8 +16,8 @@ const style = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "30%",
-    height: "30%",
+    minWidth: "50%",
+    minHeight: "50%",
     bgcolor: "#F3DFC1",
     boxShadow: 24,
     fontFamily : "OldNewspaperTypes",
@@ -46,7 +46,7 @@ const { account, active } = useWeb3React();
               <CloseIcon />
             </IconButton>
           </Grid>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" variant="h2" component="h2">
             My NFTs
           </Typography>
            <NftList  account={account}  />
