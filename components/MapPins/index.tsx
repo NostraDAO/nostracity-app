@@ -30,8 +30,8 @@ import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
 import Tooltip from "@mui/material/Tooltip";
-import barberImg from '../../public/assets/images/barbershop.png'
-import groceryImg from '../../public/assets/images/grocery_store.png'
+import barberImg from '../../public/assets/images/barber.png'
+import groceryImg from '../../public/assets/images/grocery.png'
 import dinerImg from '../../public/assets/images/diner.png'
 
 
