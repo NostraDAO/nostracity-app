@@ -68,6 +68,15 @@ export default function Sidebar() {
       <Drawer  variant="permanent" anchor="left">
         <Logo />
         <List>
+        <ListItem disablePadding>
+            <ListItemButton
+              component="a"
+              href="https://nostracity.notion.site/Get-Started-f3526c4999b14bafbc02e373f31b4812"
+              target="_blank"
+            >
+              <ListItemText primary="Get Started" />
+            </ListItemButton>
+          </ListItem>
           <ListItem disablePadding>
             <ListItemButton
               component="a"
