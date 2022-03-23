@@ -178,7 +178,6 @@ export default function MapPins() {
         10 ** 18;
       setMintPriceDiner(mintPrice);
       setAllowanceValueDiner(allowanceTx);
-      console.log("😒", allowanceValueDiner, mintPriceDiner);
       if (allowanceValueDiner >= mintPriceDiner) {
         setApprovedDiner(true);
         setBtnTextDiner("Mint");
@@ -557,7 +556,6 @@ export default function MapPins() {
     dinerAllowanceChecker();
     //complete the function to get the total amount of nft
     totalValueDiner = dinerQuantity * mintPriceDiner;
-    console.log("😊", allowanceValueDiner, totalValueDiner);
     //convert into big number and then into wei
     let weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
@@ -720,7 +718,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenBarber}
         handleClose={() => handleClose("barber")}
-        title="Mint for the Barbershop"
+        title="Colombo Family"
+        subtitle="Barbershop"
         handleMint={() => Mint("Barber")}
         buttonText={btnTextBarber}
         isDisabled={isProcessing}
@@ -754,7 +753,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenGrocery}
         handleClose={() => handleClose("grocery")}
-        title="Mint for the Grocery Store"
+        title="Gambino family"
+        subtitle="Grocery store"
         handleMint={() => Mint("Grocery")}
         buttonText={btnTextGrocery}
         isDisabled={isProcessing}
@@ -789,7 +789,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenDiner}
         handleClose={() => handleClose("diner")}
-        title="Mint for the Diner"
+        title="Genovese family"
+        subtitle="Diner"
         handleMint={() => Mint("Diner")}
         buttonText={btnTextDiner}
         isDisabled={isProcessing}

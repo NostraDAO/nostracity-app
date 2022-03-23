@@ -33,7 +33,6 @@ export default function ProfileWallet() {
 
       if (chainId == 43113) {
         setConnected(true);
-        console.log("here");
       } if(chainId != 43113) {
         console.log(chainId);
         setWrongNetworkAlert(true);

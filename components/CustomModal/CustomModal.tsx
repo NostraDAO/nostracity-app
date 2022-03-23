@@ -15,6 +15,7 @@ export const CustomModal = ({
   isOpen,
   handleClose,
   title,
+  subtitle,
   background,
   children,
   handleMint,
@@ -67,6 +68,9 @@ export const CustomModal = ({
             </Grid>
             <Typography align="center" variant="h2" component="h2">
               {title}
+            </Typography>
+            <Typography align="center" variant="span" component="h4">
+              {subtitle}
             </Typography>
             <Box id="modal-modal-description" sx={{ mt: 2 }}>
               {children}
