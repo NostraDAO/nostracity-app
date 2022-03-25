@@ -30,7 +30,7 @@ import {
   getOwnedBarber,
   getOwnedGrocery,
   getOwnedDiner,
-} from "../../utils/nftScoresFunctions.ts";
+} from "../../utils/nftScoresFunctions";
 
 const style = {
   position: "absolute",
