@@ -99,7 +99,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       await getDinerScore().then((score) => setDinerScore(score))
       await getBarberScore().then((score) => setBarberScore(score));
       await getGroceryScore().then((score) => setGroceryScore(score));
-      await getListScored().then(listScored => setRankArray(listScored));
+      await getListScored().then(listScored => setRankArray([...listScored]));
 
   }
 
