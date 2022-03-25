@@ -67,14 +67,13 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
   async function getOwnedNfts() {
-    setBarberOwner(await getOwnedBarber(account));
-    setDinerOwner(await getOwnedDiner(account));
-    setGroceryOwner(await getOwnedGrocery(account));
-    getCheckedNft();
-    getListScored();
+    await getOwnedBarber(account).then((barber) => setBarberOwner(barber));
+    await getOwnedDiner(account).then((diner) => setDinerOwner(diner));;
+    await getOwnedGrocery(account).then((grocery) => setGroceryOwner(grocery));
+    await getCheckedNft();
   }
 
-  function getCheckedNft() {
+  async function getCheckedNft() {
     if (
       barberOwner?.length > 0 ||
       groceryOwner?.length > 0 ||
@@ -86,19 +85,22 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     }
   }
 
-  function getListScored() {
+  async function getListScored() {
     let ar: Score[] = [];
     if (dinerScore && barberScore && groceryScore) {
       ar = [dinerScore, barberScore, groceryScore];
       ar.sort((a, b) => b.score - a.score);
-      setRankArray([...ar]);
+      return ar;
     }
+    console.log(rankArray);
   }
   async function handleRanking() {
       await getOwnedNfts();
-      setDinerScore(await getDinerScore());
-      setBarberScore(await getBarberScore());
-      setGroceryScore(await getGroceryScore());
+      await getDinerScore().then((score) => setDinerScore(score))
+      await getBarberScore().then((score) => setBarberScore(score));
+      await getGroceryScore().then((score) => setGroceryScore(score));
+      await getListScored().then(listScored => setRankArray(listScored));
+
   }
 
   const TableContent = () => {
@@ -135,13 +137,13 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum !== "undefined" && active) {
-      account ? handleRanking(): 'Wallet not connected';
+    if (typeof window.ethereum != "undefined") {
+       handleRanking();
     }
     return () => {
       active = false;
     };
-  }, [account]);
+  }, [rankArray]);
 
   return (
     <div>
