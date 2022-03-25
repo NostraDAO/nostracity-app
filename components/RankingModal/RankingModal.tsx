@@ -16,16 +16,21 @@ import IconButton from "@mui/material/IconButton";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 
-import barberABI from "../../abi/BarberShopNFT.json";
-import groceryABI from "../../abi/GroceryStoreNFT.json";
-import dinerABI from "../../abi/DinerNFT.json";
-
 import {
   barber_address,
   grocery_address,
   diner_address,
 } from "../../constants/adresses/contracts";
 import styles from "./RankingModal.module.css";
+
+import {
+  getBarberScore,
+  getGroceryScore,
+  getDinerScore,
+  getOwnedBarber,
+  getOwnedGrocery,
+  getOwnedDiner,
+} from "../../utils/nftScoresFunctions";
 
 const style = {
   position: "absolute",
@@ -37,7 +42,7 @@ const style = {
   bgcolor: "#F3DFC1",
   boxShadow: 24,
   fontFamily: "OldNewspaperTypes",
-  p: 4,
+  p: 8,
   textAlign: "center",
 };
 
@@ -61,131 +66,53 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const [dinerOwner, setDinerOwner] = useState<any[]>([]);
   const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
-  async function getBarberScore() {
-    const barberContract = new web3.eth.Contract(
-      barberABI as any,
-      barber_address
-    );
-    let getScore;
-    try {
-      getScore =
-        (await barberContract.methods.getCurrentScore().call()) / 10 ** 18;
-      setBarberScore({ business: "Barber", score: getScore });
-    } catch (err: any) {
-      console.log("barberScore: ", err);
-    }
-  }
-  async function getGroceryScore() {
-    const groceryContract = new web3.eth.Contract(
-      groceryABI as any,
-      grocery_address
-    );
-    let getScore;
-    try {
-      getScore =
-        (await groceryContract.methods.getCurrentScore().call()) / 10 ** 18;
-      setGroceryScore({ business: "Grocery", score: getScore });
-    } catch (err: any) {
-      console.log("groceryScore: ", err);
-    }
-  }
-  async function getDinerScore() {
-    const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
-    let getScore;
-    try {
-      getScore =
-        (await dinerContract.methods.getCurrentScore().call()) / 10 ** 18;
-      setDinerScore({ business: "Diner", score: getScore });
-    } catch (err: any) {
-      console.log("dinerScore: ", err);
-    }
+  async function getOwnedNfts() {
+    await getOwnedBarber(account).then((barber) => setBarberOwner(barber));
+    await getOwnedDiner(account).then((diner) => setDinerOwner(diner));
+    await getOwnedGrocery(account).then((grocery) => setGroceryOwner(grocery));
+    await getCheckedNft();
   }
 
-  async function getOwnedBarber() {
-    const barberContract = new web3.eth.Contract(
-      barberABI as any,
-      barber_address
-    );
-
-    try {
-      setBarberOwner(
-        await barberContract.methods.walletOfOwner(account).call());
-    } catch (e: any) {
-      console.log(e);
-    }
-  }
-
-  async function getOwnedDiner() {
-    const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
-
-    try {
-      setDinerOwner(await dinerContract.methods.walletOfOwner(account).call());
-
-    } catch (e: any) {
-      console.log(e);
-    }
-  }
-
-  async function getOwnedGrocery() {
-    const groceryContract = new web3.eth.Contract(
-      groceryABI as any,
-      grocery_address
-    );
-
-    try {
-      setGroceryOwner(
-        await groceryContract.methods.walletOfOwner(account).call()
-      );
-    } catch (err: any) {
-      console.log(err);
-    }
-  }
-
-  async function getOwnedNfts(){
-    await getOwnedBarber();
-    await getOwnedDiner();
-    await getOwnedGrocery();
-    await getCheckedNft()
-    await getListScored();
-
-  }
-  
-  async function getCheckedNft(){
-    if(barberOwner?.length > 0 || groceryOwner?.length > 0 || dinerOwner?.length > 0){
+  async function getCheckedNft() {
+    if (
+      barberOwner?.length > 0 ||
+      groceryOwner?.length > 0 ||
+      dinerOwner?.length > 0
+    ) {
       setOwnsNft(true);
-    }
-    else {
+    } else {
       setOwnsNft(false);
     }
   }
 
-  async function getListScored(){
+  async function getListScored() {
     let ar: Score[] = [];
-    if (dinerScore && barberScore && groceryScore && ownsNft) {
+    if (dinerScore && barberScore && groceryScore) {
       ar = [dinerScore, barberScore, groceryScore];
       ar.sort((a, b) => b.score - a.score);
-      setRankArray([...ar]);
-
+      return ar;
     }
+    console.log(rankArray);
   }
   async function handleRanking() {
-    if (account) {
-      await getOwnedNfts();
-      await getDinerScore();
-      await getBarberScore();
-      await getGroceryScore();
-      
-    }
-   
-    
-      
-  
+    await getOwnedNfts();
+    await getDinerScore().then((score) => setDinerScore(score));
+    await getBarberScore().then((score) => setBarberScore(score));
+    await getGroceryScore().then((score) => setGroceryScore(score));
+    await getListScored().then((listScored) => {
+      if (listScored!.length > 0) {
+        let list: Score[] = [];
+        list = listScored as Score[];
+        setRankArray([...list]);
+
+      }
+    }); 
   }
 
   const TableContent = () => {
     return (
       <TableContainer className={styles.rankingModal}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Business</TableCell>
@@ -216,14 +143,13 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum !== "undefined") {
+    if (typeof window.ethereum != "undefined") {
       handleRanking();
-      console.log("ownenft", ownsNft)
     }
     return () => {
       active = false;
     };
-  },[]);
+  }, [rankArray]);
 
   return (
     <div>

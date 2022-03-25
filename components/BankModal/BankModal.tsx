@@ -12,8 +12,13 @@ import IconButton from "@mui/material/IconButton";
 import treasuryABI from "../../abi/Treasury.json";
 
 import { treasury_address } from "../../constants/adresses/contracts";
-
-declare var window: any
+import { getTVL } from "../../utils/bankFunction";
+import {
+  getBarberScore,
+  getDinerScore,
+  getGroceryScore,
+} from "../../utils/nftScoresFunctions";
+declare var window: any;
 
 const style = {
   position: "absolute",
@@ -32,31 +37,27 @@ const style = {
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const [tvl, setTvl] = useState();
   const { account } = useWeb3React();
-
-  async function getTVL() {
-    const web3 = new Web3(Web3.givenProvider);
-    const treasuryContract = new web3.eth.Contract(
-      treasuryABI as any,
-      treasury_address
-    );
-    let treasuryBalance
-    try {
-      treasuryBalance = await treasuryContract.methods.getTotalTreasuryValue().call()
-    } catch (err: any) {
-      console.log("getTVL error: ", err);
-    } finally {
-      setTvl(treasuryBalance);
+  async function getScoreSum() {
+    let barberScore, dinerScore, groceryScore, totalScore;
+    if (account) {
+      barberScore = await getBarberScore();
+      dinerScore = await getDinerScore();
+      groceryScore = await getGroceryScore();
+      totalScore = barberScore.score + dinerScore.score + groceryScore.score;
+      return totalScore;
     }
   }
 
   useEffect(() => {
     let active = true;
-    if(typeof window.ethereum !== "undefined" && active){
-      account ? getTVL() : "Wallet not connected!";
+    if (typeof window.ethereum !== "undefined" && active) {
+      account
+        ? getScoreSum().then((score) => setTvl(score))
+        : "Wallet not connected!";
     }
     return () => {
       active = false;
-    }
+    };
   }, [account]);
 
   return (

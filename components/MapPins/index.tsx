@@ -23,6 +23,11 @@ import {
   getGroceryLimit,
   getDinerLimit,
 } from "../../utils/nftLimitFunctions";
+import {
+  getBarberRemain,
+  getGroceryRemain,
+  getDinerRemain,
+} from "../../utils/remainingNftFunctions";
 
 import NoSsr from "@material-ui/core/NoSsr";
 const Web3 = require("web3");
@@ -30,10 +35,9 @@ import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
 import Tooltip from "@mui/material/Tooltip";
-import barberImg from '../../public/assets/images/barbershop.png'
-import groceryImg from '../../public/assets/images/grocery_store.png'
-import dinerImg from '../../public/assets/images/diner.png'
-
+import barberImg from "../../public/assets/images/barber.png";
+import groceryImg from "../../public/assets/images/grocery.png";
+import dinerImg from "../../public/assets/images/diner.png";
 
 declare var window: any;
 
@@ -78,6 +82,9 @@ export default function MapPins() {
   const [barberLimit, setBarberLimit] = useState<number>(0);
   const [groceryLimit, setGroceryLimit] = useState<number>(0);
   const [dinerLimit, setDinerLimit] = useState<number>(0);
+  const [barberRemain, setBarberRemain] = useState<number>(0);
+  const [groceryRemain, setGroceryRemain] = useState<number>(0);
+  const [dinerRemain, setDinerRemain] = useState<number>(0);
 
   let totalValueBarber: any;
   let totalValueGrocery: any;
@@ -178,7 +185,6 @@ export default function MapPins() {
         10 ** 18;
       setMintPriceDiner(mintPrice);
       setAllowanceValueDiner(allowanceTx);
-      console.log("😒", allowanceValueDiner, mintPriceDiner);
       if (allowanceValueDiner >= mintPriceDiner) {
         setApprovedDiner(true);
         setBtnTextDiner("Mint");
@@ -206,6 +212,17 @@ export default function MapPins() {
     let passed = true;
     if (typeof window.ethereum !== "undefined" && account && passed) {
       getMinimalAllowance();
+      getBarberRemain().then((remain) => {
+        setBarberRemain(remain);
+      });
+
+      getGroceryRemain().then((remain) => {
+        setGroceryRemain(remain);
+      })
+      getDinerRemain().then((remain) => {
+        setDinerRemain(remain);
+      })
+
       getBarberLimit().then((amount) => {
         setBarberLimit(amount);
       });
@@ -220,7 +237,7 @@ export default function MapPins() {
     }
     return () => {
       passed = false;
-    }
+    };
   }, [
     account,
     allowanceValueBarber,
@@ -236,6 +253,7 @@ export default function MapPins() {
       setIsOpenBarber(true);
       barberAllowanceChecker();
       setBarberQuantity(0);
+      console.log("barberRemain", barberRemain);
     }
     if (item == "grocery") {
       setIsOpenGrocery(true);
@@ -273,11 +291,9 @@ export default function MapPins() {
       }
       case "grocery": {
         setGroceryQuantity(Number((event.target as HTMLInputElement).value));
-        
       }
       case "diner": {
         setDinerQuantity(Number((event.target as HTMLInputElement).value));
-
       }
     }
     setIsError(false);
@@ -287,29 +303,27 @@ export default function MapPins() {
     setIsProcessing(false);
   };
 
- 
-
   const handleClose = (item: string) => {
     if (item == "barber") {
       setIsOpenBarber(false);
       setIsError(false);
       setErrorMessage("");
       setBarberQuantity(0);
-      setSucessfulMessage('');
+      setSucessfulMessage("");
     }
     if (item == "grocery") {
       setIsOpenGrocery(false);
       setIsError(false);
       setErrorMessage("");
       setGroceryQuantity(0);
-      setSucessfulMessage('');
+      setSucessfulMessage("");
     }
     if (item == "diner") {
       setIsOpenDiner(false);
       setIsError(false);
       setErrorMessage("");
       setDinerQuantity(0);
-      setSucessfulMessage('');
+      setSucessfulMessage("");
     }
     if (item == "bank") {
       setIsOpenBank(false);
@@ -489,7 +503,6 @@ export default function MapPins() {
         setErrorMessage(`Nft limit exceeded on this account: ${groceryLimit}`);
         setIsProcessing(true);
         setLockInput(false);
-
       }
     }
     if (approvedGrocery) {
@@ -557,7 +570,6 @@ export default function MapPins() {
     dinerAllowanceChecker();
     //complete the function to get the total amount of nft
     totalValueDiner = dinerQuantity * mintPriceDiner;
-    console.log("😊", allowanceValueDiner, totalValueDiner);
     //convert into big number and then into wei
     let weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
@@ -601,7 +613,6 @@ export default function MapPins() {
         setErrorMessage(`Nft limit exceeded on this account: ${dinerLimit}`);
         setIsProcessing(true);
         setLockInput(false);
-
       }
     }
     if (approvedDiner) {
@@ -646,7 +657,6 @@ export default function MapPins() {
         setErrorMessage(`Nft limit exceeded on this account: ${dinerLimit}`);
         setIsProcessing(true);
         setLockInput(false);
-
       }
     }
     if (!active) {
@@ -666,14 +676,13 @@ export default function MapPins() {
       setErrorMessage(
         "This is an invalid value for approving or minting. Please add at least 1"
       );
-    } 
+    }
     if (dinerQuantity === 0 || null) {
       setIsError(true);
       setErrorMessage(
         "This is an invalid value for approving or minting. Please add at least 1"
       );
-    }
-    else {
+    } else {
       if (
         typeof window.ethereum !== "undefined" &&
         window.ethereum.selectedAddress
@@ -695,7 +704,7 @@ export default function MapPins() {
   function handleNftPriceQuantity(item) {
     switch (item) {
       case "barber": {
-        return  mintPriceBarber * barberQuantity + " DAI";  
+        return mintPriceBarber * barberQuantity + " DAI";
       }
       case "grocery": {
         return mintPriceGrocery * groceryQuantity + " DAI";
@@ -720,7 +729,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenBarber}
         handleClose={() => handleClose("barber")}
-        title="Mint for the Barbershop"
+        title="Colombo Family"
+        subtitle="Barbershop"
         handleMint={() => Mint("Barber")}
         buttonText={btnTextBarber}
         isDisabled={isProcessing}
@@ -740,12 +750,21 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e as any, 'barber')
+              handleQuantity(e as any, "barber")
             }
           />
         </span>
-        <span style={{ display: "inline-block", marginTop: "8px" }}>
+        <span
+          style={{
+            display: "inline-block",
+            marginTop: "8px",
+            fontSize: "12px",
+          }}
+        >
           Value of DAI for the minting: {handleNftPriceQuantity("barber")}
+        </span>
+        <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
+          Remaining Scissors NFTs units: {barberRemain}
         </span>
         {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -754,13 +773,13 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenGrocery}
         handleClose={() => handleClose("grocery")}
-        title="Mint for the Grocery Store"
+        title="Gambino family"
+        subtitle="Grocery store"
         handleMint={() => Mint("Grocery")}
         buttonText={btnTextGrocery}
         isDisabled={isProcessing}
         nftName="Tomatoes"
         background={groceryImg.src}
-
       >
         <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
           Welcome, my good fella, to the Rome Grocery Store. In order to become
@@ -775,12 +794,15 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e as any, 'grocery')
+              handleQuantity(e as any, "grocery")
             }
           />
         </span>
-        <span style={{ display: "inline-block", marginTop: "8px" }}>
+        <span style={{ display: "inline-block", marginTop: "8px", fontSize: "12px"}}>
           Value of DAI for the minting: {handleNftPriceQuantity("grocery")}
+        </span>
+        <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
+          Remaining Scissors NFTs units: {groceryRemain}
         </span>
         {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -789,7 +811,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenDiner}
         handleClose={() => handleClose("diner")}
-        title="Mint for the Diner"
+        title="Genovese family"
+        subtitle="Diner"
         handleMint={() => Mint("Diner")}
         buttonText={btnTextDiner}
         isDisabled={isProcessing}
@@ -809,13 +832,16 @@ export default function MapPins() {
             placeholder="How many nfts"
             type="number"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleQuantity(e as any, 'diner')
+              handleQuantity(e as any, "diner")
             }
           />
         </span>
 
-        <span style={{ display: "inline-block", marginTop: "8px" }}>
+        <span style={{ display: "inline-block", marginTop: "8px", fontSize: "12px"}}>
           Value of DAI for the minting: {handleNftPriceQuantity("diner")}
+        </span>
+        <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
+          Remaining Scissors NFTs units: {dinerRemain}
         </span>
         {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
