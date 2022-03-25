@@ -99,11 +99,13 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
-    await getListScored().then((listScored: Score[] ) => {
-    let list: Score[] = [];
-    list = listScored
-      if(dinerScore && barberScore && groceryScore){
-      setRankArray([...list]);
+    await getListScored().then((listScored) => {
+      if (listScored.length > 0) {
+        let list: Score[] = [];
+        list = listScored;
+        if (dinerScore && barberScore && groceryScore) {
+          setRankArray([...list]);
+        }
       }
     });
   }
