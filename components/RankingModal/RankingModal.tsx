@@ -103,7 +103,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       if (listScored!.length > 0) {
         let list: Score[] = [];
         if (dinerScore && barberScore && groceryScore) {
-        list = listScored;
+        list! = listScored;
           setRankArray([...list]);
         }
       }
