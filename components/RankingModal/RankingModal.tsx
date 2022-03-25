@@ -86,7 +86,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   }
 
   async function getListScored() {
-    let ar: Score[] = [];
+    let ar: Scores = [];
     if (dinerScore && barberScore && groceryScore) {
       ar = [dinerScore, barberScore, groceryScore];
       ar.sort((a, b) => b.score - a.score);
@@ -99,8 +99,8 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
-    await getListScored().then((listScored) => {
-    let list: Score[] = [];
+    await getListScored().then((listScored ) => {
+    let list: Scores = [];
     list = listScored
       if(dinerScore && barberScore && groceryScore){
       setRankArray([...list]);
