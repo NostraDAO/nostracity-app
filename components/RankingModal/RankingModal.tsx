@@ -102,8 +102,8 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getListScored().then((listScored) => {
       if (listScored!.length > 0) {
         let list: Score[] = [];
-        if (dinerScore && barberScore && groceryScore) {
-        list! = listScored;
+        if (dinerScore && barberScore && groceryScore && list) {
+        list = listScored;
           setRankArray([...list]);
         }
       }
