@@ -99,7 +99,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
-    await getListScored().then((listScored) => {
+    await getListScored().then((listScored : Score[]) => {
       if(dinerScore && barberScore && groceryScore){
       setRankArray([...listScored]);
       }
