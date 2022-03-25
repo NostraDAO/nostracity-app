@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import treasuryABI from "../abi/Treasury"
+import treasuryABI from "../abi/Treasury.json"
 import { treasury_address } from "../constants/adresses/contracts";
 declare var window: any;
 
