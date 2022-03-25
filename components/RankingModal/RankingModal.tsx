@@ -42,7 +42,7 @@ const style = {
   bgcolor: "#F3DFC1",
   boxShadow: 24,
   fontFamily: "OldNewspaperTypes",
-  p: 4,
+  p: 8,
   textAlign: "center",
 };
 
@@ -106,7 +106,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const TableContent = () => {
     return (
       <TableContainer className={styles.rankingModal}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table  aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Business</TableCell>

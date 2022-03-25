@@ -69,7 +69,7 @@ export const CustomModal = ({
             <Typography align="center" variant="h2" component="h2">
               {title}
             </Typography>
-            <Typography align="center" variant="overtitle2" component="h4">
+            <Typography align="center" variant="h4" component="h4">
               {subtitle}
             </Typography>
             <Box id="modal-modal-description" sx={{ mt: 2 }}>
