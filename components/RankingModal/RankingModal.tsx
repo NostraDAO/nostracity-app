@@ -102,12 +102,11 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getListScored().then((listScored) => {
       if (listScored!.length > 0) {
         let list: Score[] = [];
-        if (dinerScore && barberScore && groceryScore && list) {
-        list = listScored;
-          setRankArray([...list]);
-        }
+        list = listScored as Score[];
+        setRankArray([...list]);
+
       }
-    });
+    }); 
   }
 
   const TableContent = () => {
