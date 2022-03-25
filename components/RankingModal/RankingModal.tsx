@@ -68,7 +68,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
   async function getOwnedNfts() {
     await getOwnedBarber(account).then((barber) => setBarberOwner(barber));
-    await getOwnedDiner(account).then((diner) => setDinerOwner(diner));;
+    await getOwnedDiner(account).then((diner) => setDinerOwner(diner));
     await getOwnedGrocery(account).then((grocery) => setGroceryOwner(grocery));
     await getCheckedNft();
   }
@@ -95,18 +95,21 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     console.log(rankArray);
   }
   async function handleRanking() {
-      await getOwnedNfts();
-      await getDinerScore().then((score) => setDinerScore(score))
-      await getBarberScore().then((score) => setBarberScore(score));
-      await getGroceryScore().then((score) => setGroceryScore(score));
-      await getListScored().then(listScored => setRankArray([...listScored]));
-
+    await getOwnedNfts();
+    await getDinerScore().then((score) => setDinerScore(score));
+    await getBarberScore().then((score) => setBarberScore(score));
+    await getGroceryScore().then((score) => setGroceryScore(score));
+    await getListScored().then((listScored) => {
+      if(dinerScore && barberScore && groceryScore){
+      setRankArray([...listScored]);
+      }
+    });
   }
 
   const TableContent = () => {
     return (
       <TableContainer className={styles.rankingModal}>
-        <Table  aria-label="simple table">
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Business</TableCell>
@@ -138,7 +141,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   useEffect(() => {
     let active = true;
     if (typeof window.ethereum != "undefined") {
-       handleRanking();
+      handleRanking();
     }
     return () => {
       active = false;
