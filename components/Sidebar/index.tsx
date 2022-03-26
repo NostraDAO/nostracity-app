@@ -19,11 +19,17 @@ const useStyles = makeStyles(theme => ({
         fontFamily: "DailyNews",
         fontSize: "2.5em",
         letterSpacing: "5px",
-        fontWeight: "bold",
+        color: "white"
 
       },
       "& .MuiPaper-root": {
         backgroundColor: "transparent",
+        height: "460px",
+        marginTop: "16px",
+        padding: "18px",
+        backgroundColor: "#161616",
+        borderRadius: "8px",
+        boxShadow: "3px 3px 3px #1a1c1a"
       },
       "& .MuiDrawer-paperAnchorDockedLeft": {
         borderRight: '0px solid black',

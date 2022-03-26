@@ -74,8 +74,8 @@ export default function ProfileWallet() {
     <>
       <div className={styles.profile}>
         <div className={styles.profileBox}>
-          <UserLineIcon color="black" size="36px" />
-          <span>
+          <UserLineIcon color="white" size="36px" />
+          <span style={{color: "white"}}>
             {account?.substr(0, 8)}...{account?.substr(-8, 8)}
           </span>
           {active ? (
