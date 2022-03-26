@@ -38,6 +38,9 @@ import Tooltip from "@mui/material/Tooltip";
 import barberImg from "../../public/assets/images/barber.png";
 import groceryImg from "../../public/assets/images/grocery.png";
 import dinerImg from "../../public/assets/images/diner.png";
+import {styleFunctionSx, compose, palette,spacing } from '@material-ui/system';
+
+const styleFunction = styleFunctionSx(compose(spacing, palette));
 
 declare var window: any;
 
@@ -48,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 
 export default function MapPins() {
   const [isOpenBarber, setIsOpenBarber] = useState(false);
@@ -863,7 +867,7 @@ export default function MapPins() {
       />
       <NoSsr>
         <div className={styles.mapPins}>
-          <Tooltip title={barberText} arrow>
+          <Tooltip title={barberText} sx={{backgroundColor: "#F3DFC1"}}  arrow>
             <IconButton
               className={classes.root}
               onClick={() => handleOpen("barber")}

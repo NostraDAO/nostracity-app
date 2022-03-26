@@ -143,7 +143,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum != "undefined") {
+    if (typeof window.ethereum != "undefined" && account) {
       handleRanking();
     }
     return () => {

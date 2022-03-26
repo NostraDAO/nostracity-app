@@ -36,7 +36,6 @@
     "react-dom": "17.0.2",
     "react-i18next": "^11.15.5",
     "react-img-mapper-extended": "^1.0.0",
-    "react-map-gl": "^7.0.10",
     "remixicon-react": "^1.0.0",
     "web3": "^1.7.1",
     "web3-react": "^5.0.5",

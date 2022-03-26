@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
       "& .MuiTypography-body1": {
         fontFamily: "DailyNews",
         fontSize: "2.5em",
-        letterSpacing: "5px"
+        letterSpacing: "5px",
+        fontWeight: "bold",
 
       },
       "& .MuiPaper-root": {
@@ -44,7 +45,8 @@ const useStyles = makeStyles(theme => ({
       "& .MuiMenuItem-root" : {
         fontFamily: "DailyNews",
         fontSize: "0.8em",
-        letterSpacing: "5px"
+        letterSpacing: "5px",
+        fontWeight: "bold"
 
       }
     }
