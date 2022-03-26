@@ -23,7 +23,6 @@ const useStyles = makeStyles(theme => ({
 
       },
       "& .MuiPaper-root": {
-        backgroundColor: "transparent",
         height: "460px",
         marginTop: "16px",
         padding: "18px",
