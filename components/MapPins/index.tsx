@@ -29,17 +29,18 @@ import {
   getDinerRemain,
 } from "../../utils/remainingNftFunctions";
 
+import { styled } from '@mui/material/styles';
 import NoSsr from "@material-ui/core/NoSsr";
 const Web3 = require("web3");
 import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import barberImg from "../../public/assets/images/barber.png";
 import groceryImg from "../../public/assets/images/grocery.png";
 import dinerImg from "../../public/assets/images/diner.png";
 import {styleFunctionSx, compose, palette,spacing } from '@material-ui/system';
-
+import gunCursor from '../../public/assets/icons/cursor.png';
 const styleFunction = styleFunctionSx(compose(spacing, palette));
 
 declare var window: any;
@@ -49,9 +50,22 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiIconButton-root	": {
       color: "#93100D",
     },
-  },
+  }
 }));
 
+// const newCursor = { cursor: `url('${gunCursor}')`}
+
+const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: "#F3DFC1",
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+    fontFamily: "OldNewspaperTypes",
+  },
+})); 
 
 export default function MapPins() {
   const [isOpenBarber, setIsOpenBarber] = useState(false);
@@ -725,6 +739,10 @@ export default function MapPins() {
     "Rome Grocery Store - Managed by the Gambino Family. Click to buy tomatoes.";
   const dinerText =
     "Olympus Diner - Managed by the Genovese Family. Click to buy coffees.";
+
+  const bankText = "Bank. Check our valuable assets" 
+  
+  const rankText = 'Check the competition and which family is on the top at the moment'
   return (
     <>
       <AlertModal isOpen={isOpenAlert} handleClose={() => handleAlertClose()}>
@@ -867,7 +885,7 @@ export default function MapPins() {
       />
       <NoSsr>
         <div className={styles.mapPins}>
-          <Tooltip title={barberText} sx={{backgroundColor: "#F3DFC1"}}  arrow>
+          <CustomTooltip  title={barberText} sx={{backgroundColor: "#F3DFC1"}}  arrow>
             <IconButton
               className={classes.root}
               onClick={() => handleOpen("barber")}
@@ -876,8 +894,8 @@ export default function MapPins() {
             >
               <PushPin2FillIcon size="36px" />
             </IconButton>
-          </Tooltip>
-          <Tooltip title={groceryText} arrow>
+          </CustomTooltip>
+          <CustomTooltip title={groceryText} arrow>
             <IconButton
               className={classes.root}
               onClick={() => handleOpen("grocery")}
@@ -886,8 +904,8 @@ export default function MapPins() {
             >
               <PushPin2FillIcon size="36px" />
             </IconButton>
-          </Tooltip>
-          <Tooltip title={dinerText} arrow>
+          </CustomTooltip>
+          <CustomTooltip title={dinerText} arrow>
             <IconButton
               className={classes.root}
               onClick={() => handleOpen("diner")}
@@ -896,25 +914,27 @@ export default function MapPins() {
             >
               <PushPin2FillIcon size="36px" />
             </IconButton>
-          </Tooltip>
-
+          </CustomTooltip>
+          <CustomTooltip title={bankText}  arrow>   
           <IconButton
             className={classes.root}
             onClick={() => handleOpen("bank")}
             color="primary"
             name="bank"
           >
-            <BankFillIcon size="36px" />
+              <PushPin2FillIcon size="36px" />
           </IconButton>
-
+           </CustomTooltip>
+          <CustomTooltip title={rankText} arrow>  
           <IconButton
             className={classes.root}
             onClick={() => handleOpen("trophy")}
             color="primary"
             name="rank"
           >
-            <TrophyLineIcon size="36px" />
+              <PushPin2FillIcon size="36px" />
           </IconButton>
+          </CustomTooltip>
         </div>
       </NoSsr>
     </>

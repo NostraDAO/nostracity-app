@@ -10,34 +10,34 @@
 }
 
 .mapPins button[name="bank"]{
-    top:35%;
+    top:31%;
     left:3%;
-    color: transparent;
+    color: #93100D;
 }
 
 .mapPins button[name="rank"]{
-    top:8%;
+    top:3%;
     right:2.2%;
-    color: transparent;
+    color: #93100D;
 }
 
 .mapPins button[name="diner"]{
-    top:15%;
+    top:10%;
     left: 0.9%;
-    color: transparent;
+    color: #93100D;
 }
 
 
 .mapPins button[name="grocery"]{
-    top:38%;
+    top:34%;
     left:2.5%;
-    color: transparent;
+    color: #93100D;
 
 }
 
 .mapPins button[name="barber"]{
-    top:2%;
+    bottom:2%;
     right:0.5%;
-    color: transparent;
+    color: #93100D;
 
 }
