@@ -78,7 +78,7 @@ export default function NftList({ account }: any) {
                 <div>{scissors}</div>
               </div>
               <div style={{height: "150px"}}>
-              <div><img src={scissorImage.src} alt="tomato" width="100px" height="108px" /></div>
+              <div><img src={coffeeImage.src} alt="tomato" width="100px" height="108px" /></div>
                 <div>Coffee</div>
                 <div>{coffee}</div>
               </div>
