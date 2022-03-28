@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     root: {
       "& .MuiTypography-body1": {
         fontFamily: "DailyNews",
-        fontSize: "2.5em",
+        fontSize: "2.2em",
         letterSpacing: "5px",
         color: "white"
 
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         padding: "16px",
         fontFamily: "DailyNews",
-        fontSize: "2.5em",
+        fontSize: "2em",
         background: "#F3DFC1"
       },
       "& .MuiMenuItem-root" : {
@@ -78,7 +78,7 @@ export default function Sidebar() {
         <ListItem disablePadding>
             <ListItemButton
               component="a"
-              href="https://nostracity.notion.site/Get-Started-f3526c4999b14bafbc02e373f31b4812"
+              href="https://nostracity.gitbook.io/nostracity/additional-details/get-started-tutorial"
               target="_blank"
             >
               <ListItemText primary="Get Started" />
