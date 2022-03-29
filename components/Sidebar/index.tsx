@@ -87,7 +87,7 @@ export default function Sidebar() {
           <ListItem disablePadding>
             <ListItemButton
               component="a"
-              href="http://bit.ly/NostraCity"
+              href="https://nostracity.gitbook.io/"
               target="_blank"
             >
               <ListItemText primary="Docs" />
