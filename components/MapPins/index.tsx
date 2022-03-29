@@ -423,7 +423,7 @@ export default function MapPins() {
       if (barberQuantity <= barberLimit) {
         try {
           let mintTx = barberContract.methods
-            .safeMint(account, barberQuantity)
+            .safeMint(barberQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
               setBtnTextBarber("Minting...");
@@ -534,7 +534,7 @@ export default function MapPins() {
       if (groceryQuantity <= groceryLimit) {
         try {
           let mintTx = groceryContract.methods
-            .safeMint(account, groceryQuantity)
+            .safeMint(groceryQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
               setBtnTextGrocery("Minting...");
@@ -647,7 +647,7 @@ export default function MapPins() {
       if (dinerQuantity <= dinerLimit) {
         try {
           let mintTx = dinerContract.methods
-            .safeMint(account, dinerQuantity)
+            .safeMint(dinerQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
               setBtnTextDiner("Minting...");
