@@ -837,7 +837,7 @@ export default function MapPins() {
           Value of DAI for the minting: {handleNftPriceQuantity("grocery")}
         </span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
-          Remaining Scissors NFTs units: {groceryRemain}
+          Remaining Tomatoes NFTs units: {groceryRemain}
         </span>
         {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -876,7 +876,7 @@ export default function MapPins() {
           Value of DAI for the minting: {handleNftPriceQuantity("diner")}
         </span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
-          Remaining Scissors NFTs units: {dinerRemain}
+          Remaining Coffee NFTs units: {dinerRemain}
         </span>
         {isSucessful && <p style={{ color: "green" }}>{sucessfulMessage}</p>}
         {isError && <p style={{ color: "red" }}>{errorMessage}</p>}
