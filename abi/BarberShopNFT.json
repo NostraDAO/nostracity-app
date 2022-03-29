@@ -131,6 +131,12 @@
 		"type": "event"
 	},
 	{
+		"anonymous": false,
+		"inputs": [],
+		"name": "sentToTreasury",
+		"type": "event"
+	},
+	{
 		"inputs": [],
 		"name": "MAX_SUPPLY",
 		"outputs": [
@@ -185,6 +191,25 @@
 	{
 		"inputs": [],
 		"name": "_score",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "addressToTokensMinted",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -438,11 +463,6 @@
 	},
 	{
 		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
 			{
 				"internalType": "uint8",
 				"name": "numberOfTokens",
@@ -703,7 +723,7 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_owner",
+				"name": "wallet",
 				"type": "address"
 			}
 		],
