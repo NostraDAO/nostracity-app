@@ -265,6 +265,9 @@ export default function MapPins() {
     barberLimit,
     groceryLimit,
     dinerLimit,
+    barberRemain,
+    groceryRemain,
+    dinerRemain
   ]);
 
   const handleOpen = (item: string) => {
@@ -436,6 +439,9 @@ export default function MapPins() {
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Scissor minted successfully!!");
+              getBarberRemain().then((remain) => {
+                setBarberRemain(remain);
+              });
               barberAllowanceChecker();
             })
             .on("error", (err: any) => {
@@ -545,6 +551,9 @@ export default function MapPins() {
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Tomatoe minted sucessfully!");
+              getGroceryRemain().then((remain) => {
+                setGroceryRemain(remain);
+              })
               groceryAllowanceChecker();
             })
             .on("error", (err: any) => {
@@ -654,6 +663,9 @@ export default function MapPins() {
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Coffee minted sucessfully!");
+              getDinerRemain().then((remain) => {
+                setDinerRemain(remain);
+              });
               dinerAllowanceChecker();
             })
             .on("error", (err: any) => {
