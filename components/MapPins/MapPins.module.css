@@ -11,13 +11,14 @@
 
 .mapPins button[name="bank"]{
     top:31%;
-    left:3%;
+    left:1%;
     color: #93100D;
+
 }
 
 .mapPins button[name="rank"]{
     top:3%;
-    right:2.2%;
+    right:6.5%;
     color: #93100D;
 }
 
@@ -30,14 +31,14 @@
 
 .mapPins button[name="grocery"]{
     top:34%;
-    left:2.5%;
+    left:4%;
     color: #93100D;
 
 }
 
 .mapPins button[name="barber"]{
     bottom:2%;
-    right:0.5%;
+    left:5%;
     color: #93100D;
 
 }

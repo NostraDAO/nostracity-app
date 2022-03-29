@@ -4,6 +4,7 @@ import PushPin2FillIcon from "remixicon-react/Pushpin2FillIcon";
 import BankFillIcon from "remixicon-react/BankFillIcon";
 import TrophyLineIcon from "remixicon-react/TrophyLineIcon";
 import IconButton from "@material-ui/core/IconButton";
+import FedoraIcon from "../../public/assets/icons/fedora.png";
 import { CustomModal } from "../CustomModal/CustomModal";
 import { BankModal } from "../BankModal/BankModal";
 import { RankingModal } from "../RankingModal/RankingModal";
@@ -892,7 +893,7 @@ export default function MapPins() {
               color="primary"
               name="barber"
             >
-              <PushPin2FillIcon size="36px" />
+              <img src={FedoraIcon.src} width="64"/>
             </IconButton>
           </CustomTooltip>
           <CustomTooltip title={groceryText} arrow>
@@ -902,7 +903,7 @@ export default function MapPins() {
               color="primary"
               name="grocery"
             >
-              <PushPin2FillIcon size="36px" />
+              <img src={FedoraIcon.src} width="64"/>
             </IconButton>
           </CustomTooltip>
           <CustomTooltip title={dinerText} arrow>
@@ -912,7 +913,7 @@ export default function MapPins() {
               color="primary"
               name="diner"
             >
-              <PushPin2FillIcon size="36px" />
+              <img src={FedoraIcon.src} width="64"/>
             </IconButton>
           </CustomTooltip>
           <CustomTooltip title={bankText}  arrow>   
@@ -922,7 +923,7 @@ export default function MapPins() {
             color="primary"
             name="bank"
           >
-              <PushPin2FillIcon size="36px" />
+              <img src={FedoraIcon.src} width="64"/>
           </IconButton>
            </CustomTooltip>
           <CustomTooltip title={rankText} arrow>  
@@ -932,7 +933,7 @@ export default function MapPins() {
             color="primary"
             name="rank"
           >
-              <PushPin2FillIcon size="36px" />
+              <img src={FedoraIcon.src} width="64"/>
           </IconButton>
           </CustomTooltip>
         </div>
