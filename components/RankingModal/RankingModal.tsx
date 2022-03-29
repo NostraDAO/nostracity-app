@@ -92,21 +92,30 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       ar.sort((a, b) => b.score - a.score);
       return ar;
     }
-    console.log(rankArray);
   }
   async function handleRanking() {
+    console.log("Ranking hanlde function")
     await getOwnedNfts();
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
-    await getListScored().then((listScored) => {
-      if (listScored!.length > 0) {
-        let list: Score[] = [];
-        list = listScored as Score[];
-        setRankArray([...list]);
-
-      }
-    }); 
+    if(dinerScore && barberScore && groceryScore){
+      await getListScored().then((listScored) => {
+        if (listScored!.length > 0) {
+          let list: Score[] = [];
+          list = listScored as Score[];
+          setRankArray([...list]);
+  
+        }if(!listScored) {
+          console.log("Score array is empty")
+          null;
+        }
+      }); 
+    }else {
+      console.log("Score array is going null because the scores are empty")
+      return null;
+    }
+   
   }
 
   const TableContent = () => {
@@ -149,7 +158,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     return () => {
       active = false;
     };
-  }, [rankArray]);
+  }, [rankArray.length, account, dinerScore?.score, barberScore?.score, groceryScore?.score]);
 
   return (
     <div>
