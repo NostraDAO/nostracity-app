@@ -764,8 +764,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenBarber}
         handleClose={() => handleClose("barber")}
-        title="Colombo Family"
-        subtitle="Barbershop"
+        title="Barbershop"
+        subtitle="Colombo Family"
         handleMint={() => Mint("Barber")}
         buttonText={btnTextBarber}
         isDisabled={isProcessing}
@@ -808,8 +808,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenGrocery}
         handleClose={() => handleClose("grocery")}
-        title="Gambino family"
-        subtitle="Grocery store"
+        title="Grocery Store"
+        subtitle="Gambino family"
         handleMint={() => Mint("Grocery")}
         buttonText={btnTextGrocery}
         isDisabled={isProcessing}
@@ -846,8 +846,8 @@ export default function MapPins() {
       <CustomModal
         isOpen={isOpenDiner}
         handleClose={() => handleClose("diner")}
-        title="Genovese family"
-        subtitle="Diner"
+        title="Diner"
+        subtitle="Genovese family"
         handleMint={() => Mint("Diner")}
         buttonText={btnTextDiner}
         isDisabled={isProcessing}
