@@ -99,7 +99,7 @@ export default function Sidebar() {
               href="https://traderjoexyz.com/trade?inputCurrency=AVAX&outputCurrency=0xd586e7f844cea2f87f50152665bcbc2c279d8d70"
               target="_blank"
             >
-              <ListItemText primary="Buy DAI" />
+              <ListItemText primary="Buy DAI.e" />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>

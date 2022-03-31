@@ -156,7 +156,7 @@ export default function MapPins() {
         }
       } catch (err: any) {
         console.log(
-          "Error on getting mint price for Scissors or allowance of DAI: ",
+          "Error on getting mint price for Scissors or allowance of DAI.e: ",
           err.message
         );
       }
@@ -196,7 +196,7 @@ export default function MapPins() {
         }
       } catch (err: any) {
         console.log(
-          "Error on getting mint price for Tomatoes  or allowance of DAI: ",
+          "Error on getting mint price for Tomatoes  or allowance of DAI.e: ",
           err.message
         );
       }
@@ -416,7 +416,7 @@ export default function MapPins() {
               setIsError(false);
               setIsProcessing(false);
               setIsSucessful(true);
-              setSucessfulMessage("Approval for usage of DAI sucessful!");
+              setSucessfulMessage("Approval for usage of DAI.e sucessful!");
               barberAllowanceChecker();
             })
             .on("error", (err: any) => {
@@ -754,13 +754,13 @@ export default function MapPins() {
   function handleNftPriceQuantity(item) {
     switch (item) {
       case "barber": {
-        return mintPriceBarber * barberQuantity + " DAI";
+        return mintPriceBarber * barberQuantity + " DAI.e";
       }
       case "grocery": {
-        return mintPriceGrocery * groceryQuantity + " DAI";
+        return mintPriceGrocery * groceryQuantity + " DAI.e";
       }
       case "diner": {
-        return mintPriceDiner * dinerQuantity + " DAI";
+        return mintPriceDiner * dinerQuantity + " DAI.e";
       }
     }
   }
@@ -816,7 +816,7 @@ export default function MapPins() {
             fontSize: "12px",
           }}
         >
-          Value of DAI for the minting: {handleNftPriceQuantity("barber")}
+          Value of DAI.e for the minting: {handleNftPriceQuantity("barber")}
         </span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
           Remaining Scissors NFTs units: {barberRemain}
@@ -860,7 +860,7 @@ export default function MapPins() {
             fontSize: "12px",
           }}
         >
-          Value of DAI for the minting: {handleNftPriceQuantity("grocery")}
+          Value of DAI.e for the minting: {handleNftPriceQuantity("grocery")}
         </span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
           Remaining Tomatoes NFTs units: {groceryRemain}
@@ -905,7 +905,7 @@ export default function MapPins() {
             fontSize: "12px",
           }}
         >
-          Value of DAI for the minting: {handleNftPriceQuantity("diner")}
+          Value of DAI.e for the minting: {handleNftPriceQuantity("diner")}
         </span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
           Remaining Coffee NFTs units: {dinerRemain}
