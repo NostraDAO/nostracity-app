@@ -36,7 +36,7 @@ const style = {
 
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const [tvl, setTvl] = useState();
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   async function getScoreSum() {
     let barberScore, dinerScore, groceryScore, totalScore;
     if (account) {
@@ -50,7 +50,7 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum !== "undefined" && active) {
+    if (typeof window.ethereum !== "undefined" && active && chainId == 43114) {
       account
         ? getScoreSum().then((score) => setTvl(score))
         : "Wallet not connected!";

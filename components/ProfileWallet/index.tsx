@@ -9,7 +9,6 @@ import { InjectedConnector } from "@web3-react/injected-connector";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Web3 from "web3";
 
-
 const web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
@@ -17,41 +16,54 @@ import NftsOwnedModal from "../NftsOwnedModal";
 
 export default function ProfileWallet() {
   const router = useRouter();
-  const { active, account, activate, deactivate, chainId } = useWeb3React();
+  const { active, account, activate, deactivate } = useWeb3React();
   const [nftOpen, setNftOpen] = useState(false);
   const [wrongNetworkAlert, setWrongNetworkAlert] = useState(false);
   const [networkMessage, setNetworkMessage] = useState("");
-  const [connected, setConnected] = useState(false)
-  const [connectedMessage, setConnectedMessage] = useState('');
+  const [connected, setConnected] = useState(false);
+  const [connectedMessage, setConnectedMessage] = useState("");
+  const [chainId, setChainId] = useState<number>();
 
-
-  useEffect(() => {
-    if (typeof window.ethereum !== "undefined") {
+  async function getChainId() {
+    web3.eth.getChainId().then((chainId: number) => setChainId(chainId));
+    console.log(chainId)
+    if(chainId !== 43114){
       setNetworkMessage(
         "Unsupported chain. Please connect to Avalanche MainNet"
       );
+    }
+  }
+  
+  useEffect(() => {
+    if(window.ethereum !== "undefined"){
+    window.ethereum.on('chainChanged', (chainId: number) => {
+      setChainId(chainId)
+      chainId !== 43114 ? deactivate() : null;
+    });
+    }
+    getChainId();
+  }, [chainId])
 
-      if (chainId == 43114) {
-        setConnected(true);
-      } if(chainId != 43114) {
+
+  const login = () => {
+        if (chainId == 43114) {
+          setConnectedMessage("You connected sucessfully");
+          activate(new InjectedConnector({}));
+          setConnected(true);        
+          setWrongNetworkAlert(false);
+        }
+      if (chainId != 43114) {
         setWrongNetworkAlert(true);
         deactivate();
       }
-    }
-  }, [chainId]);
-
-  const login = () => {
-    if (window.ethereum !== undefined) {
-      setConnectedMessage('You connected sucessfully')
-      activate(new InjectedConnector({}));
-     
-    }
-   
+      
+        
+      
+      
   };
 
   const logout = () => {
     deactivate();
-
   };
 
   const handleNftOpen = () => {
@@ -65,16 +77,14 @@ export default function ProfileWallet() {
   };
 
   const handleCloseConnected = () => {
-   connected == false
-      ? setConnected(true)
-      : setConnected(false);
+    connected == false ? setConnected(true) : setConnected(false);
   };
   return (
     <>
       <div className={styles.profile}>
         <div className={styles.profileBox}>
           <UserLineIcon color="white" size="36px" />
-          <span style={{color: "white"}}>
+          <span style={{ color: "white" }}>
             {account?.substr(0, 8)}...{account?.substr(-8, 8)}
           </span>
           {active ? (
