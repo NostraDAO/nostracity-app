@@ -37,6 +37,9 @@ export default function ProfileWallet() {
         setWrongNetworkAlert(true);
         deactivate();
       }
+      if(chainId != 'undefined'){
+        setWrongNetworkAlert(false);
+      }
     }
   }, [chainId]);
 
