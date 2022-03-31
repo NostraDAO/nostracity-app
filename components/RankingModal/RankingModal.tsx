@@ -90,7 +90,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     }
   }
   async function handleRanking() {
-    await getOwnedNfts();
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
@@ -158,6 +157,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   useEffect(() => {
     let active = true;
     if (typeof window.ethereum != "undefined" && account) {
+      getOwnedNfts();
       handleRanking();
     }
     return () => {
