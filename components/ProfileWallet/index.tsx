@@ -38,7 +38,7 @@ export default function ProfileWallet() {
     if(window.ethereum !== "undefined"){
     window.ethereum.on('chainChanged', (chainId: number) => {
       setChainId(chainId)
-      chainId !== 43114 ? deactivate() : activate();
+      chainId !== 43114 ? deactivate() : null;
     });
     }
     getChainId();
