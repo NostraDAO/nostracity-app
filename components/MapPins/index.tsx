@@ -30,7 +30,7 @@ import {
   getDinerRemain,
 } from "../../utils/remainingNftFunctions";
 
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import NoSsr from "@material-ui/core/NoSsr";
 const Web3 = require("web3");
 import { useWeb3React } from "@web3-react/core";
@@ -40,8 +40,13 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import barberImg from "../../public/assets/images/barber.png";
 import groceryImg from "../../public/assets/images/grocery.png";
 import dinerImg from "../../public/assets/images/diner.png";
-import {styleFunctionSx, compose, palette,spacing } from '@material-ui/system';
-import gunCursor from '../../public/assets/icons/cursor.png';
+import {
+  styleFunctionSx,
+  compose,
+  palette,
+  spacing,
+} from "@material-ui/system";
+import gunCursor from "../../public/assets/icons/cursor.png";
 const styleFunction = styleFunctionSx(compose(spacing, palette));
 
 declare var window: any;
@@ -51,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     "&.MuiIconButton-root	": {
       color: "#93100D",
     },
-  }
+  },
 }));
 
 // const newCursor = { cursor: `url('${gunCursor}')`}
@@ -61,12 +66,12 @@ const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
     backgroundColor: "#F3DFC1",
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: "rgba(0, 0, 0, 0.87)",
     boxShadow: theme.shadows[1],
     fontSize: 11,
     fontFamily: "OldNewspaperTypes",
   },
-})); 
+}));
 
 export default function MapPins() {
   const [isOpenBarber, setIsOpenBarber] = useState(false);
@@ -111,111 +116,128 @@ export default function MapPins() {
   const classes = useStyles();
   const { account, active } = useWeb3React();
 
+  const web3 = new Web3(Web3.givenProvider);
+
+  async function getChainId() {
+    let chainId = await web3.eth.getChainId();
+    return chainId;
+  }
+
   async function barberAllowanceChecker() {
-    const web3 = new Web3(Web3.givenProvider);
-    const daiContract = new web3.eth.Contract(
-      daiContractAbi as any,
-      dai_address
-    );
-    const barberContract = new web3.eth.Contract(
-      barberContractAbi as any,
-      barber_address
-    );
-    let allowanceTx;
-    let mintPrice;
-    try {
-      mintPrice =
-        (await barberContract.methods.getMintingPrice(account).call()) /
-        10 ** 18;
-      allowanceTx =
-        (await daiContract.methods.allowance(account, barber_address).call()) /
-        10 ** 18;
-      setMintPriceBarber(mintPrice);
-      setAllowanceValueBarber(allowanceTx);
-      if (allowanceValueBarber >= mintPriceBarber) {
-        setApprovedBarber(true);
-        setBtnTextBarber("Mint");
-      } else {
-        setApprovedBarber(false);
-        setBtnTextBarber("Approve");
-      }
-    } catch (err: any) {
-      console.log(
-        "Error on getting mint price for Scissors or allowance of DAI: ",
-        err.message
+    const chainId = await getChainId();
+    if (chainId == 43114) {
+      const daiContract = new web3.eth.Contract(
+        daiContractAbi as any,
+        dai_address
       );
+      const barberContract = new web3.eth.Contract(
+        barberContractAbi as any,
+        barber_address
+      );
+      let allowanceTx;
+      let mintPrice;
+      try {
+        mintPrice =
+          (await barberContract.methods.getMintingPrice(account).call()) /
+          10 ** 18;
+        allowanceTx =
+          (await daiContract.methods
+            .allowance(account, barber_address)
+            .call()) /
+          10 ** 18;
+        setMintPriceBarber(mintPrice);
+        setAllowanceValueBarber(allowanceTx);
+        if (allowanceValueBarber >= mintPriceBarber) {
+          setApprovedBarber(true);
+          setBtnTextBarber("Mint");
+        } else {
+          setApprovedBarber(false);
+          setBtnTextBarber("Approve");
+        }
+      } catch (err: any) {
+        console.log(
+          "Error on getting mint price for Scissors or allowance of DAI: ",
+          err.message
+        );
+      }
     }
   }
 
   async function groceryAllowanceChecker() {
-    const web3 = new Web3(Web3.givenProvider);
-    const daiContract = new web3.eth.Contract(
-      daiContractAbi as any,
-      dai_address
-    );
-    const groceryContract = new web3.eth.Contract(
-      groceryContractAbi as any,
-      grocery_address
-    );
-    let allowanceTx;
-    let mintPrice;
-    try {
-      mintPrice =
-        (await groceryContract.methods.getMintingPrice(account).call()) /
-        10 ** 18;
-      allowanceTx =
-        (await daiContract.methods.allowance(account, grocery_address).call()) /
-        10 ** 18;
-      setMintPriceGrocery(mintPrice);
-      setAllowanceValueGrocery(allowanceTx);
-      if (allowanceValueGrocery >= mintPriceGrocery) {
-        setApprovedGrocery(true);
-        setBtnTextGrocery("Mint");
-      } else {
-        setApprovedGrocery(false);
-        setBtnTextGrocery("Approve");
-      }
-    } catch (err: any) {
-      console.log(
-        "Error on getting mint price for Tomatoes  or allowance of DAI: ",
-        err.message
+    const chainId = await getChainId();
+    if (chainId == 43114) {
+      const daiContract = new web3.eth.Contract(
+        daiContractAbi as any,
+        dai_address
       );
+      const groceryContract = new web3.eth.Contract(
+        groceryContractAbi as any,
+        grocery_address
+      );
+      let allowanceTx;
+      let mintPrice;
+      try {
+        mintPrice =
+          (await groceryContract.methods.getMintingPrice(account).call()) /
+          10 ** 18;
+        allowanceTx =
+          (await daiContract.methods
+            .allowance(account, grocery_address)
+            .call()) /
+          10 ** 18;
+        setMintPriceGrocery(mintPrice);
+        setAllowanceValueGrocery(allowanceTx);
+        if (allowanceValueGrocery >= mintPriceGrocery) {
+          setApprovedGrocery(true);
+          setBtnTextGrocery("Mint");
+        } else {
+          setApprovedGrocery(false);
+          setBtnTextGrocery("Approve");
+        }
+      } catch (err: any) {
+        console.log(
+          "Error on getting mint price for Tomatoes  or allowance of DAI: ",
+          err.message
+        );
+      }
     }
   }
 
   async function dinerAllowanceChecker() {
-    const web3 = new Web3(Web3.givenProvider);
-    const daiContract = new web3.eth.Contract(
-      daiContractAbi as any,
-      dai_address
-    );
-    const dinerContract = new web3.eth.Contract(
-      dinerContractAbi as any,
-      diner_address
-    );
-    let allowanceTx;
-    let mintPrice;
-    try {
-      mintPrice =
-        (await dinerContract.methods.getMintingPrice(account).call()) /
-        10 ** 18;
-      allowanceTx =
-        (await daiContract.methods.allowance(account, diner_address).call()) /
-        10 ** 18;
-      setMintPriceDiner(mintPrice);
-      setAllowanceValueDiner(allowanceTx);
-      if (allowanceValueDiner >= mintPriceDiner) {
-        setApprovedDiner(true);
-        setBtnTextDiner("Mint");
-      } else {
-        setApprovedDiner(false);
-        setBtnTextDiner("Approve");
-      }
-    } catch (err: any) {
-      console.log(
-        "Error on getting mint price for Coffee or allowance of DAI: ",
-        err.message
+    const chainId = await getChainId();
+    if (chainId == 43114) {
+      const daiContract = new web3.eth.Contract(
+        daiContractAbi as any,
+        dai_address
       );
+      const dinerContract = new web3.eth.Contract(
+        dinerContractAbi as any,
+        diner_address
+      );
+      let allowanceTx;
+      let mintPrice;
+      try {
+        mintPrice =
+          (await dinerContract.methods.getMintingPrice(account).call()) /
+          10 ** 18;
+        allowanceTx =
+          (await daiContract.methods.allowance(account, diner_address).call()) /
+          10 ** 18;
+        setMintPriceDiner(mintPrice);
+        setAllowanceValueDiner(allowanceTx);
+        if (allowanceValueDiner >= mintPriceDiner) {
+          setApprovedDiner(true);
+          setBtnTextDiner("Mint");
+        } else {
+          setApprovedDiner(false);
+          setBtnTextDiner("Approve");
+        }
+      } catch (err: any) {
+        console.log(
+          "Error on getting mint price for Coffee or allowance of DAI: ",
+          err.message
+        );
+      }
     }
   }
 
@@ -237,10 +259,10 @@ export default function MapPins() {
 
       getGroceryRemain().then((remain) => {
         setGroceryRemain(remain);
-      })
+      });
       getDinerRemain().then((remain) => {
         setDinerRemain(remain);
-      })
+      });
 
       getBarberLimit().then((amount) => {
         setBarberLimit(amount);
@@ -267,7 +289,7 @@ export default function MapPins() {
     dinerLimit,
     barberRemain,
     groceryRemain,
-    dinerRemain
+    dinerRemain,
   ]);
 
   const handleOpen = (item: string) => {
@@ -357,7 +379,6 @@ export default function MapPins() {
 
   async function mintBarber() {
     let approveTx;
-    const web3 = new Web3(Web3.givenProvider);
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
       dai_address
@@ -472,7 +493,6 @@ export default function MapPins() {
   }
 
   async function mintGrocery() {
-    const web3 = new Web3(Web3.givenProvider);
     let approveTx;
     let allowanceTx;
     const daiContract = new web3.eth.Contract(
@@ -553,7 +573,7 @@ export default function MapPins() {
               setSucessfulMessage("Tomatoe minted sucessfully!");
               getGroceryRemain().then((remain) => {
                 setGroceryRemain(remain);
-              })
+              });
               groceryAllowanceChecker();
             })
             .on("error", (err: any) => {
@@ -585,7 +605,6 @@ export default function MapPins() {
   }
 
   async function mintDiner() {
-    const web3 = new Web3(Web3.givenProvider);
     let approveTx;
     const daiContract = new web3.eth.Contract(
       daiContractAbi as any,
@@ -753,9 +772,10 @@ export default function MapPins() {
   const dinerText =
     "Olympus Diner - Managed by the Genovese Family. Click to buy coffees.";
 
-  const bankText = "Bank. Check our valuable assets" 
-  
-  const rankText = 'Check the competition and which family is on the top at the moment'
+  const bankText = "Bank. Check our valuable assets";
+
+  const rankText =
+    "Check the competition and which family is on the top at the moment";
   return (
     <>
       <AlertModal isOpen={isOpenAlert} handleClose={() => handleAlertClose()}>
@@ -833,7 +853,13 @@ export default function MapPins() {
             }
           />
         </span>
-        <span style={{ display: "inline-block", marginTop: "8px", fontSize: "12px"}}>
+        <span
+          style={{
+            display: "inline-block",
+            marginTop: "8px",
+            fontSize: "12px",
+          }}
+        >
           Value of DAI for the minting: {handleNftPriceQuantity("grocery")}
         </span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
@@ -872,7 +898,13 @@ export default function MapPins() {
           />
         </span>
 
-        <span style={{ display: "inline-block", marginTop: "8px", fontSize: "12px"}}>
+        <span
+          style={{
+            display: "inline-block",
+            marginTop: "8px",
+            fontSize: "12px",
+          }}
+        >
           Value of DAI for the minting: {handleNftPriceQuantity("diner")}
         </span>
         <span style={{ display: "block", marginTop: "8px", fontSize: "12px" }}>
@@ -898,14 +930,18 @@ export default function MapPins() {
       />
       <NoSsr>
         <div className={styles.mapPins}>
-          <CustomTooltip  title={barberText} sx={{backgroundColor: "#F3DFC1"}}  arrow>
+          <CustomTooltip
+            title={barberText}
+            sx={{ backgroundColor: "#F3DFC1" }}
+            arrow
+          >
             <IconButton
               className={classes.root}
               onClick={() => handleOpen("barber")}
               color="primary"
               name="barber"
             >
-              <img src={FedoraIcon.src} width="64"/>
+              <img src={FedoraIcon.src} width="64" />
             </IconButton>
           </CustomTooltip>
           <CustomTooltip title={groceryText} arrow>
@@ -915,7 +951,7 @@ export default function MapPins() {
               color="primary"
               name="grocery"
             >
-              <img src={FedoraIcon.src} width="64"/>
+              <img src={FedoraIcon.src} width="64" />
             </IconButton>
           </CustomTooltip>
           <CustomTooltip title={dinerText} arrow>
@@ -925,28 +961,28 @@ export default function MapPins() {
               color="primary"
               name="diner"
             >
-              <img src={FedoraIcon.src} width="64"/>
+              <img src={FedoraIcon.src} width="64" />
             </IconButton>
           </CustomTooltip>
-          <CustomTooltip title={bankText}  arrow>   
-          <IconButton
-            className={classes.root}
-            onClick={() => handleOpen("bank")}
-            color="primary"
-            name="bank"
-          >
-              <img src={FedoraIcon.src} width="64"/>
-          </IconButton>
-           </CustomTooltip>
-          <CustomTooltip title={rankText} arrow>  
-          <IconButton
-            className={classes.root}
-            onClick={() => handleOpen("trophy")}
-            color="primary"
-            name="rank"
-          >
-              <img src={FedoraIcon.src} width="64"/>
-          </IconButton>
+          <CustomTooltip title={bankText} arrow>
+            <IconButton
+              className={classes.root}
+              onClick={() => handleOpen("bank")}
+              color="primary"
+              name="bank"
+            >
+              <img src={FedoraIcon.src} width="64" />
+            </IconButton>
+          </CustomTooltip>
+          <CustomTooltip title={rankText} arrow>
+            <IconButton
+              className={classes.root}
+              onClick={() => handleOpen("trophy")}
+              color="primary"
+              name="rank"
+            >
+              <img src={FedoraIcon.src} width="64" />
+            </IconButton>
           </CustomTooltip>
         </div>
       </NoSsr>

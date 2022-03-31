@@ -70,18 +70,14 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getOwnedBarber(account).then((barber) => setBarberOwner(barber));
     await getOwnedDiner(account).then((diner) => setDinerOwner(diner));
     await getOwnedGrocery(account).then((grocery) => setGroceryOwner(grocery));
-  }
-
-  async function getCheckedNft() {
     if (
       barberOwner?.length > 0 ||
       groceryOwner?.length > 0 ||
       dinerOwner?.length > 0
     ) {
-      console.log("Checking", barberOwner.length, groceryOwner.length, dinerOwner.length);
-      setOwnsNft(true);
-    } else {
       setOwnsNft(false);
+    } else {
+      setOwnsNft(true);
     }
   }
 
@@ -94,12 +90,12 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     }
   }
   async function handleRanking() {
-    console.log("Ranking hanlde function")
     await getOwnedNfts();
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
-    getCheckedNft();
+    
+
     if(dinerScore && barberScore && groceryScore){
       await getListScored().then((listScored) => {
         if (listScored!.length > 0) {
@@ -108,15 +104,23 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
           setRankArray([...list]);
   
         }if(!listScored) {
-          console.log("Score array is empty")
           null;
         }
       }); 
     }else {
-      console.log("Score array is going null because the scores are empty")
       return null;
     }
    
+  }
+
+  const tableStyle = {
+    fontFamily: "OldNewspaperTypes",
+    fontSize: "1.2em"
+  }
+
+  const tableItemsStyle = {
+    fontFamily: "OldNewspaperTypes",
+    fontSize: "1em"
   }
 
   const TableContent = () => {
@@ -125,18 +129,18 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Business</TableCell>
-              <TableCell align="right">Score</TableCell>
+              <TableCell style={tableStyle}>Business</TableCell>
+              <TableCell style={tableStyle}  align="right">Score</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {ownsNft ? (
               rankArray.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell component="th" scope="row">
+                  <TableCell style={tableItemsStyle} component="th" scope="row">
                     {item.business}
                   </TableCell>
-                  <TableCell align="right">{item.score}</TableCell>
+                  <TableCell style={tableItemsStyle} align="right">{item.score}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -155,8 +159,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     let active = true;
     if (typeof window.ethereum != "undefined" && account) {
       handleRanking();
-      console.log('rankArray', rankArray);
-      console.log('ownsNft', ownsNft )
     }
     return () => {
       active = false;
