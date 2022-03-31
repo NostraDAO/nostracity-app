@@ -163,7 +163,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     return () => {
       active = false;
     };
-  }, [rankArray.length, account, dinerScore?.score, barberScore?.score, groceryScore?.score]);
+  }, [rankArray.length, account, dinerScore?.score, barberScore?.score, groceryScore?.score, ownsNft]);
 
   return (
     <div>
