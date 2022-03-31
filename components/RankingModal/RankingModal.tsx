@@ -70,7 +70,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getOwnedBarber(account).then((barber) => setBarberOwner(barber));
     await getOwnedDiner(account).then((diner) => setDinerOwner(diner));
     await getOwnedGrocery(account).then((grocery) => setGroceryOwner(grocery));
-    await getCheckedNft();
   }
 
   async function getCheckedNft() {
@@ -79,6 +78,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       groceryOwner?.length > 0 ||
       dinerOwner?.length > 0
     ) {
+      console.log("Checking", barberOwner.length, groceryOwner.length, dinerOwner.length);
       setOwnsNft(true);
     } else {
       setOwnsNft(false);
@@ -99,6 +99,7 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
+    getCheckedNft();
     if(dinerScore && barberScore && groceryScore){
       await getListScored().then((listScored) => {
         if (listScored!.length > 0) {
@@ -154,6 +155,8 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     let active = true;
     if (typeof window.ethereum != "undefined" && account) {
       handleRanking();
+      console.log('rankArray', rankArray);
+      console.log('ownsNft', ownsNft )
     }
     return () => {
       active = false;

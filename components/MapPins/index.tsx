@@ -820,7 +820,7 @@ export default function MapPins() {
           Welcome, my good fella, to the Rome Grocery Store. In order to become
           a made-man in the Genovese family - click on “Approve” button below,
           and then “Mint”, in order to get your tomatoes. Those tomatoes will
-          come in handy later, so keep ‘em safe and join the Colombo Family on
+          come in handy later, so keep ‘em safe and join the Gambino Family on
           discord for more.{" "}
         </p>
         <span style={{ display: "block" }}>
@@ -858,7 +858,7 @@ export default function MapPins() {
           Welcome, my good fella, to the Olympus Diner. In order to become a
           made-man in the Genovese family - click on “Approve” button below, and
           then “Mint”, in order to get your coffees. Those coffees will come in
-          handy later, so keep ‘em safe and join the Colombo Family on discord
+          handy later, so keep ‘em safe and join the Genovese Family on discord
           for more.{" "}
         </p>
         <span style={{ display: "block" }}>
