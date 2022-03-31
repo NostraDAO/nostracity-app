@@ -75,9 +75,9 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       groceryOwner?.length > 0 ||
       dinerOwner?.length > 0
     ) {
-      setOwnsNft(false);
-    } else {
       setOwnsNft(true);
+    } else {
+      setOwnsNft(false);
     }
   }
 
