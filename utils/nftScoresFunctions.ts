@@ -39,7 +39,7 @@ export async function getBarberScore() {
 }
 export async function getGroceryScore() {
   const chainId = await getChainId();
-  if(chainId == 43114){
+  if(chainId == 43114 || chainId == 43113){
     const groceryContract = new web3.eth.Contract(
       groceryABI as any,
       grocery_address
@@ -59,7 +59,7 @@ export async function getGroceryScore() {
 }
 export async function getDinerScore() {
   const chainId = await getChainId();
-  if(chainId == 43114){
+  if(chainId == 43114 || chainId == 43113){
     const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
     let getScore, scoreObj;
     try {
@@ -77,7 +77,7 @@ export async function getDinerScore() {
 
 export async function getOwnedBarber(account) {
   const chainId = await getChainId();
-  if(chainId == 43114){
+  if(chainId == 43114 || chainId == 43113){
     const barberContract = new web3.eth.Contract(
       barberABI as any,
       barber_address

@@ -125,7 +125,7 @@ export default function MapPins() {
 
   async function barberAllowanceChecker() {
     const chainId = await getChainId();
-    if (chainId == 43114) {
+    if (chainId == 43114 || chainId == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -165,7 +165,7 @@ export default function MapPins() {
 
   async function groceryAllowanceChecker() {
     const chainId = await getChainId();
-    if (chainId == 43114) {
+    if (chainId == 43114 || chainId == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -205,7 +205,7 @@ export default function MapPins() {
 
   async function dinerAllowanceChecker() {
     const chainId = await getChainId();
-    if (chainId == 43114) {
+    if (chainId == 43114 || chainId == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -297,7 +297,6 @@ export default function MapPins() {
       setIsOpenBarber(true);
       barberAllowanceChecker();
       setBarberQuantity(0);
-      console.log("barberRemain", barberRemain);
     }
     if (item == "grocery") {
       setIsOpenGrocery(true);
@@ -390,7 +389,6 @@ export default function MapPins() {
     barberAllowanceChecker();
     //complete the function to get the total amount of nft
     if (barberQuantity >= barberLimit) {
-      console.log("total amou", barberLimit);
       setIsError(true);
       setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
       setIsProcessing(true);
@@ -453,7 +451,6 @@ export default function MapPins() {
               setIsProcessing(true);
             })
             .on("receipt", (receipt: any) => {
-              console.log("receipt", receipt);
               setBtnTextBarber("Mint");
               setIsError(false);
               setLockInput(false);
@@ -563,7 +560,6 @@ export default function MapPins() {
               setIsProcessing(true);
             })
             .on("receipt", (receipt: any) => {
-              console.log("receipt", receipt);
               setBtnTextGrocery("Mint");
               groceryAllowanceChecker();
               setIsError(false);
@@ -675,7 +671,6 @@ export default function MapPins() {
               setIsProcessing(true);
             })
             .on("receipt", (receipt: any) => {
-              console.log("receipt", receipt);
               setBtnTextDiner("Mint");
               setIsError(false);
               setLockInput(false);
@@ -885,7 +880,7 @@ export default function MapPins() {
           made-man in the Genovese family - click on “Approve” button below, and
           then “Mint”, in order to get your coffees. Those coffees will come in
           handy later, so keep ‘em safe and join the Genovese Family on discord
-          for more.{" "}
+          for more.
         </p>
         <span style={{ display: "block" }}>
           <Input

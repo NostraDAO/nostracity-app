@@ -11,7 +11,7 @@ async function getChainId() {
 
 export async function getTVL() {
   const chainId = await getChainId();
-  if (chainId == 43114) {
+  if (chainId == 43114 || chainId == 43113) {
     const treasuryContract = new web3.eth.Contract(
       treasuryABI as any,
       treasury_address
