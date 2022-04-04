@@ -255,7 +255,6 @@ export default function MapPins() {
       getMinimalAllowance();
       getBarberRemain().then((remain) => {
         setBarberRemain(remain);
-        console.log(remain);
       });
 
       getGroceryRemain().then((remain) => {
@@ -267,7 +266,6 @@ export default function MapPins() {
 
       getBarberLimit().then((amount) => {
         setBarberLimit(amount);
-        console.log('limit', amount);
       });
 
       getGroceryLimit().then((amount) => {
@@ -299,7 +297,6 @@ export default function MapPins() {
       setIsOpenBarber(true);
       barberAllowanceChecker();
       setBarberQuantity(0);
-      console.log("barberRemain", barberRemain);
     }
     if (item == "grocery") {
       setIsOpenGrocery(true);
@@ -392,7 +389,6 @@ export default function MapPins() {
     barberAllowanceChecker();
     //complete the function to get the total amount of nft
     if (barberQuantity >= barberLimit) {
-      console.log("total amou", barberLimit);
       setIsError(true);
       setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
       setIsProcessing(true);
@@ -455,7 +451,6 @@ export default function MapPins() {
               setIsProcessing(true);
             })
             .on("receipt", (receipt: any) => {
-              console.log("receipt", receipt);
               setBtnTextBarber("Mint");
               setIsError(false);
               setLockInput(false);
@@ -565,7 +560,6 @@ export default function MapPins() {
               setIsProcessing(true);
             })
             .on("receipt", (receipt: any) => {
-              console.log("receipt", receipt);
               setBtnTextGrocery("Mint");
               groceryAllowanceChecker();
               setIsError(false);
@@ -677,7 +671,6 @@ export default function MapPins() {
               setIsProcessing(true);
             })
             .on("receipt", (receipt: any) => {
-              console.log("receipt", receipt);
               setBtnTextDiner("Mint");
               setIsError(false);
               setLockInput(false);
