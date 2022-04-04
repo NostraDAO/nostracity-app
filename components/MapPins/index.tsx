@@ -880,7 +880,7 @@ export default function MapPins() {
           made-man in the Genovese family - click on “Approve” button below, and
           then “Mint”, in order to get your coffees. Those coffees will come in
           handy later, so keep ‘em safe and join the Genovese Family on discord
-          for more.{" "}
+          for more.
         </p>
         <span style={{ display: "block" }}>
           <Input
