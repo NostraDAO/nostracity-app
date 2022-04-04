@@ -833,7 +833,7 @@ export default function MapPins() {
       >
         <p style={{ maxWidth: "70%", textAlign: "center", margin: "auto" }}>
           Welcome, my good fella, to the Rome Grocery Store. In order to become
-          a made-man in the Genovese family - click on “Approve” button below,
+          a made-man in the Gambino family - click on “Approve” button below,
           and then “Mint”, in order to get your tomatoes. Those tomatoes will
           come in handy later, so keep ‘em safe and join the Gambino Family on
           discord for more.{" "}
