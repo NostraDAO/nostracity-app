@@ -58,9 +58,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-// const newCursor = { cursor: `url('${gunCursor}')`}
-
 const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
@@ -935,6 +932,7 @@ export default function MapPins() {
               onClick={() => handleOpen("barber")}
               color="primary"
               name="barber"
+              disabled={!active}
             >
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
@@ -945,6 +943,7 @@ export default function MapPins() {
               onClick={() => handleOpen("grocery")}
               color="primary"
               name="grocery"
+              disabled={!active}
             >
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
@@ -955,6 +954,7 @@ export default function MapPins() {
               onClick={() => handleOpen("diner")}
               color="primary"
               name="diner"
+              disabled={!active}
             >
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
