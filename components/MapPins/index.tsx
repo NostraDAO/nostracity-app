@@ -125,7 +125,7 @@ export default function MapPins() {
 
   async function barberAllowanceChecker() {
     const chainId = await getChainId();
-    if (chainId == 43114) {
+    if (chainId == 43114 || chainId == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -165,7 +165,7 @@ export default function MapPins() {
 
   async function groceryAllowanceChecker() {
     const chainId = await getChainId();
-    if (chainId == 43114) {
+    if (chainId == 43114 || chainId == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -205,7 +205,7 @@ export default function MapPins() {
 
   async function dinerAllowanceChecker() {
     const chainId = await getChainId();
-    if (chainId == 43114) {
+    if (chainId == 43114 || chainId == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -255,6 +255,7 @@ export default function MapPins() {
       getMinimalAllowance();
       getBarberRemain().then((remain) => {
         setBarberRemain(remain);
+        console.log(remain);
       });
 
       getGroceryRemain().then((remain) => {
@@ -266,6 +267,7 @@ export default function MapPins() {
 
       getBarberLimit().then((amount) => {
         setBarberLimit(amount);
+        console.log('limit', amount);
       });
 
       getGroceryLimit().then((amount) => {

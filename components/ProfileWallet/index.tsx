@@ -26,10 +26,14 @@ export default function ProfileWallet() {
 
   async function getChainId() {
     web3.eth.getChainId().then((chainId: number) => setChainId(chainId));
-    console.log(chainId)
-    if(chainId !== 43114){
+    if(chainId !== 43114 && process.env.NODE_ENV == 'production'){
       setNetworkMessage(
-        "Unsupported chain. Please connect to Avalanche MainNet"
+        "Unsupported chain. Please connect to Avalanche MainNet."
+      );
+    }
+    if(chainId == 43114 && process.env.NODE_ENV == 'development'){
+      setNetworkMessage(
+        "You are on the test ambient. Unsupported chain. Please connect to Avalanche FujinNet."
       );
     }
   }
@@ -38,7 +42,13 @@ export default function ProfileWallet() {
     if(window.ethereum !== "undefined"){
     window.ethereum.on('chainChanged', (chainId: number) => {
       setChainId(chainId)
-      chainId !== 43114 ? deactivate() : null;
+      if(process.env.NODE_ENV == 'production'){
+        chainId !== 43114 ? deactivate() : null;
+      }
+      if(process.env.NODE_ENV == 'development'){
+        chainId !== 43113 ? deactivate() : null;
+
+      }
     });
     }
     getChainId();
@@ -46,13 +56,24 @@ export default function ProfileWallet() {
 
 
   const login = () => {
-        if (chainId == 43114) {
+        if (chainId == 43114 && process.env.NODE_ENV == 'production') {
           setConnectedMessage("You connected sucessfully");
           activate(new InjectedConnector({}));
           setConnected(true);        
           setWrongNetworkAlert(false);
         }
-      if (chainId != 43114) {
+      if (chainId != 43114 && process.env.NODE_ENV == 'production') {
+        setWrongNetworkAlert(true);
+        deactivate();
+      }
+
+      if(chainId == 43113 && process.env.NODE_ENV == 'development') {
+        setConnectedMessage("You connected sucessfully to the Test Environment");
+        activate(new InjectedConnector({}));
+        setConnected(true);        
+        setWrongNetworkAlert(false);
+      }
+      if (chainId != 43113 && process.env.NODE_ENV == 'development') {
         setWrongNetworkAlert(true);
         deactivate();
       }

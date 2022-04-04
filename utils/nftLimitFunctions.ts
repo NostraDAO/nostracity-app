@@ -27,7 +27,7 @@ export async function getBarberLimit() {
   };
   let account = ethEnabled();
   let barberLimit;
-  if (chainId == 43114) {
+  if (chainId == 43114 || chainId == 43113) {
     const barberContract = new web3.eth.Contract(
       barberContractAbi as any,
       barber_address
@@ -56,7 +56,7 @@ export async function getGroceryLimit() {
   };
   let account = ethEnabled();
   let groceryLimit;
-  if (chainId == 43114) {
+  if (chainId == 43114 || chainId == 43113) {
     const groceryContract = new web3.eth.Contract(
       groceryContractAbi as any,
       grocery_address
@@ -85,7 +85,7 @@ export async function getDinerLimit() {
   };
   let account = ethEnabled();
   let dinerLimit;
-  if(chainId == 43114){
+  if(chainId == 43114 || chainId == 43113){
     const dinerContract = new web3.eth.Contract(
       dinerContractAbi as any,
       diner_address
