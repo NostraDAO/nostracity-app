@@ -1,0 +1,22 @@
+.ClaimTokenModal button {
+    font-family: DailyNews;
+    font-size:2em;
+    letter-spacing: 5px;
+    margin-top: 16px;
+    background-color: #93100D;
+    color: white;
+}
+.ClaimTokenModal button:hover {
+    background-color: #93100D;
+    filter: brightness(0.8);
+}
+
+.ClaimTokenModal h2 {
+    font-family: DailyNews;
+    font-size:3.5em;
+    letter-spacing: 5px;
+    padding-bottom: 16px;
+}
+.ClaimTokenModal {
+    text-align: center;
+}

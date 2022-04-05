@@ -29,6 +29,8 @@ import {
   getGroceryRemain,
   getDinerRemain,
 } from "../../utils/remainingNftFunctions";
+import {barberMintPrice, groceryMintPrice, dinerMintPrice} from  "../../utils/mintPriceFunctions";
+import { barberAllowance, groceryAllowance, dinerAllowance} from "../../utils/allowanceFunctions";
 
 import { styled } from "@mui/material/styles";
 import NoSsr from "@material-ui/core/NoSsr";
@@ -123,25 +125,11 @@ export default function MapPins() {
   async function barberAllowanceChecker() {
     const chainId = await getChainId();
     if (chainId == 43114 || chainId == 43113) {
-      const daiContract = new web3.eth.Contract(
-        daiContractAbi as any,
-        dai_address
-      );
-      const barberContract = new web3.eth.Contract(
-        barberContractAbi as any,
-        barber_address
-      );
       let allowanceTx;
       let mintPrice;
       try {
-        mintPrice =
-          (await barberContract.methods.getMintingPrice(account).call()) /
-          10 ** 18;
-        allowanceTx =
-          (await daiContract.methods
-            .allowance(account, barber_address)
-            .call()) /
-          10 ** 18;
+        mintPrice = await barberMintPrice(account);
+        allowanceTx = await barberAllowance(account);
         setMintPriceBarber(mintPrice);
         setAllowanceValueBarber(allowanceTx);
         if (allowanceValueBarber >= mintPriceBarber) {
@@ -163,25 +151,11 @@ export default function MapPins() {
   async function groceryAllowanceChecker() {
     const chainId = await getChainId();
     if (chainId == 43114 || chainId == 43113) {
-      const daiContract = new web3.eth.Contract(
-        daiContractAbi as any,
-        dai_address
-      );
-      const groceryContract = new web3.eth.Contract(
-        groceryContractAbi as any,
-        grocery_address
-      );
       let allowanceTx;
       let mintPrice;
       try {
-        mintPrice =
-          (await groceryContract.methods.getMintingPrice(account).call()) /
-          10 ** 18;
-        allowanceTx =
-          (await daiContract.methods
-            .allowance(account, grocery_address)
-            .call()) /
-          10 ** 18;
+      mintPrice = await groceryMintPrice(account);
+        allowanceTx = await groceryAllowance(account);
         setMintPriceGrocery(mintPrice);
         setAllowanceValueGrocery(allowanceTx);
         if (allowanceValueGrocery >= mintPriceGrocery) {
@@ -203,23 +177,11 @@ export default function MapPins() {
   async function dinerAllowanceChecker() {
     const chainId = await getChainId();
     if (chainId == 43114 || chainId == 43113) {
-      const daiContract = new web3.eth.Contract(
-        daiContractAbi as any,
-        dai_address
-      );
-      const dinerContract = new web3.eth.Contract(
-        dinerContractAbi as any,
-        diner_address
-      );
       let allowanceTx;
       let mintPrice;
       try {
-        mintPrice =
-          (await dinerContract.methods.getMintingPrice(account).call()) /
-          10 ** 18;
-        allowanceTx =
-          (await daiContract.methods.allowance(account, diner_address).call()) /
-          10 ** 18;
+        mintPrice = await dinerMintPrice(account);
+        allowanceTx = await dinerAllowance(account);
         setMintPriceDiner(mintPrice);
         setAllowanceValueDiner(allowanceTx);
         if (allowanceValueDiner >= mintPriceDiner) {
@@ -310,6 +272,9 @@ export default function MapPins() {
     }
     if (item == "trophy") {
       setIsOpenRank(true);
+    }
+    if (item == "claim") {
+      setIsOpenClaim(true);
     }
   };
 
@@ -979,6 +944,15 @@ export default function MapPins() {
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
           </CustomTooltip>
+
+          <IconButton
+              className={classes.root}
+              onClick={() => handleOpen("trophy")}
+              color="primary"
+              name="rank"
+            >
+              <img src={FedoraIcon.src} width="64" />
+            </IconButton>
         </div>
       </NoSsr>
     </>

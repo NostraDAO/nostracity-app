@@ -12,10 +12,11 @@ import {
   diner_address,
   grocery_address,
 } from "../../constants/adresses/contracts";
-
+import {renderScissors, renderTomatoes, renderCoffee} from "../../utils/nftCounterFunctions"
 import coffeeImage from '../../public/assets/images/coffee.png'
 import tomatoImage from '../../public/assets/images/tomato.png'
 import scissorImage from '../../public/assets/images/scissors.png'
+
 
 export default function NftList({ account }: any) {
   const web3 = new Web3(Web3.givenProvider);
@@ -24,40 +25,11 @@ export default function NftList({ account }: any) {
   const [tomatoes, setTomatoes] = useState(0);
   const [coffee, setCoffee] = useState(0);
 
-  async function renderCoffee() {
-    const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
-    let nftCounter = await dinerContract.methods.walletOfOwner(account).call();
-    console.log("", nftCounter);
-    nftCounter.length >= 1 ? setCoffee(nftCounter.length) : setCoffee(0);
-  }
-
-  async function renderTomatoes() {
-    const groceryContract = new web3.eth.Contract(
-      groceryABI as any,
-      grocery_address
-    );
-    let nftCounter = await groceryContract.methods
-      .walletOfOwner(account)
-      .call();
-    console.log("", nftCounter);
-    nftCounter.length >= 1 ? setTomatoes(nftCounter.length) : setTomatoes(0);
-  }
-
-  async function renderScissors() {
-    const barberContract = new web3.eth.Contract(
-      barberABI as any,
-      barber_address
-    );
-    let nftCounter = await barberContract.methods.walletOfOwner(account).call();
-    console.log("", nftCounter);
-    nftCounter.length >= 1 ? setScissors(nftCounter.length) : setScissors(0);
-  }
-
   useEffect(() => {
     if (account) {
-      renderScissors();
-      renderTomatoes();
-      renderCoffee();
+      renderScissors(account).then((scissors) => setScissors(scissors));
+      renderTomatoes(account).then((tomatoes) => setTomatoes(tomatoes));
+      renderCoffee(account).then((coffee) => setCoffee(coffee));
     }
   }, [scissors, coffee, tomatoes]);
 
