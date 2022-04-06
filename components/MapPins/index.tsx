@@ -8,6 +8,7 @@ import FedoraIcon from "../../public/assets/icons/fedora.png";
 import { CustomModal } from "../CustomModal/CustomModal";
 import { BankModal } from "../BankModal/BankModal";
 import { RankingModal } from "../RankingModal/RankingModal";
+import ClaimTokenModal from "../ClaimTokenModal"
 import { makeStyles } from "@material-ui/core/styles";
 import daiContractAbi from "../../abi/DAIE.json";
 import barberContractAbi from "../../abi/BarberShopNFT.json";
@@ -78,6 +79,7 @@ export default function MapPins() {
   const [isOpenDiner, setIsOpenDiner] = useState(false);
   const [isOpenBank, setIsOpenBank] = useState(false);
   const [isOpenRank, setIsOpenRank] = useState(false);
+  const [isOpenClaim, setIsOpenClaim] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -336,6 +338,9 @@ export default function MapPins() {
     if (item == "trophy") {
       setIsOpenRank(false);
     }
+    if (item == "claim") {
+      setIsOpenClaim(false);
+    }
   };
 
   async function mintBarber() {
@@ -439,7 +444,6 @@ export default function MapPins() {
           setLockInput(false);
           setIsProcessing(false);
         }
-
         if (!active) {
           handleAlert();
         }
@@ -885,6 +889,13 @@ export default function MapPins() {
         handleClose={() => handleClose("trophy")}
         title="Ranking"
       />
+      <ClaimTokenModal
+       name="claim"
+       isOpen={isOpenClaim}
+       handleClose={() => handleClose("claim")}
+      >
+        </ClaimTokenModal>
+      // Icons on the map
       <NoSsr>
         <div className={styles.mapPins}>
           <CustomTooltip
@@ -947,9 +958,9 @@ export default function MapPins() {
 
           <IconButton
               className={classes.root}
-              onClick={() => handleOpen("trophy")}
+              onClick={() => handleOpen("claim")}
               color="primary"
-              name="rank"
+              name="claim"
             >
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
