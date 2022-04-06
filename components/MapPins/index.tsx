@@ -737,6 +737,8 @@ export default function MapPins() {
 
   const rankText =
     "Check the competition and which family is on the top at the moment";
+
+  const claimText = "Check how much tokens you can claim from your family ties!"
   return (
     <>
       <AlertModal isOpen={isOpenAlert} handleClose={() => handleAlertClose()}>
@@ -955,7 +957,7 @@ export default function MapPins() {
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
           </CustomTooltip>
-
+          <CustomTooltip  title={claimText} arrow>
           <IconButton
               className={classes.root}
               onClick={() => handleOpen("claim")}
@@ -964,6 +966,7 @@ export default function MapPins() {
             >
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
+            </CustomTooltip>
         </div>
       </NoSsr>
     </>

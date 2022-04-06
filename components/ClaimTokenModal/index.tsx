@@ -12,11 +12,19 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import {renderScissors, renderTomatoes, renderCoffee} from "../../utils/nftCounterFunctions";
 import MintingTokenView from "../MintingTokenView"
+//contracts and abis
+import {
+  diner_address,
+  barber_address,
+  grocery_address,
+  dai_address,
+} from "../../constants/adresses/contracts";
 //Images
 import coffeeImage from '../../public/assets/images/coffee.png'
 import tomatoImage from '../../public/assets/images/tomato.png'
 import scissorImage from '../../public/assets/images/scissors.png'
 
+const web3 = new Web3(Web3.givenProvider);
 const style = {
     position: "absolute",
     top: "50%",
@@ -50,9 +58,43 @@ useEffect(() => {
       renderTomatoes(account).then((tomatoes) => setTomatoes(tomatoes));
       renderCoffee(account).then((coffee) => setCoffee(coffee));
     }
-    console.log(scissors)
-  }, [scissors, coffee, tomatoes]);
-  
+  }, [account]);
+  async function mint(){
+    const barberContract = new web3.eth.Contract(
+      barberABI as any,
+      barber_address
+    );
+
+    try {
+      let mintTx = barberContract.methods
+        .safeMint(barberQuantity)
+        .send({ from: account })
+        .on("transactionHash", function (hash: any) {
+          setBtnTextBarber("Minting...");
+          setIsError(false);
+          setLockInput(true);
+          setIsProcessing(true);
+        })
+        .on("receipt", (receipt: any) => {
+          setBtnTextBarber("Mint");
+          setIsError(false);
+          setIsProcessing(false);
+          setIsSucessful(true);
+          setSucessfulMessage("Scissor minted successfully!!");
+        })
+        .on("error", (err: any) => {
+          console.log("err", err);
+          setIsError(true);
+          setErrorMessage(
+            "There was an error on the mint transaction. Check your wallet and try again."
+          );
+          setLockInput(false);
+          setIsProcessing(false);
+        });
+    }catch(err: any){
+      console.log(err);
+    }
+  }
   return (
     <div>
       <Modal
@@ -75,7 +117,7 @@ useEffect(() => {
         
           {account ? (
               <>
-               {minting === false  ? (
+               {minting == false  ? (
                  <>
               <Stack direction="row" spacing={2} sx={{ justifyContent: "center", alignItems: "center"}}>
               <div style={{height: "150px"}}>
