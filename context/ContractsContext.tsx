@@ -3,30 +3,21 @@ import {ConnectTpe} from  "../@types/ConnectType";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 
-const defaultConnect: ConnectType = {
-    chainId: null,
-    active: false,
-    activate: () => {},
-    deactivate: () => {}
+const defaultContracts: ContractsType = {
 }
 const web3 = new Web3(Web3.givenProvider);
-const ConnectContext = createContext<ConnectType | null>(defaultConnect);
+const ContractsContext = createContext<ConnectType | null>(defaultConnect);
 
 export function useConnectContext(){
 return useContext(ConnectContext);
 }
 const ConnectProvider: ReactNode = ({children}: ReactNode[]) => {
     const { account, active, activate, deactivate } = useWeb3React();
-    const [ chain, setChain] = useState<number>();
     
-    async function getChain(): number{
-    web3.eth.getChainId().then(chain => setChain(chain))
-    }
     useEffect(() => {
-        getChain();    
     }, [])
-    return <ConnectContext.Provider value={{chain, account, active, activate, deactivate}}>{children}</ConnectContext.Provider>;
+    return <ContractsContext.Provider value={{chain, account, active, activate, deactivate}}>{children}</ContractsContext.Provider>;
 
 }
 
-export default ConnectProvider;
+export default ContractsProvider;
