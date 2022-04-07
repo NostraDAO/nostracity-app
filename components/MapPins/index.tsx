@@ -46,10 +46,11 @@ import {
   palette,
   spacing,
 } from "@material-ui/system";
+import {useConnectContext} from "../../context/ConnectContext"
+
 import gunCursor from "../../public/assets/icons/cursor.png";
 const styleFunction = styleFunctionSx(compose(spacing, palette));
-
-declare var window: any;
+declare let window: any;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,18 +112,13 @@ export default function MapPins() {
   let totalValueGrocery: any;
   let totalValueDiner: any;
   const classes = useStyles();
-  const { account, active } = useWeb3React();
-
+ const {chain, account, active} = useConnectContext();
   const web3 = new Web3(Web3.givenProvider);
 
-  async function getChainId() {
-    let chainId = await web3.eth.getChainId();
-    return chainId;
-  }
+  
 
   async function barberAllowanceChecker() {
-    const chainId = await getChainId();
-    if (chainId == 43114 || chainId == 43113) {
+    if (chain == 43114 || chain == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -161,8 +157,7 @@ export default function MapPins() {
   }
 
   async function groceryAllowanceChecker() {
-    const chainId = await getChainId();
-    if (chainId == 43114 || chainId == 43113) {
+    if (chain == 43114 || chain == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -201,8 +196,7 @@ export default function MapPins() {
   }
 
   async function dinerAllowanceChecker() {
-    const chainId = await getChainId();
-    if (chainId == 43114 || chainId == 43113) {
+    if (chain == 43114 || chain == 43113) {
       const daiContract = new web3.eth.Contract(
         daiContractAbi as any,
         dai_address
@@ -391,7 +385,7 @@ export default function MapPins() {
       setIsProcessing(true);
     }
     totalValueBarber = barberQuantity * mintPriceBarber;
-    let weiBarber = web3.utils.toWei(totalValueBarber.toString());
+    const weiBarber = web3.utils.toWei(totalValueBarber.toString());
 
     if (!approvedBarber) {
       if (barberQuantity <= barberLimit) {
@@ -438,7 +432,7 @@ export default function MapPins() {
     if (approvedBarber) {
       if (barberQuantity <= barberLimit) {
         try {
-          let mintTx = barberContract.methods
+          const mintTx = barberContract.methods
             .safeMint(barberQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
@@ -500,7 +494,7 @@ export default function MapPins() {
     groceryAllowanceChecker();
     //complete the function to get the total amount of nft
     totalValueGrocery = groceryQuantity * mintPriceGrocery;
-    let weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
+    const weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
     if (!approvedGrocery) {
       if (groceryQuantity <= groceryLimit) {
         try {
@@ -547,7 +541,7 @@ export default function MapPins() {
     if (approvedGrocery) {
       if (groceryQuantity <= groceryLimit) {
         try {
-          let mintTx = groceryContract.methods
+          const mintTx = groceryContract.methods
             .safeMint(groceryQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
@@ -611,7 +605,7 @@ export default function MapPins() {
     //complete the function to get the total amount of nft
     totalValueDiner = dinerQuantity * mintPriceDiner;
     //convert into big number and then into wei
-    let weiDiner = web3.utils.toWei(totalValueDiner.toString());
+    const weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
       if (dinerQuantity <= dinerLimit) {
         try {
@@ -658,7 +652,7 @@ export default function MapPins() {
     if (approvedDiner) {
       if (dinerQuantity <= dinerLimit) {
         try {
-          let mintTx = dinerContract.methods
+          const mintTx = dinerContract.methods
             .safeMint(dinerQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
@@ -913,7 +907,6 @@ export default function MapPins() {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
         cupiditate.
       </BankModal>
-
       <RankingModal
         name="rank"
         isOpen={isOpenRank}

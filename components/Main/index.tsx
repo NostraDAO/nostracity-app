@@ -6,13 +6,17 @@ import ProfileWallet from '../ProfileWallet'
 import styles from './Main.module.css'
 import MapPins from '../MapPins'
 import Background from '../Background'
+import ConnectProvider from "../../context/ConnectContext"
+
 export default function Main() {
 
   return (
     <div className={styles.mainRoot}>
       <Sidebar />
+      <ConnectProvider>
       <ProfileWallet />
       <MapPins />
+      </ConnectProvider>
      <Background />
     </div>
   )

@@ -12,10 +12,6 @@ import TableRow from "@mui/material/TableRow";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
-
-import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
-
 import {
   barber_address,
   grocery_address,
@@ -31,7 +27,8 @@ import {
   getOwnedGrocery,
   getOwnedDiner,
 } from "../../utils/nftScoresFunctions";
-
+import {useConnectContext} from "../../context/ConnectContext"
+import {ConnectType} from "../../@types/Connect.d"
 const style = {
   position: "absolute",
   top: "50%",
@@ -51,12 +48,11 @@ interface Score {
   score: number;
 }
 
-interface Scores extends Array<Score> {}
-declare var window: any;
+type Scores = Array<Score>
+declare let window: any;
 
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
-  const web3 = new Web3(Web3.givenProvider);
-  const { account } = useWeb3React();
+  const {chainId, account, active, activate, deactivate } = useConnectContext();
   const [barberScore, setBarberScore] = useState<Score>();
   const [groceryScore, setGroceryScore] = useState<Score>();
   const [dinerScore, setDinerScore] = useState<Score>();

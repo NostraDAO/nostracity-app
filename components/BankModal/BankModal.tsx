@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -18,7 +16,10 @@ import {
   getDinerScore,
   getGroceryScore,
 } from "../../utils/nftScoresFunctions";
-declare var window: any;
+
+import {useConnectContext} from "../../context/ConnectContext"
+
+declare let window: any;
 
 const style = {
   position: "absolute",
@@ -36,7 +37,7 @@ const style = {
 
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const [tvl, setTvl] = useState();
-  const { account, chainId } = useWeb3React();
+  const {chain, account } = useConnectContext();
   async function getScoreSum() {
     let barberScore, dinerScore, groceryScore, totalScore;
     if (account) {
@@ -50,7 +51,7 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum !== "undefined" && active && chainId == 43114) {
+    if (typeof window.ethereum !== "undefined" && active && chain == 43114) {
       account
         ? getScoreSum().then((score) => setTvl(score))
         : "Wallet not connected!";

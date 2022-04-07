@@ -26,7 +26,7 @@ export default function NftList({ account }: any) {
 
   async function renderCoffee() {
     const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
-    let nftCounter = await dinerContract.methods.walletOfOwner(account).call();
+    const nftCounter = await dinerContract.methods.walletOfOwner(account).call();
     console.log("", nftCounter);
     nftCounter.length >= 1 ? setCoffee(nftCounter.length) : setCoffee(0);
   }
@@ -36,7 +36,7 @@ export default function NftList({ account }: any) {
       groceryABI as any,
       grocery_address
     );
-    let nftCounter = await groceryContract.methods
+    const nftCounter = await groceryContract.methods
       .walletOfOwner(account)
       .call();
     console.log("", nftCounter);
@@ -48,7 +48,7 @@ export default function NftList({ account }: any) {
       barberABI as any,
       barber_address
     );
-    let nftCounter = await barberContract.methods.walletOfOwner(account).call();
+    const nftCounter = await barberContract.methods.walletOfOwner(account).call();
     console.log("", nftCounter);
     nftCounter.length >= 1 ? setScissors(nftCounter.length) : setScissors(0);
   }
