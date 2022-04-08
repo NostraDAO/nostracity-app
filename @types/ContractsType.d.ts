@@ -1,7 +1,9 @@
-export interface Contract {
-    name: 
+export interface ContractFunctionsType {
+    properties: any[];
+    methods: any[];
+    events: any[];
 }
 
-export interface Contracts {
-    
+export interface ContractsType {
+    contracts: ContractFunctionsType[];
 }
