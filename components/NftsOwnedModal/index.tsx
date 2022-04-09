@@ -10,8 +10,8 @@ import NftList from "../NftList"
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
-import ContractsProvider from "../../context/ContractsContext"
-import {ContractsType, ContractFunctionsType} from "../../@types/ContractsType"
+import NftsProvider from "../../context/NftsContext"
+
 const style = {
     position: "absolute",
     top: "50%",
@@ -50,9 +50,9 @@ const { account, active } = useWeb3React();
           <Typography id="modal-modal-title" variant="h2" component="h2">
             My NFTs
           </Typography>
-          <ContractsProvider>
+          <NftsProvider>
            <NftList  account={account}  />
-          </ContractsProvider> 
+          </NftsProvider> 
         </Box>
       </Modal>
     </div>

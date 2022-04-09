@@ -12,7 +12,7 @@ import {
   diner_address,
   grocery_address,
 } from "../../constants/adresses/contracts";
-import {useContractsContext} from "../../context/ContractsContext"
+import {useNftsContext} from "../../context/NftsContext"
 
 
 import coffeeImage from '../../public/assets/images/coffee.png'
@@ -20,9 +20,8 @@ import tomatoImage from '../../public/assets/images/tomato.png'
 import scissorImage from '../../public/assets/images/scissors.png'
 
 export default function NftList({ account }: any) {
-  const web3 = new Web3(Web3.givenProvider);
-const {tomatoes, coffee, scissors} = useContractsContext();
-  
+const web3 = new Web3(Web3.givenProvider);
+const {tomatoes, coffee, scissors} = useNftsContext();
   return (
     <Container fixed>
       <Box>
