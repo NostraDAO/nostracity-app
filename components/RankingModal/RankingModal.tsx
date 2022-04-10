@@ -12,10 +12,6 @@ import TableRow from "@mui/material/TableRow";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
-
-import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
-
 import {
   barber_address,
   grocery_address,
@@ -31,7 +27,9 @@ import {
   getOwnedGrocery,
   getOwnedDiner,
 } from "../../utils/nftScoresFunctions";
-
+import {useConnectContext} from "../../context/ConnectContext"
+import {useNftsContext} from "../../context/NftsContext"
+import {ConnectType} from "../../@types/Connect.d"
 const style = {
   position: "absolute",
   top: "50%",
@@ -51,34 +49,39 @@ interface Score {
   score: number;
 }
 
-interface Scores extends Array<Score> {}
-declare var window: any;
+type Scores = Array<Score>
+declare let window: any;
 
+const tableStyle = {
+  fontFamily: "OldNewspaperTypes",
+  fontSize: "1.2em"
+}
+
+const tableItemsStyle = {
+  fontFamily: "OldNewspaperTypes",
+  fontSize: "1em"
+}
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
-  const web3 = new Web3(Web3.givenProvider);
-  const { account } = useWeb3React();
+  const {chainId, account, active, activate, deactivate } = useConnectContext();
+  const { tomatoes, scissors, coffee } = useNftsContext();
   const [barberScore, setBarberScore] = useState<Score>();
   const [groceryScore, setGroceryScore] = useState<Score>();
   const [dinerScore, setDinerScore] = useState<Score>();
   const [rankArray, setRankArray] = useState<Scores>([]);
-  const [barberOwner, setBarberOwner] = useState<any[]>([]);
-  const [groceryOwner, setGroceryOwner] = useState<any[]>([]);
-  const [dinerOwner, setDinerOwner] = useState<any[]>([]);
   const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
   async function getOwnedNfts() {
-    await getOwnedBarber(account).then((barber) => setBarberOwner(barber));
-    await getOwnedDiner(account).then((diner) => setDinerOwner(diner));
-    await getOwnedGrocery(account).then((grocery) => setGroceryOwner(grocery));
     if (
-      barberOwner?.length > 0 ||
-      groceryOwner?.length > 0 ||
-      dinerOwner?.length > 0
+      tomatoes > 0 |
+      coffee > 0 |
+      scissors > 0
     ) {
       setOwnsNft(true);
     } else {
       setOwnsNft(false);
     }
+    setOwnsNft(true)
+    
   }
 
   async function getListScored() {
@@ -93,7 +96,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     await getDinerScore().then((score) => setDinerScore(score));
     await getBarberScore().then((score) => setBarberScore(score));
     await getGroceryScore().then((score) => setGroceryScore(score));
-    
 
     if(dinerScore && barberScore && groceryScore){
       await getListScored().then((listScored) => {
@@ -110,16 +112,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
       return null;
     }
    
-  }
-
-  const tableStyle = {
-    fontFamily: "OldNewspaperTypes",
-    fontSize: "1.2em"
-  }
-
-  const tableItemsStyle = {
-    fontFamily: "OldNewspaperTypes",
-    fontSize: "1em"
   }
 
   const TableContent = () => {

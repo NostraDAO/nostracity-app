@@ -11,6 +11,18 @@ declare var window: any;
 
 const web3 = new Web3(Web3.givenProvider);
 
+const barberContract = new web3.eth.Contract(
+  barberContractAbi as any,
+  barber_address
+);
+const groceryContract = new web3.eth.Contract(
+  groceryContractAbi as any,
+  grocery_address
+);
+const dinerContract = new web3.eth.Contract(
+    dinerContractAbi as any, 
+    diner_address);
+
 async function getChainId() {
   let chainId = await web3.eth.getChainId();
   return chainId;
@@ -28,10 +40,6 @@ export async function getBarberLimit() {
   let account = ethEnabled();
   let barberLimit;
   if (chainId == 43114 || chainId == 43113) {
-    const barberContract = new web3.eth.Contract(
-      barberContractAbi as any,
-      barber_address
-    );
     try {
       barberLimit = await barberContract.methods
         .getMintingLimit(account)
@@ -46,7 +54,6 @@ export async function getBarberLimit() {
 
 export async function getGroceryLimit() {
   const chainId = await getChainId();
-
   const ethEnabled = () => {
     let account;
     if (window.ethereum !== "undefined") {
@@ -57,10 +64,6 @@ export async function getGroceryLimit() {
   let account = ethEnabled();
   let groceryLimit;
   if (chainId == 43114 || chainId == 43113) {
-    const groceryContract = new web3.eth.Contract(
-      groceryContractAbi as any,
-      grocery_address
-    );
     try {
       groceryLimit = await groceryContract.methods
         .getMintingLimit(account)
@@ -86,10 +89,6 @@ export async function getDinerLimit() {
   let account = ethEnabled();
   let dinerLimit;
   if(chainId == 43114 || chainId == 43113){
-    const dinerContract = new web3.eth.Contract(
-      dinerContractAbi as any,
-      diner_address
-    );
     try {
       dinerLimit = await dinerContract.methods.getMintingLimit(account).call();
     } catch (e: any) {

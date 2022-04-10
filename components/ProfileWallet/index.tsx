@@ -7,31 +7,27 @@ import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { AlertModal } from "../AlertModal/AlertModal";
-import Web3 from "web3";
-
-const web3 = new Web3(Web3.givenProvider);
-declare var window: any;
+import {useConnectContext} from "../../context/ConnectContext"
+declare let window: any;
 
 import NftsOwnedModal from "../NftsOwnedModal";
 
 export default function ProfileWallet() {
   const router = useRouter();
-  const { active, account, activate, deactivate } = useWeb3React();
   const [nftOpen, setNftOpen] = useState(false);
   const [wrongNetworkAlert, setWrongNetworkAlert] = useState(false);
   const [networkMessage, setNetworkMessage] = useState("");
   const [connected, setConnected] = useState(false);
   const [connectedMessage, setConnectedMessage] = useState("");
-  const [chainId, setChainId] = useState<number>();
+  const {chain, account, active, activate, deactivate } = useConnectContext();
 
   async function getChainId() {
-    web3.eth.getChainId().then((chainId: number) => setChainId(chainId));
-    if(chainId !== 43114 && process.env.NODE_ENV == 'production'){
+    if(chain !== 43114 && process.env.NODE_ENV == 'production'){
       setNetworkMessage(
         "Unsupported chain. Please connect to Avalanche MainNet."
       );
     }
-    if(chainId == 43114 && process.env.NODE_ENV == 'development'){
+    if(chain == 43114 && process.env.NODE_ENV == 'development'){
       setNetworkMessage(
         "You are on the test ambient. Unsupported chain. Please connect to Avalanche FujinNet."
       );
@@ -40,46 +36,40 @@ export default function ProfileWallet() {
   
   useEffect(() => {
     if(window.ethereum !== "undefined"){
-    window.ethereum.on('chainChanged', (chainId: number) => {
-      setChainId(chainId)
+    window.ethereum.on('chainChanged', (chain) => {
       if(process.env.NODE_ENV == 'production'){
-        chainId !== 43114 ? deactivate() : null;
+        chain !== 43114 ? deactivate() : null;
       }
       if(process.env.NODE_ENV == 'development'){
-        chainId !== 43113 ? deactivate() : null;
-
+        chain !== 43113 ? deactivate() : null;
       }
     });
     }
     getChainId();
-  }, [chainId])
-
+  }, [chain])
 
   const login = () => {
-        if (chainId == 43114 && process.env.NODE_ENV == 'production') {
+        if (chain == 43114 && process.env.NODE_ENV == 'production') {
           setConnectedMessage("You connected sucessfully");
           activate(new InjectedConnector({}));
           setConnected(true);        
           setWrongNetworkAlert(false);
         }
-      if (chainId != 43114 && process.env.NODE_ENV == 'production') {
+      if (chain != 43114 && process.env.NODE_ENV == 'production') {
         setWrongNetworkAlert(true);
         deactivate();
       }
 
-      if(chainId == 43113 && process.env.NODE_ENV == 'development') {
+      if(chain == 43113 && process.env.NODE_ENV == 'development') {
         setConnectedMessage("You connected sucessfully to the Test Environment");
         activate(new InjectedConnector({}));
         setConnected(true);        
         setWrongNetworkAlert(false);
       }
-      if (chainId != 43113 && process.env.NODE_ENV == 'development') {
+      if (chain != 43113 && process.env.NODE_ENV == 'development') {
         setWrongNetworkAlert(true);
         deactivate();
       }
-      
-        
-      
       
   };
 

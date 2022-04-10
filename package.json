@@ -43,9 +43,12 @@
   },
   "devDependencies": {
     "@types/node": "17.0.21",
-    "@types/react": "17.0.39",
-    "eslint": "8.10.0",
+    "@types/react": "^17.0.43",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "eslint": "^8.12.0",
     "eslint-config-next": "12.1.0",
+    "eslint-plugin-react": "^7.29.4",
     "typescript": "4.6.2"
   }
 }

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -9,16 +7,10 @@ import styles from "./BankModal.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
-import treasuryABI from "../../abi/Treasury.json";
+import {useConnectContext} from "../../context/ConnectContext"
+import {useBankContext} from "../../context/BankContext"
 
-import { treasury_address } from "../../constants/adresses/contracts";
-import { getTVL } from "../../utils/bankFunction";
-import {
-  getBarberScore,
-  getDinerScore,
-  getGroceryScore,
-} from "../../utils/nftScoresFunctions";
-declare var window: any;
+declare let window: any;
 
 const style = {
   position: "absolute",
@@ -36,25 +28,24 @@ const style = {
 
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const [tvl, setTvl] = useState();
-  const { account, chainId } = useWeb3React();
-  async function getScoreSum() {
-    let barberScore, dinerScore, groceryScore, totalScore;
-    if (account) {
-      barberScore = await getBarberScore();
-      dinerScore = await getDinerScore();
-      groceryScore = await getGroceryScore();
-      totalScore = barberScore.score + dinerScore.score + groceryScore.score;
+  const {chain, account } = useConnectContext();
+  const {barberScore, dinerScore, groceryScore} = useBankContext()
+
+  function getScoreSum() {
+    let totalScore;
+      console.log(barberScore, dinerScore, groceryScore)
+      totalScore = barberScore + dinerScore + groceryScore;
       return totalScore;
-    }
   }
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum !== "undefined" && active && chainId == 43114) {
+    if (typeof window.ethereum !== "undefined" && active && chain == 43114 | chain == 43113) {
       account
-        ? getScoreSum().then((score) => setTvl(score))
+        ? setTvl(getScoreSum())
         : "Wallet not connected!";
     }
+    console.log('tvl', tvl)
     return () => {
       active = false;
     };
