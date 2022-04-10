@@ -71,18 +71,16 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
   async function getOwnedNfts() {
-    console.log(scissors, tomatoes, scissors)
-    // if (
-    //   tomatoes > 0 |
-    //   coffee > 0 |
-    //   scissors > 0
-    // ) {
-    //   setOwnsNft(true);
-    // } else {
-    //   setOwnsNft(false);
-    // }
+    if (
+      tomatoes > 0 |
+      coffee > 0 |
+      scissors > 0
+    ) {
+      setOwnsNft(true);
+    } else {
+      setOwnsNft(false);
+    }
     setOwnsNft(true)
-    console.log('this', ownsNft)
     
   }
 
@@ -153,7 +151,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
     if (typeof window.ethereum != "undefined" && account) {
       getOwnedNfts();
       handleRanking();
-      console.log('tomato', tomatoes)
     }
     return () => {
       active = false;

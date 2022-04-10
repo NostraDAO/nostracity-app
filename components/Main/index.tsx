@@ -7,7 +7,7 @@ import styles from './Main.module.css'
 import MapPins from '../MapPins'
 import Background from '../Background'
 import ConnectProvider from "../../context/ConnectContext"
-
+import NftsProvider from "../../context/NftsContext"
 export default function Main() {
 
   return (
@@ -15,7 +15,9 @@ export default function Main() {
       <Sidebar />
       <ConnectProvider>
       <ProfileWallet />
+      <NftsProvider>
       <MapPins />
+      </NftsProvider>
       </ConnectProvider>
      <Background />
     </div>

@@ -47,8 +47,6 @@ import {
   spacing,
 } from "@material-ui/system";
 import {useConnectContext} from "../../context/ConnectContext"
-import NftsProvider from "../../context/NftsContext"
-
 import gunCursor from "../../public/assets/icons/cursor.png";
 const styleFunction = styleFunctionSx(compose(spacing, palette));
 declare let window: any;
@@ -906,14 +904,12 @@ export default function MapPins() {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
         cupiditate.
       </BankModal>
-      <NftsProvider>
       <RankingModal
         name="rank"
         isOpen={isOpenRank}
         handleClose={() => handleClose("trophy")}
         title="Ranking"
       />
-      </NftsProvider>
       <NoSsr>
         <div className={styles.mapPins}>
           <CustomTooltip
