@@ -7,17 +7,8 @@ import styles from "./BankModal.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
-import treasuryABI from "../../abi/Treasury.json";
-
-import { treasury_address } from "../../constants/adresses/contracts";
-import { getTVL } from "../../utils/bankFunction";
-import {
-  getBarberScore,
-  getDinerScore,
-  getGroceryScore,
-} from "../../utils/nftScoresFunctions";
-
 import {useConnectContext} from "../../context/ConnectContext"
+import {useBankContext} from "../../context/BankContext"
 
 declare let window: any;
 
@@ -38,24 +29,23 @@ const style = {
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const [tvl, setTvl] = useState();
   const {chain, account } = useConnectContext();
-  async function getScoreSum() {
-    let barberScore, dinerScore, groceryScore, totalScore;
-    if (account) {
-      barberScore = await getBarberScore();
-      dinerScore = await getDinerScore();
-      groceryScore = await getGroceryScore();
-      totalScore = barberScore.score + dinerScore.score + groceryScore.score;
+  const {barberScore, dinerScore, groceryScore} = useBankContext()
+
+  function getScoreSum() {
+    let totalScore;
+      console.log(barberScore, dinerScore, groceryScore)
+      totalScore = barberScore + dinerScore + groceryScore;
       return totalScore;
-    }
   }
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum !== "undefined" && active && chain == 43114) {
+    if (typeof window.ethereum !== "undefined" && active && chain == 43114 | chain == 43113) {
       account
-        ? getScoreSum().then((score) => setTvl(score))
+        ? setTvl(getScoreSum())
         : "Wallet not connected!";
     }
+    console.log('tvl', tvl)
     return () => {
       active = false;
     };

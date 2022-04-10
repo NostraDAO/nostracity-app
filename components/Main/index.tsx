@@ -8,6 +8,7 @@ import MapPins from '../MapPins'
 import Background from '../Background'
 import ConnectProvider from "../../context/ConnectContext"
 import NftsProvider from "../../context/NftsContext"
+import BankProvider from "../../context/BankContext"
 export default function Main() {
 
   return (
@@ -16,7 +17,9 @@ export default function Main() {
       <ConnectProvider>
       <ProfileWallet />
       <NftsProvider>
+      <BankProvider>
       <MapPins />
+      </BankProvider>
       </NftsProvider>
       </ConnectProvider>
      <Background />

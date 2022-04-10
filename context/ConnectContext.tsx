@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, {createContext, useEffect, useState, ReactNode, useContext }from 'react';
-import {ConnectTpe} from  "../@types/ConnectType";
+import {ConnectType} from  "../@types/ConnectType";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 

@@ -47,6 +47,7 @@ import {
   spacing,
 } from "@material-ui/system";
 import {useConnectContext} from "../../context/ConnectContext"
+import BankProvider from "../../context/BankContext"
 import gunCursor from "../../public/assets/icons/cursor.png";
 const styleFunction = styleFunctionSx(compose(spacing, palette));
 declare let window: any;
@@ -901,8 +902,6 @@ export default function MapPins() {
         handleClose={() => handleClose("bank")}
         title="Bank"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-        cupiditate.
       </BankModal>
       <RankingModal
         name="rank"

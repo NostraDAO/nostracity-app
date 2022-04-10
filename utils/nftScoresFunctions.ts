@@ -36,6 +36,8 @@ export async function getBarberScore() {
       getScore =
         (await barberContract.methods.getCurrentScore().call()) / 10 ** 18;
       scoreObj = { business: "Barber", score: await getScore };
+      console.log(scoreObj);
+
     } catch (err: any) {
       console.log("barberScore: ", err);
     } finally {
@@ -52,6 +54,8 @@ export async function getGroceryScore() {
       getScore =
         (await groceryContract.methods.getCurrentScore().call()) / 10 ** 18;
       scoreObj = { business: "Grocery", score: await getScore };
+      console.log(scoreObj);
+
     } catch (err: any) {
       console.log("groceryScore: ", err);
     } finally {
@@ -68,6 +72,7 @@ export async function getDinerScore() {
       getScore =
         (await dinerContract.methods.getCurrentScore().call()) / 10 ** 18;
       scoreObj = { business: "Diner", score: await getScore };
+      console.log(scoreObj);
     } catch (err: any) {
       console.log("dinerScore: ", err);
     } finally {
