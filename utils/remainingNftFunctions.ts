@@ -9,8 +9,21 @@ import {
 } from "../constants/adresses/contracts";
 declare var window: any;
 
+const web3 = new Web3(Web3.givenProvider);
+
+const barberContract = new web3.eth.Contract(
+  barberContractAbi as any,
+  barber_address
+);
+const groceryContract = new web3.eth.Contract(
+  groceryContractAbi as any,
+  grocery_address
+);
+const dinerContract = new web3.eth.Contract(
+    dinerContractAbi as any, 
+    diner_address);
+
 export async function getBarberRemain() {
-  const web3 = new Web3(Web3.givenProvider);
   let remainBarberValue,
     totalBarberSupply,
     maxBarberSupply,
@@ -18,10 +31,6 @@ export async function getBarberRemain() {
     totalBarberSupplyReq;
 
   if (window.ethereum !== "undefined") {
-    const barberContract = new web3.eth.Contract(
-      barberContractAbi as any,
-      barber_address
-    );
     maxBarberSupplyReq = await barberContract.methods.MAX_SUPPLY.call().call();
     maxBarberSupply = maxBarberSupplyReq;
     totalBarberSupplyReq = await barberContract.methods.totalSupply().call();
@@ -32,7 +41,6 @@ export async function getBarberRemain() {
 }
 
 export async function getGroceryRemain() {
-  const web3 = new Web3(Web3.givenProvider);
   let remainGroceryValue,
     totalGrocerySupply,
     maxGrocerySupply,
@@ -40,11 +48,6 @@ export async function getGroceryRemain() {
     totalGrocerySupplyReq;
 
   if (window.ethereum !== "undefined") {
-    const groceryContract = new web3.eth.Contract(
-      groceryContractAbi as any,
-      grocery_address
-    );
-
     maxGrocerySupplyReq = await groceryContract.methods.MAX_SUPPLY.call().call();
     maxGrocerySupply = maxGrocerySupplyReq;
     totalGrocerySupplyReq = await groceryContract.methods.totalSupply().call();
@@ -55,15 +58,9 @@ export async function getGroceryRemain() {
 }
 
 export async function getDinerRemain() {
-  const web3 = new Web3(Web3.givenProvider);
   let remainDinerValue, totalDinerSupply, maxDinerSupplyReq, maxDinerSupply, totalDinerSupplyReq;
 
   if (window.ethereum !== "undefined") {
-    const dinerContract = new web3.eth.Contract(
-      dinerContractAbi as any,
-      diner_address
-    );
-
     maxDinerSupplyReq = await dinerContract.methods.MAX_SUPPLY.call().call();
     maxDinerSupply = maxDinerSupplyReq;
     totalDinerSupplyReq = await dinerContract.methods.totalSupply().call();
