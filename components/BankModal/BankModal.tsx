@@ -40,7 +40,7 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum !== "undefined" && active && chain == 43114 | chain == 43113) {
+    if ((typeof window.ethereum !== "undefined" && active) && chain == 43114 || chain == 43113) {
       account
         ? setTvl(getScoreSum())
         : "Wallet not connected!";
