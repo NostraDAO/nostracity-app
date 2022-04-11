@@ -96,7 +96,8 @@ export default function MapPins() {
   let totalValueDiner: any;
   const classes = useStyles();
  const {chain, account, active} = useConnectContext();
- const {barberPrice,
+ const {
+  barberPrice,
   groceryPrice, 
   dinerPrice,
   barberAllowance, 
@@ -113,7 +114,7 @@ export default function MapPins() {
 
   function barberAllowanceChecker() {
     if (chain == 43114 || chain == 43113) {
-      if (barberAllowance >= barberPrice) {
+      if (barberAllowance! >= barberPrice!) {
         setApprovedBarber(true);
         setBtnTextBarber("Mint");
       } else {
@@ -125,7 +126,7 @@ export default function MapPins() {
 
   function groceryAllowanceChecker() {
     if (chain == 43114 || chain == 43113) {
-      if (groceryAllowance >= groceryPrice) {
+      if (groceryAllowance! >= groceryPrice!) {
         setApprovedGrocery(true);
         setBtnTextGrocery("Mint");
       } else {
@@ -137,7 +138,7 @@ export default function MapPins() {
 
     function dinerAllowanceChecker() {
     if (chain == 43114 || chain == 43113) {
-      if (dinerAllowance >= dinerPrice) {
+      if (dinerAllowance! >= dinerPrice!) {
         setApprovedDiner(true);
         setBtnTextDiner("Mint");
       } else {
@@ -263,16 +264,16 @@ export default function MapPins() {
     );
     barberAllowanceChecker();
     //complete the function to get the total amount of nft
-    if (barberQuantity >= barberLimit) {
+    if (barberQuantity >= barberLimit!) {
       setIsError(true);
       setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
       setIsProcessing(true);
     }
-    totalValueBarber = barberQuantity * barberPrice;
+    totalValueBarber = barberQuantity * barberPrice!;
     const weiBarber = web3.utils.toWei(totalValueBarber.toString());
 
     if (!approvedBarber) {
-      if (barberQuantity <= barberLimit) {
+      if (barberQuantity <= barberLimit!) {
         try {
           approveTx = daiContract.methods
             .approve(barber_address, weiBarber)
@@ -314,7 +315,7 @@ export default function MapPins() {
       }
     }
     if (approvedBarber) {
-      if (barberQuantity <= barberLimit) {
+      if (barberQuantity <= barberLimit!) {
         try {
           const mintTx = barberContract.methods
             .safeMint(barberQuantity)
@@ -374,10 +375,10 @@ export default function MapPins() {
     );
     groceryAllowanceChecker();
     //complete the function to get the total amount of nft
-    totalValueGrocery = groceryQuantity * groceryPrice;
+    totalValueGrocery = groceryQuantity * groceryPrice!;
     const weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
     if (!approvedGrocery) {
-      if (groceryQuantity <= groceryLimit) {
+      if (groceryQuantity <= groceryLimit!) {
         try {
           approveTx = daiContract.methods
             .approve(grocery_address, weiGrocery)
@@ -420,7 +421,7 @@ export default function MapPins() {
       }
     }
     if (approvedGrocery) {
-      if (groceryQuantity <= groceryLimit) {
+      if (groceryQuantity <= groceryLimit!) {
         try {
           const mintTx = groceryContract.methods
             .safeMint(groceryQuantity)
@@ -481,11 +482,11 @@ export default function MapPins() {
     );
     dinerAllowanceChecker();
     //complete the function to get the total amount of nft
-    totalValueDiner = dinerQuantity * dinerPrice;
+    totalValueDiner = dinerQuantity * dinerPrice!;
     //convert into big number and then into wei
     const weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
-      if (dinerQuantity <= dinerLimit) {
+      if (dinerQuantity <= dinerLimit!) {
         try {
           approveTx = daiContract.methods
             .approve(diner_address, weiDiner)
@@ -528,7 +529,7 @@ export default function MapPins() {
       }
     }
     if (approvedDiner) {
-      if (dinerQuantity <= dinerLimit) {
+      if (dinerQuantity <= dinerLimit!) {
         try {
           const mintTx = dinerContract.methods
             .safeMint(dinerQuantity)
@@ -615,13 +616,13 @@ export default function MapPins() {
   function handleNftPriceQuantity(item) {
     switch (item) {
       case "barber": {
-        return barberPrice * barberQuantity + " DAI.e";
+        return barberPrice! * barberQuantity + " DAI.e";
       }
       case "grocery": {
-        return groceryPrice * groceryQuantity + " DAI.e";
+        return groceryPrice! * groceryQuantity + " DAI.e";
       }
       case "diner": {
-        return dinerPrice * dinerQuantity + " DAI.e";
+        return dinerPrice! * dinerQuantity + " DAI.e";
       }
     }
   }

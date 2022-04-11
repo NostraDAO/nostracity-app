@@ -22,7 +22,7 @@ const defaultMint: MintContextType = {
     groceryRemain: 0
 }
 const web3 = new Web3(Web3.givenProvider);
-const MintContext = createContext<MintContextType | null>(defaultMint);
+const MintContext = createContext<MintContextType>(defaultMint);
 
 export function useMintContext(){
 return useContext(MintContext);
