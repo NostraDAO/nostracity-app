@@ -12,7 +12,7 @@ const defaultConnect: ConnectType = {
     deactivate: () => {},
 }
 const web3 = new Web3(Web3.givenProvider);
-const ConnectContext = createContext<ConnectType, any>(defaultConnect);
+const ConnectContext = createContext<ConnectType, null>(defaultConnect);
 
 export function useConnectContext(){
 return useContext(ConnectContext);
@@ -28,8 +28,7 @@ const ConnectProvider: ReactNode = ({children} :ReactNode[]) => {
         getChain();    
     }, [])
     
-    
-    return <ConnectContext.Provider value={{chain, account, active, activate, deactivate}}>{children}</ConnectContext.Provider>;
+     return <ConnectContext.Provider value={{chain, account, active, activate, deactivate}}>{children}</ConnectContext.Provider>;
 
 }
 
