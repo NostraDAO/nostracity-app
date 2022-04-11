@@ -12,7 +12,7 @@ import {
   diner_address,
   grocery_address,
 } from "../../constants/adresses/contracts";
-import {useNftsContext} from "../../context/NftsContext"
+import { useNftsContext } from "../../context/NftsContext"
 
 
 import coffeeImage from '../../public/assets/images/coffee.png'

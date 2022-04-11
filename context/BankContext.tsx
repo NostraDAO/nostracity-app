@@ -1,7 +1,6 @@
 import React, {createContext, useEffect, useState, ReactNode, useContext }from 'react';
 import {BankContextType} from  "../@types/BankContextType";
 import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
 import {getBarberScore, getGroceryScore, getDinerScore} from "../utils/nftScoresFunctions"
 
 const defaultScore: BankContextType = {
@@ -16,7 +15,6 @@ export function useBankContext(){
 return useContext(BankContext);
 }
 const BankProvider = ({children}) => {
-    // const { account} = useWeb3React();
     const [groceryScore, setGroceryScore] = useState(0)
     const [barberScore, setBarberScore] = useState(0)
     const [dinerScore, setDinerScore] = useState(0)

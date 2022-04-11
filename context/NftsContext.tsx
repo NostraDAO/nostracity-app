@@ -24,16 +24,16 @@ const groceryContract = new web3.eth.Contract(groceryABI as any, grocery_address
 const barberContract = new web3.eth.Contract(barberABI as any, barber_address);
 const dinerContract = new web3.eth.Contract(dinerABI as any, diner_address);
 
-const NftsContext = createContext<NftsContextType | null>(defaultNfts);
+const NftsContext = createContext<NftsContextType>(defaultNfts);
 
 export function useNftsContext(){
 return useContext(NftsContext);
 }
-const NftsProvider = ({children}) => {
-    const { account, active, activate, deactivate } = useWeb3React();
-    const [scissors, setScissors] = useState(0);
-    const [tomatoes, setTomatoes] = useState(0);
-    const [coffee, setCoffee] = useState(0);
+export const NftsProvider = ({children}: {children: ReactNode}) => {
+    const { account } = useWeb3React();
+    const [scissors, setScissors] = useState<number>(0);
+    const [tomatoes, setTomatoes] = useState<number>(0);
+    const [coffee, setCoffee] = useState<number>(0);
 
     useEffect(() => {
         if(account){
@@ -48,4 +48,3 @@ const NftsProvider = ({children}) => {
 
 }
 
-export default NftsProvider;
