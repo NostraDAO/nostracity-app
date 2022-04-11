@@ -10,7 +10,7 @@ import NftList from "../NftList"
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
-import NftsProvider from "../../context/NftsContext"
+import { NftsProvider } from "../../context/NftsContext"
 
 const style = {
     position: "absolute",
