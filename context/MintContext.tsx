@@ -13,7 +13,13 @@ const defaultMint: MintContextType = {
     dinerPrice: 0,
     barberAllowance: 0,
     groceryAllowance: 0,
-    dinerAllowance: 0
+    dinerAllowance: 0,
+    barberLimit: 0,
+    groceryLimit: 0,
+    dinerLimit: 0,
+    barberRemain: 0,
+    dinerRemain: 0,
+    groceryRemain: 0
 }
 const web3 = new Web3(Web3.givenProvider);
 const MintContext = createContext<MintContextType | null>(defaultMint);
@@ -21,20 +27,20 @@ const MintContext = createContext<MintContextType | null>(defaultMint);
 export function useMintContext(){
 return useContext(MintContext);
 }
-const MintProvider: ReactNode = ({children} : ReactNode[]) => {
+const MintProvider = ({children}) => {
      const { account} = useWeb3React();
-     const [barberPrice, setBarberPrice] = useState(0)
-     const [groceryPrice, setGroceryPrice] = useState(0)
-     const [ dinerPrice, setDinerPrice] = useState(0)
-     const [barberAllowance, setBarberAllowance] = useState(0)
-     const [dinerAllowance, setDinerAllowance] = useState(0)
-     const [ groceryAllowance, setGroceryAllowance] = useState(0)
-     const [barberLimit, setBarberLimit] = useState(0)
-     const [dinerLimit, setDinerLimit] = useState(0)
-     const [groceryLimit, setGroceryLimit] = useState(0)
-     const [barberRemain, setBarberRemain] = useState(0)
-     const [groceryRemain, setGroceryRemain] = useState(0)
-     const [dinerRemain, setDinerRemain] = useState(0)
+     const [barberPrice, setBarberPrice] = useState<number | undefined>(0)
+     const [groceryPrice, setGroceryPrice] = useState<number | undefined>(0)
+     const [ dinerPrice, setDinerPrice] = useState<number | undefined>(0)
+     const [barberAllowance, setBarberAllowance] = useState<number | undefined>(0)
+     const [dinerAllowance, setDinerAllowance] = useState<number | undefined>(0)
+     const [ groceryAllowance, setGroceryAllowance] = useState<number | undefined>(0)
+     const [barberLimit, setBarberLimit] = useState<number | undefined>(0)
+     const [dinerLimit, setDinerLimit] = useState<number | undefined>(0)
+     const [groceryLimit, setGroceryLimit] = useState<number | undefined>(0)
+     const [barberRemain, setBarberRemain] = useState<number | undefined>(0)
+     const [groceryRemain, setGroceryRemain] = useState<number | undefined>(0)
+     const [dinerRemain, setDinerRemain] = useState<number | undefined>(0)
 
 
     useEffect(() => {

@@ -13,9 +13,9 @@ import {
 import {countCoffee, countTomatoes, countScissors} from "../utils/nftCountFunctions"
 
 const defaultNfts: NftsContextType = {
-    tomatoes: null,
-    coffee: null,
-    diner: null
+    tomatoes: 0,
+    coffee: 0,
+    scissors: 0
 }
 const web3 = new Web3(Web3.givenProvider);
 
@@ -29,7 +29,7 @@ const NftsContext = createContext<NftsContextType | null>(defaultNfts);
 export function useNftsContext(){
 return useContext(NftsContext);
 }
-const NftsProvider: ReactNode = ({children}: ReactNode[]) => {
+const NftsProvider = ({children}) => {
     const { account, active, activate, deactivate } = useWeb3React();
     const [scissors, setScissors] = useState(0);
     const [tomatoes, setTomatoes] = useState(0);

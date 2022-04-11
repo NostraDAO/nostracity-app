@@ -10,12 +10,12 @@ const defaultScore: BankContextType = {
     dinerScore: 0
 }
 const web3 = new Web3(Web3.givenProvider);
-const BankContext = createContext<BankContextType , any>(defaultScore);
+const BankContext = createContext<BankContextType>(defaultScore);
 
 export function useBankContext(){
 return useContext(BankContext);
 }
-const BankProvider: ReactNode = ({children} : ReactNode[]) => {
+const BankProvider = ({children}) => {
     // const { account} = useWeb3React();
     const [groceryScore, setGroceryScore] = useState(0)
     const [barberScore, setBarberScore] = useState(0)

@@ -8,20 +8,20 @@ const defaultConnect: ConnectType = {
     chain:  null,
     account: null,
     active: false,
-    activate: () => {},
-    deactivate: () => {},
+    activate: () => Promise.resolve(false),
+    deactivate: () => Promise.resolve(false)
 }
 const web3 = new Web3(Web3.givenProvider);
-const ConnectContext = createContext<ConnectType, null>(defaultConnect);
+const ConnectContext = createContext<ConnectType>(defaultConnect);
 
 export function useConnectContext(){
 return useContext(ConnectContext);
 }
-const ConnectProvider: ReactNode = ({children} :ReactNode[]) => {
+const ConnectProvider = ({children} ) => {
     const { account, active, activate, deactivate } = useWeb3React();
     const [ chain, setChain] = useState<number>();
     
-    async function getChain(): number{
+    async function getChain(): Promise<any> {
     web3.eth.getChainId().then(chain => setChain(chain))
     }
     useEffect(() => {
