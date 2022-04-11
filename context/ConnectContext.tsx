@@ -12,7 +12,7 @@ const defaultConnect: ConnectType = {
     deactivate: () => {},
 }
 const web3 = new Web3(Web3.givenProvider);
-const ConnectContext = createContext<ConnectType | null>(defaultConnect);
+const ConnectContext = createContext<ConnectType, any>(defaultConnect);
 
 export function useConnectContext(){
 return useContext(ConnectContext);
