@@ -10,7 +10,7 @@ const defaultScore: BankContextType = {
     dinerScore: 0
 }
 const web3 = new Web3(Web3.givenProvider);
-const BankContext = createContext<BankContextType | null>(defaultScore);
+const BankContext = createContext<BankContextType , any>(defaultScore);
 
 export function useBankContext(){
 return useContext(BankContext);
