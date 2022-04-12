@@ -26,7 +26,7 @@ import {
 } from "../../utils/nftScoresFunctions";
 import {useConnectContext} from "../../context/ConnectContext"
 import {useNftsContext} from "../../context/NftsContext"
-import {ConnectType} from "../../@types/Connect.d"
+
 const style = {
   position: "absolute",
   top: "50%",
