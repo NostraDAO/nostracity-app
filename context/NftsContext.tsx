@@ -43,7 +43,7 @@ export const NftsProvider = ({children}) => {
         }
         
         
-    }, [])
+    }, [account])
     return <NftsContext.Provider value={{tomatoes,coffee, scissors}}>{children}</NftsContext.Provider>;
 
 }

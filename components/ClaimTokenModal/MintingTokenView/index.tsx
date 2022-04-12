@@ -11,13 +11,12 @@ import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import LoadingButton from '@mui/lab/LoadingButton';
+import SuccessMintTokenView from "../SuccessMintTokenView"
+import ErrorMintTokenView from "../ErrorMintTokenView"
 
 
 export default function MintingTokenView({isLoading, IsSuccess, IsError } : any ) {
 const web3 = new Web3(Web3.givenProvider);
-const [loading, setLoading] = useState(false);
-const [success, setSuccess] = useState(false);
-const [error, setError] = useState(false);
 return (
     <div>
       <div
@@ -38,7 +37,7 @@ return (
           disabled
         >Claim $BOSS </LoadingButton>
             </>
-          ) : null}
+          ): null}
          
         </Box>
       </div>
