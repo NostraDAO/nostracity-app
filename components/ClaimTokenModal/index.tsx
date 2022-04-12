@@ -10,9 +10,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import {renderScissors, renderTomatoes, renderCoffee} from "../../utils/nftCounterFunctions";
 import MintingTokenView from "../MintingTokenView"
-//contracts and abis
+import {useNftsContext} from "../../context/NftsContext"
+
 import {
   diner_address,
   barber_address,
@@ -23,6 +23,7 @@ import {
 import coffeeImage from '../../public/assets/images/coffee.png'
 import tomatoImage from '../../public/assets/images/tomato.png'
 import scissorImage from '../../public/assets/images/scissors.png'
+declare const window: any;
 
 const web3 = new Web3(Web3.givenProvider);
 const style = {
@@ -43,22 +44,12 @@ export default function ClaimTokenModal({
 
 }: any) {
 const { account, active } = useWeb3React();
-const [scissors, setScissors] = useState(0);
-const [tomatoes, setTomatoes] = useState(0);
-const [coffee, setCoffee] = useState(0);
+const {tomatoes, scissors, coffee} = useNftsContext();
 const [minting, setMinting] = useState(false);
 const [minted, setMinted] = useState(false);
 const [notMinted, setNotMinted] = useState(false);
 const web3 = new Web3(Web3.givenProvider);
 
-
-useEffect(() => {
-    if (account) {
-      renderScissors(account).then((scissors) => setScissors(scissors));
-      renderTomatoes(account).then((tomatoes) => setTomatoes(tomatoes));
-      renderCoffee(account).then((coffee) => setCoffee(coffee));
-    }
-  }, [account]);
   async function mint(){
     const barberContract = new web3.eth.Contract(
       barberABI as any,

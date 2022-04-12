@@ -10,7 +10,7 @@ import {
   grocery_address,
   barber_address,
 } from "../constants/adresses/contracts";
-declare var window: any;
+declare const window: any;
 
 const web3 = new Web3(Web3.givenProvider);
 
@@ -18,20 +18,7 @@ const daiContract = new web3.eth.Contract(
     daiContractAbi as any,
     dai_address
   );
-
-const barberContract = new web3.eth.Contract(
-    barberContractAbi as any,
-    barber_address
-  );
-  const groceryContract = new web3.eth.Contract(
-    groceryContractAbi as any,
-    grocery_address
-  );
-  const dinerContract = new web3.eth.Contract(
-      dinerContractAbi as any, 
-      diner_address);
-
-    export async function getBarberAllowance(account){
+    export async function getBarberAllowance(account : string){
         try{
             return  (await daiContract.methods
                 .allowance(account, barber_address)
@@ -42,7 +29,7 @@ const barberContract = new web3.eth.Contract(
         }
     }
 
-    export async function getGroceryAllowance(account){
+    export async function getGroceryAllowance(account: string){
         try{
             return  (await daiContract.methods
                 .allowance(account, grocery_address)
@@ -53,7 +40,7 @@ const barberContract = new web3.eth.Contract(
         }
     }
 
-    export async function getDinerAllowance(account){
+    export async function getDinerAllowance(account: string){
         try{
             return  (await daiContract.methods
                 .allowance(account, diner_address)

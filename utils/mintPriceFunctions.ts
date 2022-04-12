@@ -50,7 +50,7 @@ const barberContract = new web3.eth.Contract(
 
     export async function getDinerPrice(account){
         try{
-            return (await barberContract.methods.getMintingPrice(account).call()) /
+            return (await dinerContract.methods.getMintingPrice(account).call()) /
             10 ** 18;
         }catch(error: any){
             console.log(error);
