@@ -1,5 +1,4 @@
 import React from "react";
-import UserLineIcon from "remixicon-react/UserLineIcon";
 import styles from "./ProfileWallet.module.css";
 import Button from "@material-ui/core/Button";
 import { useRouter } from "next/router";
@@ -7,6 +6,7 @@ import { useEffect, useState } from "react";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { AlertModal } from "../AlertModal/AlertModal";
 import {useConnectContext} from "../../context/ConnectContext"
+import PersonIcon from '@mui/icons-material/Person';
 declare let window: any;
 
 import NftsOwnedModal from "../NftsOwnedModal";
@@ -93,7 +93,7 @@ export default function ProfileWallet() {
     <>
       <div className={styles.profile}>
         <div className={styles.profileBox}>
-          <UserLineIcon color="white" size="36px" />
+          <PersonIcon  sx={{color: "white"}} fontSize="large" />
           <span style={{ color: "white" }}>
             {typeof account === "string" ? account?.substring(0, 8) : null} ...{typeof account === "string" ? account?.substring(-8, 8) : null}
           </span>
