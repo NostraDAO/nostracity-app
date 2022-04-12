@@ -59,7 +59,7 @@ const tableItemsStyle = {
   fontSize: "1em"
 }
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
-  const {chainId, account, active, activate, deactivate } = useConnectContext();
+  const {chain, account, active, activate, deactivate } = useConnectContext();
   const { tomatoes, scissors, coffee } = useNftsContext();
   const [barberScore, setBarberScore] = useState<Score>();
   const [groceryScore, setGroceryScore] = useState<Score>();
