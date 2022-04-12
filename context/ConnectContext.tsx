@@ -7,7 +7,7 @@ declare const window: any;
 
 const defaultConnect: ConnectType = {
     chain:  null,
-    account: '',
+    acc: '',
     active: false,
     activate: () => Promise.resolve(false),
     deactivate: () => Promise.resolve(false)
