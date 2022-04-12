@@ -22,10 +22,7 @@ import styles from "./RankingModal.module.css";
 import {
   getBarberScore,
   getGroceryScore,
-  getDinerScore,
-  getOwnedBarber,
-  getOwnedGrocery,
-  getOwnedDiner,
+  getDinerScore
 } from "../../utils/nftScoresFunctions";
 import {useConnectContext} from "../../context/ConnectContext"
 import {useNftsContext} from "../../context/NftsContext"
