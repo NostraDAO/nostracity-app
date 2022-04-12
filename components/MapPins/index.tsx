@@ -1,8 +1,10 @@
+
+//TODO: move the modals into a new component with the states 
+//TODO: a make the text into constants as well
+//TODO: check if one state could fit to all cases and then on the modals component 
+
 import React, { useState, useEffect, InputHTMLAttributes } from "react";
 import styles from "./MapPins.module.css";
-import PushPin2FillIcon from "remixicon-react/Pushpin2FillIcon";
-import BankFillIcon from "remixicon-react/BankFillIcon";
-import TrophyLineIcon from "remixicon-react/TrophyLineIcon";
 import IconButton from "@material-ui/core/IconButton";
 import FedoraIcon from "../../public/assets/icons/fedora.png";
 import { CustomModal } from "../CustomModal/CustomModal";
@@ -20,26 +22,14 @@ import {
   grocery_address,
   dai_address,
 } from "../../constants/adresses/contracts";
-import {
-  getBarberLimit,
-  getGroceryLimit,
-  getDinerLimit,
-} from "../../utils/nftLimitFunctions";
-import {
-  getBarberRemain,
-  getGroceryRemain,
-  getDinerRemain,
-} from "../../utils/remainingNftFunctions";
-import {barberMintPrice, groceryMintPrice, dinerMintPrice} from  "../../utils/mintPriceFunctions";
-import { barberAllowance, groceryAllowance, dinerAllowance} from "../../utils/allowanceFunctions";
-
 import { styled } from "@mui/material/styles";
 import NoSsr from "@material-ui/core/NoSsr";
-const Web3 = require("web3");
+import  Web3  from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+import {CustomTooltip} from "../CustomTooltip"
 import barberImg from "../../public/assets/images/barber.png";
 import groceryImg from "../../public/assets/images/grocery.png";
 import dinerImg from "../../public/assets/images/diner.png";
@@ -49,27 +39,17 @@ import {
   palette,
   spacing,
 } from "@material-ui/system";
-import gunCursor from "../../public/assets/icons/cursor.png";
+import {useConnectContext} from "../../context/ConnectContext"
+import { useMintContext} from "../../context/MintContext"
+import {barberText, groceryText, dinerText, bankText, rankText, claimText} from "../../constants/tooltipsText"
 const styleFunction = styleFunctionSx(compose(spacing, palette));
-
-declare var window: any;
+declare let window: any;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     "&.MuiIconButton-root	": {
       color: "#93100D",
     },
-  },
-}));
-const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: "#F3DFC1",
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-    fontFamily: "OldNewspaperTypes",
   },
 }));
 
@@ -94,163 +74,86 @@ export default function MapPins() {
   const [isApproving, setIsApproving] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [allowanceValueBarber, setAllowanceValueBarber] = useState(0);
-  const [allowanceValueGrocery, setAllowanceValueGrocery] = useState(0);
-  const [allowanceValueDiner, setAllowanceValueDiner] = useState(0);
-  const [mintPriceBarber, setMintPriceBarber] = useState(0);
-  const [mintPriceGrocery, setMintPriceGrocery] = useState(0);
-  const [mintPriceDiner, setMintPriceDiner] = useState(0);
   const [barberQuantity, setBarberQuantity] = useState<number>(0);
   const [groceryQuantity, setGroceryQuantity] = useState<number>(0);
   const [dinerQuantity, setDinerQuantity] = useState<number>(0);
   const [lockInput, setLockInput] = useState(false);
-  const [barberLimit, setBarberLimit] = useState<number>(0);
-  const [groceryLimit, setGroceryLimit] = useState<number>(0);
-  const [dinerLimit, setDinerLimit] = useState<number>(0);
-  const [barberRemain, setBarberRemain] = useState<number>(0);
-  const [groceryRemain, setGroceryRemain] = useState<number>(0);
-  const [dinerRemain, setDinerRemain] = useState<number>(0);
-
+  
   let totalValueBarber: any;
   let totalValueGrocery: any;
   let totalValueDiner: any;
   const classes = useStyles();
-  const { account, active } = useWeb3React();
-
+ const {chain, account, active} = useConnectContext();
+ const {
+  barberPrice,
+  groceryPrice, 
+  dinerPrice,
+  barberAllowance, 
+  groceryAllowance,   
+  dinerAllowance, 
+  barberLimit,
+  groceryLimit,
+  dinerLimit,
+  barberRemain,
+  dinerRemain,
+  groceryRemain
+} = useMintContext();
   const web3 = new Web3(Web3.givenProvider);
 
-  async function getChainId() {
-    let chainId = await web3.eth.getChainId();
-    return chainId;
-  }
-
-  async function barberAllowanceChecker() {
-    const chainId = await getChainId();
-    if (chainId == 43114 || chainId == 43113) {
-      let allowanceTx;
-      let mintPrice;
-      try {
-        mintPrice = await barberMintPrice(account);
-        allowanceTx = await barberAllowance(account);
-        setMintPriceBarber(mintPrice);
-        setAllowanceValueBarber(allowanceTx);
-        if (allowanceValueBarber >= mintPriceBarber) {
-          setApprovedBarber(true);
-          setBtnTextBarber("Mint");
-        } else {
-          setApprovedBarber(false);
-          setBtnTextBarber("Approve");
-        }
-      } catch (err: any) {
-        console.log(
-          "Error on getting mint price for Scissors or allowance of DAI.e: ",
-          err.message
-        );
+  function barberAllowanceChecker() {
+    if (chain == 43114 || chain == 43113) {
+      if (barberAllowance! >= barberPrice!) {
+        setApprovedBarber(true);
+        setBtnTextBarber("Mint");
+      } else {
+        setApprovedBarber(false);
+        setBtnTextBarber("Approve");
       }
     }
   }
 
-  async function groceryAllowanceChecker() {
-    const chainId = await getChainId();
-    if (chainId == 43114 || chainId == 43113) {
-      let allowanceTx;
-      let mintPrice;
-      try {
-      mintPrice = await groceryMintPrice(account);
-        allowanceTx = await groceryAllowance(account);
-        setMintPriceGrocery(mintPrice);
-        setAllowanceValueGrocery(allowanceTx);
-        if (allowanceValueGrocery >= mintPriceGrocery) {
-          setApprovedGrocery(true);
-          setBtnTextGrocery("Mint");
-        } else {
-          setApprovedGrocery(false);
-          setBtnTextGrocery("Approve");
-        }
-      } catch (err: any) {
-        console.log(
-          "Error on getting mint price for Tomatoes  or allowance of DAI.e: ",
-          err.message
-        );
+  function groceryAllowanceChecker() {
+    if (chain == 43114 || chain == 43113) {
+      if (groceryAllowance! >= groceryPrice!) {
+        setApprovedGrocery(true);
+        setBtnTextGrocery("Mint");
+      } else {
+        setApprovedGrocery(false);
+        setBtnTextGrocery("Approve");
       }
     }
   }
 
-  async function dinerAllowanceChecker() {
-    const chainId = await getChainId();
-    if (chainId == 43114 || chainId == 43113) {
-      let allowanceTx;
-      let mintPrice;
-      try {
-        mintPrice = await dinerMintPrice(account);
-        allowanceTx = await dinerAllowance(account);
-        setMintPriceDiner(mintPrice);
-        setAllowanceValueDiner(allowanceTx);
-        if (allowanceValueDiner >= mintPriceDiner) {
-          setApprovedDiner(true);
-          setBtnTextDiner("Mint");
-        } else {
-          setApprovedDiner(false);
-          setBtnTextDiner("Approve");
-        }
-      } catch (err: any) {
-        console.log(
-          "Error on getting mint price for Coffee or allowance of DAI: ",
-          err.message
-        );
+    function dinerAllowanceChecker() {
+    if (chain == 43114 || chain == 43113) {
+      if (dinerAllowance! >= dinerPrice!) {
+        setApprovedDiner(true);
+        setBtnTextDiner("Mint");
+      } else {
+        setApprovedDiner(false);
+        setBtnTextDiner("Approve");
       }
     }
   }
 
-  async function getMinimalAllowance() {
+  function getMinimalAllowance() {
     if (account) {
-      await barberAllowanceChecker();
-      await groceryAllowanceChecker();
-      await dinerAllowanceChecker();
+      barberAllowanceChecker();
+      groceryAllowanceChecker();
+      dinerAllowanceChecker();
     }
   }
 
   useEffect(() => {
     let passed = true;
-    if (typeof window.ethereum !== "undefined" && account && passed) {
+    if (account) {
       getMinimalAllowance();
-      getBarberRemain().then((remain) => {
-        setBarberRemain(remain);
-      });
-
-      getGroceryRemain().then((remain) => {
-        setGroceryRemain(remain);
-      });
-      getDinerRemain().then((remain) => {
-        setDinerRemain(remain);
-      });
-
-      getBarberLimit().then((amount) => {
-        setBarberLimit(amount);
-      });
-
-      getGroceryLimit().then((amount) => {
-        setGroceryLimit(amount);
-      });
-
-      getDinerLimit().then((amount) => {
-        setDinerLimit(amount);
-      });
     }
     return () => {
       passed = false;
     };
   }, [
-    account,
-    allowanceValueBarber,
-    allowanceValueGrocery,
-    allowanceValueDiner,
-    barberLimit,
-    groceryLimit,
-    dinerLimit,
-    barberRemain,
-    groceryRemain,
-    dinerRemain,
+    account
   ]);
 
   const handleOpen = (item: string) => {
@@ -293,15 +196,15 @@ export default function MapPins() {
     item: string
   ) => {
     switch (item) {
-      case "barber": {
+      case "barber": 
         setBarberQuantity(Number((event.target as HTMLInputElement).value));
-      }
-      case "grocery": {
+      break;      
+      case "grocery": 
         setGroceryQuantity(Number((event.target as HTMLInputElement).value));
-      }
-      case "diner": {
+      break;
+      case "diner": 
         setDinerQuantity(Number((event.target as HTMLInputElement).value));
-      }
+      break;
     }
     setIsError(false);
     setErrorMessage("");
@@ -355,16 +258,16 @@ export default function MapPins() {
     );
     barberAllowanceChecker();
     //complete the function to get the total amount of nft
-    if (barberQuantity >= barberLimit) {
+    if (barberQuantity >= barberLimit!) {
       setIsError(true);
       setErrorMessage(`Nft limit exceeded on this account: ${barberLimit}`);
       setIsProcessing(true);
     }
-    totalValueBarber = barberQuantity * mintPriceBarber;
-    let weiBarber = web3.utils.toWei(totalValueBarber.toString());
+    totalValueBarber = barberQuantity * barberPrice!;
+    const weiBarber = web3.utils.toWei(totalValueBarber.toString());
 
     if (!approvedBarber) {
-      if (barberQuantity <= barberLimit) {
+      if (barberQuantity <= barberLimit!) {
         try {
           approveTx = daiContract.methods
             .approve(barber_address, weiBarber)
@@ -406,9 +309,9 @@ export default function MapPins() {
       }
     }
     if (approvedBarber) {
-      if (barberQuantity <= barberLimit) {
+      if (barberQuantity <= barberLimit!) {
         try {
-          let mintTx = barberContract.methods
+          const mintTx = barberContract.methods
             .safeMint(barberQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
@@ -424,9 +327,6 @@ export default function MapPins() {
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Scissor minted successfully!!");
-              getBarberRemain().then((remain) => {
-                setBarberRemain(remain);
-              });
               barberAllowanceChecker();
             })
             .on("error", (err: any) => {
@@ -468,10 +368,10 @@ export default function MapPins() {
     );
     groceryAllowanceChecker();
     //complete the function to get the total amount of nft
-    totalValueGrocery = groceryQuantity * mintPriceGrocery;
-    let weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
+    totalValueGrocery = groceryQuantity * groceryPrice!;
+    const weiGrocery = web3.utils.toWei(totalValueGrocery.toString());
     if (!approvedGrocery) {
-      if (groceryQuantity <= groceryLimit) {
+      if (groceryQuantity <= groceryLimit!) {
         try {
           approveTx = daiContract.methods
             .approve(grocery_address, weiGrocery)
@@ -514,9 +414,9 @@ export default function MapPins() {
       }
     }
     if (approvedGrocery) {
-      if (groceryQuantity <= groceryLimit) {
+      if (groceryQuantity <= groceryLimit!) {
         try {
-          let mintTx = groceryContract.methods
+          const mintTx = groceryContract.methods
             .safeMint(groceryQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
@@ -533,9 +433,6 @@ export default function MapPins() {
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Tomatoe minted sucessfully!");
-              getGroceryRemain().then((remain) => {
-                setGroceryRemain(remain);
-              });
               groceryAllowanceChecker();
             })
             .on("error", (err: any) => {
@@ -578,11 +475,11 @@ export default function MapPins() {
     );
     dinerAllowanceChecker();
     //complete the function to get the total amount of nft
-    totalValueDiner = dinerQuantity * mintPriceDiner;
+    totalValueDiner = dinerQuantity * dinerPrice!;
     //convert into big number and then into wei
-    let weiDiner = web3.utils.toWei(totalValueDiner.toString());
+    const weiDiner = web3.utils.toWei(totalValueDiner.toString());
     if (!approvedDiner) {
-      if (dinerQuantity <= dinerLimit) {
+      if (dinerQuantity <= dinerLimit!) {
         try {
           approveTx = daiContract.methods
             .approve(diner_address, weiDiner)
@@ -625,9 +522,9 @@ export default function MapPins() {
       }
     }
     if (approvedDiner) {
-      if (dinerQuantity <= dinerLimit) {
+      if (dinerQuantity <= dinerLimit!) {
         try {
-          let mintTx = dinerContract.methods
+          const mintTx = dinerContract.methods
             .safeMint(dinerQuantity)
             .send({ from: account })
             .on("transactionHash", function (hash: any) {
@@ -643,9 +540,6 @@ export default function MapPins() {
               setIsProcessing(false);
               setIsSucessful(true);
               setSucessfulMessage("Coffee minted sucessfully!");
-              getDinerRemain().then((remain) => {
-                setDinerRemain(remain);
-              });
               dinerAllowanceChecker();
             })
             .on("error", (err: any) => {
@@ -715,30 +609,18 @@ export default function MapPins() {
   function handleNftPriceQuantity(item) {
     switch (item) {
       case "barber": {
-        return mintPriceBarber * barberQuantity + " DAI.e";
+        return barberPrice! * barberQuantity + " DAI.e";
       }
       case "grocery": {
-        return mintPriceGrocery * groceryQuantity + " DAI.e";
+        return groceryPrice! * groceryQuantity + " DAI.e";
       }
       case "diner": {
-        return mintPriceDiner * dinerQuantity + " DAI.e";
+        return dinerPrice! * dinerQuantity + " DAI.e";
       }
     }
   }
 
-  const barberText =
-    "Hector Barbershop - Managed by the Colombo Family. Click to buy scissors.";
-  const groceryText =
-    "Rome Grocery Store - Managed by the Gambino Family. Click to buy tomatoes.";
-  const dinerText =
-    "Olympus Diner - Managed by the Genovese Family. Click to buy coffees.";
-
-  const bankText = "Bank. Check our valuable assets";
-
-  const rankText =
-    "Check the competition and which family is on the top at the moment";
-
-  const claimText = "Check how much tokens you can claim from your family ties!"
+  
   return (
     <>
       <AlertModal isOpen={isOpenAlert} handleClose={() => handleAlertClose()}>
@@ -881,10 +763,7 @@ export default function MapPins() {
         handleClose={() => handleClose("bank")}
         title="Bank"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam,
-        cupiditate.
       </BankModal>
-
       <RankingModal
         name="rank"
         isOpen={isOpenRank}
@@ -897,7 +776,6 @@ export default function MapPins() {
        handleClose={() => handleClose("claim")}
       >
         </ClaimTokenModal>
-      // Icons on the map
       <NoSsr>
         <div className={styles.mapPins}>
           <CustomTooltip

@@ -12,27 +12,15 @@ import {
   diner_address,
   grocery_address,
 } from "../../constants/adresses/contracts";
-import {renderScissors, renderTomatoes, renderCoffee} from "../../utils/nftCounterFunctions"
+import { useNftsContext } from "../../context/NftsContext"
 import coffeeImage from '../../public/assets/images/coffee.png'
 import tomatoImage from '../../public/assets/images/tomato.png'
 import scissorImage from '../../public/assets/images/scissors.png'
 
 
 export default function NftList({ account }: any) {
-  const web3 = new Web3(Web3.givenProvider);
-
-  const [scissors, setScissors] = useState(0);
-  const [tomatoes, setTomatoes] = useState(0);
-  const [coffee, setCoffee] = useState(0);
-
-  useEffect(() => {
-    if (account) {
-      renderScissors(account).then((scissors) => setScissors(scissors));
-      renderTomatoes(account).then((tomatoes) => setTomatoes(tomatoes));
-      renderCoffee(account).then((coffee) => setCoffee(coffee));
-    }
-  }, [scissors, coffee, tomatoes]);
-
+const web3 = new Web3(Web3.givenProvider);
+const {tomatoes, coffee, scissors} = useNftsContext();
   return (
     <Container fixed>
       <Box>

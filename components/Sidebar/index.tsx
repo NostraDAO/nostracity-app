@@ -121,7 +121,7 @@ export default function Sidebar() {
         }}
       >
         <MenuItem component="a" href="https://twitter.com/Nostra_City" target="_blank" onClick={handleClose}>Twitter</MenuItem>
-        <MenuItem component="a" href="https://discord.gg/nostracityhq" target="_blank" onClick={handleClose}>Discord</MenuItem>
+        <MenuItem component="a" href="http://discord.gg/rFSxg4BUGb" target="_blank" onClick={handleClose}>Discord</MenuItem>
         <MenuItem component="a" href="https://t.me/NostraCity" target="_blank" onClick={handleClose}>Telegram</MenuItem>
         <MenuItem component="a" href="https://medium.com/@nostracity" target="_blank" onClick={handleClose}>Medium</MenuItem>
 
