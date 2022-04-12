@@ -59,7 +59,7 @@ const tableItemsStyle = {
   fontSize: "1em"
 }
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
-  const {chain, account, active, activate, deactivate } = useConnectContext();
+  const {chain, acc, active, activate, deactivate } = useConnectContext();
   const { tomatoes, scissors, coffee } = useNftsContext();
   const [barberScore, setBarberScore] = useState<Score>();
   const [groceryScore, setGroceryScore] = useState<Score>();
@@ -145,14 +145,14 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
   useEffect(() => {
     let active = true;
-    if (typeof window.ethereum != "undefined" && account) {
+    if (typeof window.ethereum != "undefined" && acc) {
       getOwnedNfts();
       handleRanking();
     }
     return () => {
       active = false;
     };
-  }, [rankArray.length, account, dinerScore?.score, barberScore?.score, groceryScore?.score, ownsNft]);
+  }, [rankArray.length, acc, dinerScore?.score, barberScore?.score, groceryScore?.score, ownsNft]);
 
   return (
     <div>

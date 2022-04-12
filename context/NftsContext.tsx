@@ -18,7 +18,7 @@ const defaultNfts: NftsContextType = {
     scissors: 0
 }
 const web3 = new Web3(Web3.givenProvider);
-
+declare const window: any;
 
 const groceryContract = new web3.eth.Contract(groceryABI as any, grocery_address);
 const barberContract = new web3.eth.Contract(barberABI as any, barber_address);
@@ -30,13 +30,13 @@ export function useNftsContext(){
 return useContext(NftsContext);
 }
 export const NftsProvider = ({children}) => {
-    const { account } = useWeb3React();
+    const { account, active} = useWeb3React();
     const [scissors, setScissors] = useState<number>(0);
     const [tomatoes, setTomatoes] = useState<number>(0);
     const [coffee, setCoffee] = useState<number>(0);
 
     useEffect(() => {
-        if(account){
+        if(window.ethereum !== undefined && account){
         countCoffee(account).then(coffee => setCoffee(coffee));
         countTomatoes(account).then(tomatoes => setTomatoes(tomatoes));
         countScissors(account).then(scissors => setScissors(scissors));
