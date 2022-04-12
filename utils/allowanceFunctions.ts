@@ -10,7 +10,7 @@ import {
   grocery_address,
   barber_address,
 } from "../constants/adresses/contracts";
-declare var window: any;
+declare const window: any;
 
 const web3 = new Web3(Web3.givenProvider);
 

@@ -6,7 +6,7 @@ import { useWeb3React } from "@web3-react/core";
 
 const defaultConnect: ConnectType = {
     chain:  null,
-    account: null,
+    account: '',
     active: false,
     activate: () => Promise.resolve(false),
     deactivate: () => Promise.resolve(false)
@@ -17,7 +17,7 @@ const ConnectContext = createContext<ConnectType>(defaultConnect);
 export function useConnectContext(){
 return useContext(ConnectContext);
 }
-const ConnectProvider = ({children} ) => {
+const ConnectProvider = ({children} : Props) => {
     const { account, active, activate, deactivate } = useWeb3React();
     const [ chain, setChain] = useState<number>();
     

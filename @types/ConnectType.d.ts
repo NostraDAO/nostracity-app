@@ -1,6 +1,6 @@
 export interface ConnectType {
     chain:  number | null | undefined;
-    account: number | null | undefined | string;
+    account: string;
     active: boolean | null | undefined;
     activate: any;
     deactivate: any;

@@ -43,7 +43,6 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
         ? setTvl(getScoreSum())
         : "Wallet not connected!";
     }
-    console.log('tvl', tvl)
     return () => {
       active = false;
     };

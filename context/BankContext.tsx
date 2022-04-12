@@ -23,7 +23,6 @@ const BankProvider = ({children}) => {
             getBarberScore().then(score => setBarberScore(score.score))
             getGroceryScore().then(score => setGroceryScore(score.score))
             getDinerScore().then(score => setDinerScore(score.score))
-            console.log(dinerScore, groceryScore, barberScore)
     }, [])
     return <BankContext.Provider value={{groceryScore, barberScore, dinerScore}}>{children}</BankContext.Provider>;
 
