@@ -9,3 +9,6 @@ export const barberText =
 
   export const rankText =
     "Check the competition and which family is on the top at the moment";
+
+    export const claimText =
+    "Claim your $BOSS Token, take your bribe of the family";
