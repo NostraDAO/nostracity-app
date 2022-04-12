@@ -4,7 +4,6 @@ import styles from "./ProfileWallet.module.css";
 import Button from "@material-ui/core/Button";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useWeb3React } from "@web3-react/core";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { AlertModal } from "../AlertModal/AlertModal";
 import {useConnectContext} from "../../context/ConnectContext"
@@ -96,7 +95,7 @@ export default function ProfileWallet() {
         <div className={styles.profileBox}>
           <UserLineIcon color="white" size="36px" />
           <span style={{ color: "white" }}>
-            {account?.substr(0, 8)}...{account?.substr(-8, 8)}
+            {typeof account === "string" ? account?.substring(0, 8) : null} ...{typeof account === "string" ? account?.substring(-8, 8) : null}
           </span>
           {active ? (
             <Button onClick={logout} variant="contained" color="primary">

@@ -29,7 +29,7 @@ const NftsContext = createContext<NftsContextType>(defaultNfts);
 export function useNftsContext(){
 return useContext(NftsContext);
 }
-export const NftsProvider = ({children}: {children: ReactNode}) => {
+export const NftsProvider = ({children}) => {
     const { account } = useWeb3React();
     const [scissors, setScissors] = useState<number>(0);
     const [tomatoes, setTomatoes] = useState<number>(0);
