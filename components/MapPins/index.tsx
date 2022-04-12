@@ -268,6 +268,7 @@ export default function MapPins() {
 
     if (!approvedBarber) {
       if (barberQuantity <= barberLimit!) {
+        console.log('chegou aqui')
         try {
           approveTx = daiContract.methods
             .approve(barber_address, weiBarber)
@@ -521,7 +522,7 @@ export default function MapPins() {
         setLockInput(false);
       }
     }
-    if (approvedDiner) {
+    if (approvedDiner ) {
       if (dinerQuantity <= dinerLimit!) {
         try {
           const mintTx = dinerContract.methods

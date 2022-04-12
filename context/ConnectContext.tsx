@@ -28,11 +28,11 @@ const ConnectProvider = ({children}) => {
     }
     useEffect(() => {
         getChain();    
-        if(window.ethereum !== "undefined" && typeof account == "string"){
+        if(window.ethereum !== "undefined" && account){
             setAcc(account)
             console.log(acc)
         }
-    }, [acc, account])
+    }, [account])
     
      return <ConnectContext.Provider value={{chain, acc, active, activate, deactivate}}>{children}</ConnectContext.Provider>;
 

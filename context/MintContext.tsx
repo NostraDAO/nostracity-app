@@ -1,7 +1,7 @@
 import React, {createContext, useEffect, useState, ReactNode, useContext }from 'react';
 import {MintContextType} from  "../@types/MintContextType";
 import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
+import { useConnectContext } from './ConnectContext';
 import { getBarberAllowance, getDinerAllowance, getGroceryAllowance} from "../utils/allowanceFunctions"
 import {getBarberPrice, getGroceryPrice, getDinerPrice} from "../utils/mintPriceFunctions"
 import {getBarberLimit, getGroceryLimit, getDinerLimit} from "../utils/nftLimitFunctions"
@@ -29,7 +29,7 @@ export function useMintContext(){
 return useContext(MintContext);
 }
 const MintProvider = ({children}) => {
-     const { account} = useWeb3React();
+     const { acc} = useConnectContext();
      const [barberPrice, setBarberPrice] = useState<number | undefined>(0)
      const [groceryPrice, setGroceryPrice] = useState<number | undefined>(0)
      const [ dinerPrice, setDinerPrice] = useState<number | undefined>(0)
@@ -45,16 +45,14 @@ const MintProvider = ({children}) => {
 
 
     useEffect(() => {
-        if(window.ethereum !== "undefined" && account){
+        if(window.ethereum !== "undefined" && acc){
+        getBarberPrice(acc).then(price => setBarberPrice(price))
+        getGroceryPrice(acc).then(price => setGroceryPrice(price))
+        getDinerPrice(acc).then(price => setDinerPrice(price))
 
-        
-        getBarberPrice(account).then(price => setBarberPrice(price))
-        getGroceryPrice(account).then(price => setGroceryPrice(price))
-        getDinerPrice(account).then(price => setDinerPrice(price))
-
-        getBarberAllowance(account).then(allowance => setBarberAllowance(allowance))
-        getGroceryAllowance(account).then(allowance => setGroceryAllowance(allowance))
-        getDinerAllowance(account).then(allowance => setDinerAllowance(allowance))
+        getBarberAllowance(acc).then(allowance => setBarberAllowance(allowance))
+        getGroceryAllowance(acc).then(allowance => setGroceryAllowance(allowance))
+        getDinerAllowance(acc).then(allowance => setDinerAllowance(allowance))
 
         getBarberLimit().then(limit => setBarberLimit(limit))
         getGroceryLimit().then(limit => setGroceryLimit(limit))
@@ -64,7 +62,7 @@ const MintProvider = ({children}) => {
         getGroceryRemain().then(remain => setGroceryRemain(remain))
         getDinerRemain().then(remain => setDinerRemain(remain))
         }
-    }, [])
+    }, [acc])
     return <MintContext.Provider value={{
         barberPrice, 
         groceryPrice, 

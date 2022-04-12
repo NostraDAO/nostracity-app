@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import Web3 from "web3";
 import barberABI from "../abi/BarberShopNFT.json";
 import groceryABI from "../abi/GroceryStoreNFT.json";
@@ -21,7 +22,11 @@ interface MintProps {
     error: any | undefined;
 }
 export async function barberMint(account:any , quantity:number) {
-let mintObj: MintProps = {}
+let mintObj: MintProps = {
+  hash: undefined,
+  receipt: undefined,
+  error: undefined
+}
  try { barberContract.methods
     .safeMint(quantity)
     .send({ from: account })
@@ -38,8 +43,8 @@ let mintObj: MintProps = {}
     } catch (err: any) {
     console.log("err mint", err);
     mintObj.error = err;
-    }finally {
-        return mintObj;
     }
+        return mintObj;
+    
 }
  
