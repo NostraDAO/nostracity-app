@@ -27,7 +27,7 @@ const style = {
 };
 
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
-  const [tvl, setTvl] = useState();
+  const [tvl, setTvl] = useState<number>(0);
   const {chain, account } = useConnectContext();
   const {barberScore, dinerScore, groceryScore} = useBankContext()
 
