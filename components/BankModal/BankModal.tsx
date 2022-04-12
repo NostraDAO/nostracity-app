@@ -32,9 +32,7 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const {barberScore, dinerScore, groceryScore} = useBankContext()
 
   function getScoreSum() {
-    const totalScore;
-      console.log(barberScore, dinerScore, groceryScore)
-      totalScore = barberScore + dinerScore + groceryScore;
+    const  totalScore = barberScore + dinerScore + groceryScore;
       return totalScore;
   }
 
