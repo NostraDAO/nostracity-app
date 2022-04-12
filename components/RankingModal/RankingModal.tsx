@@ -69,8 +69,8 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
 
   async function getOwnedNfts() {
     if (
-      tomatoes > 0 |
-      coffee > 0 |
+      tomatoes > 0 ||
+      coffee > 0 ||
       scissors > 0
     ) {
       setOwnsNft(true);
