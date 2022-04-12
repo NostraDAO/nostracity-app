@@ -34,7 +34,7 @@ import {
 
 import { styled } from "@mui/material/styles";
 import NoSsr from "@material-ui/core/NoSsr";
-const Web3 = require("web3");
+import  Web3 = require("web3");
 import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
@@ -202,15 +202,15 @@ export default function MapPins() {
     item: string
   ) => {
     switch (item) {
-      case "barber": {
+      case "barber": 
         setBarberQuantity(Number((event.target as HTMLInputElement).value));
-      }
-      case "grocery": {
+      break;      
+      case "grocery": 
         setGroceryQuantity(Number((event.target as HTMLInputElement).value));
-      }
-      case "diner": {
+      break;
+      case "diner": 
         setDinerQuantity(Number((event.target as HTMLInputElement).value));
-      }
+      break;
     }
     setIsError(false);
     setErrorMessage("");
