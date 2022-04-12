@@ -22,6 +22,7 @@ const defaultMint: MintContextType = {
     groceryRemain: 0
 }
 const web3 = new Web3(Web3.givenProvider);
+declare const window: any;
 const MintContext = createContext<MintContextType>(defaultMint);
 
 export function useMintContext(){
@@ -44,6 +45,9 @@ const MintProvider = ({children}) => {
 
 
     useEffect(() => {
+        if(window.ethereum !== "undefined" && account){
+
+        
         getBarberPrice(account).then(price => setBarberPrice(price))
         getGroceryPrice(account).then(price => setGroceryPrice(price))
         getDinerPrice(account).then(price => setDinerPrice(price))
@@ -59,7 +63,7 @@ const MintProvider = ({children}) => {
         getBarberRemain().then(remain => setBarberRemain(remain))
         getGroceryRemain().then(remain => setGroceryRemain(remain))
         getDinerRemain().then(remain => setDinerRemain(remain))
-        
+        }
     }, [])
     return <MintContext.Provider value={{
         barberPrice, 

@@ -18,7 +18,7 @@ export default function ProfileWallet() {
   const [networkMessage, setNetworkMessage] = useState("");
   const [connected, setConnected] = useState(false);
   const [connectedMessage, setConnectedMessage] = useState("");
-  const {chain, account, active, activate, deactivate } = useConnectContext();
+  const {chain, acc, active, activate, deactivate } = useConnectContext();
 
   async function getChainId() {
     if(chain !== 43114 && process.env.NODE_ENV == 'production'){
@@ -95,7 +95,7 @@ export default function ProfileWallet() {
         <div className={styles.profileBox}>
           <PersonIcon  sx={{color: "white"}} fontSize="large" />
           <span style={{ color: "white" }}>
-            {typeof account === "string" ? account?.substring(0, 8) : null} ...{typeof account === "string" ? account?.substring(-8, 8) : null}
+            {typeof acc === "string" ? acc?.substring(0, 8) : null} ...{typeof acc === "string" ? acc?.substring(-8, 8) : null}
           </span>
           {active ? (
             <Button onClick={logout} variant="contained" color="primary">

@@ -83,7 +83,7 @@ export default function MapPins() {
   let totalValueGrocery: any;
   let totalValueDiner: any;
   const classes = useStyles();
- const {chain, account, active} = useConnectContext();
+ const {chain, acc, active} = useConnectContext();
  const {
   barberPrice,
   groceryPrice, 
@@ -137,7 +137,7 @@ export default function MapPins() {
   }
 
   function getMinimalAllowance() {
-    if (account) {
+    if (acc) {
       barberAllowanceChecker();
       groceryAllowanceChecker();
       dinerAllowanceChecker();
@@ -146,14 +146,14 @@ export default function MapPins() {
 
   useEffect(() => {
     let passed = true;
-    if (account) {
+    if (acc) {
       getMinimalAllowance();
     }
     return () => {
       passed = false;
     };
   }, [
-    account
+    acc
   ]);
 
   const handleOpen = (item: string) => {
@@ -271,7 +271,7 @@ export default function MapPins() {
         try {
           approveTx = daiContract.methods
             .approve(barber_address, weiBarber)
-            .send({ from: account })
+            .send({ from: acc })
             .on("transactionHash", function (hash: any) {
               setBtnTextBarber("Approving...");
               setIsError(false);
@@ -313,7 +313,7 @@ export default function MapPins() {
         try {
           const mintTx = barberContract.methods
             .safeMint(barberQuantity)
-            .send({ from: account })
+            .send({ from: acc })
             .on("transactionHash", function (hash: any) {
               setBtnTextBarber("Minting...");
               setIsError(false);
@@ -375,7 +375,7 @@ export default function MapPins() {
         try {
           approveTx = daiContract.methods
             .approve(grocery_address, weiGrocery)
-            .send({ from: account })
+            .send({ from: acc })
             .on("transactionHash", function (hash: any) {
               setBtnTextGrocery("Approving...");
               setIsError(false);
@@ -418,7 +418,7 @@ export default function MapPins() {
         try {
           const mintTx = groceryContract.methods
             .safeMint(groceryQuantity)
-            .send({ from: account })
+            .send({ from: acc })
             .on("transactionHash", function (hash: any) {
               setBtnTextGrocery("Minting...");
               setIsError(false);
@@ -483,7 +483,7 @@ export default function MapPins() {
         try {
           approveTx = daiContract.methods
             .approve(diner_address, weiDiner)
-            .send({ from: account })
+            .send({ from: acc })
             .on("transactionHash", function (hash: any) {
               setBtnTextDiner("Approving...");
               setIsError(false);
@@ -526,7 +526,7 @@ export default function MapPins() {
         try {
           const mintTx = dinerContract.methods
             .safeMint(dinerQuantity)
-            .send({ from: account })
+            .send({ from: acc })
             .on("transactionHash", function (hash: any) {
               setBtnTextDiner("Minting...");
               setIsError(false);

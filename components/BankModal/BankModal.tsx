@@ -28,7 +28,7 @@ const style = {
 
 export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   const [tvl, setTvl] = useState<number>(0);
-  const {chain, account } = useConnectContext();
+  const {chain, acc } = useConnectContext();
   const {barberScore, dinerScore, groceryScore} = useBankContext()
 
   function getScoreSum() {
@@ -39,15 +39,14 @@ export const BankModal = ({ isOpen, handleClose, title, children }: any) => {
   useEffect(() => {
     let active = true;
     if ((typeof window.ethereum !== "undefined" && active) && chain == 43114 || chain == 43113) {
-      account
+      acc
         ? setTvl(getScoreSum())
         : "Wallet not connected!";
     }
-    console.log('tvl', tvl)
     return () => {
       active = false;
     };
-  }, [account]);
+  }, [acc]);
 
   return (
     <div>
