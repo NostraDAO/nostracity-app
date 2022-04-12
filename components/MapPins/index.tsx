@@ -5,9 +5,6 @@
 
 import React, { useState, useEffect, InputHTMLAttributes } from "react";
 import styles from "./MapPins.module.css";
-import PushPin2FillIcon from "remixicon-react/Pushpin2FillIcon";
-import BankFillIcon from "remixicon-react/BankFillIcon";
-import TrophyLineIcon from "remixicon-react/TrophyLineIcon";
 import IconButton from "@material-ui/core/IconButton";
 import FedoraIcon from "../../public/assets/icons/fedora.png";
 import { CustomModal } from "../CustomModal/CustomModal";
