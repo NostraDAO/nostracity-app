@@ -34,7 +34,7 @@ import {
 
 import { styled } from "@mui/material/styles";
 import NoSsr from "@material-ui/core/NoSsr";
-import  Web3 = require("web3");
+import  Web3  from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
