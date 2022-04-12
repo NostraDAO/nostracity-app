@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import MintingTokenView from "./MintingTokenView"
 import SuccessMintTokenView from "./SuccessMintTokenView"
+import ErrorMintTokenView from './ErrorMintTokenView';
 import { useNftsContext } from "../../context/NftsContext"
 
 import {
@@ -24,7 +25,6 @@ import {
 import coffeeImage from '../../public/assets/images/coffee.png'
 import tomatoImage from '../../public/assets/images/tomato.png'
 import scissorImage from '../../public/assets/images/scissors.png'
-import ErrorMintTokenView from './ErrorMintTokenView';
 declare const window: any;
 
 const web3 = new Web3(Web3.givenProvider);
@@ -46,6 +46,7 @@ export default function ClaimTokenModal({
 
 }: any) {
   const { account, active } = useWeb3React();
+  const {ownsNft} = useNftsContext();
   const [minting, setMinting] = useState(false);
   const [minted, setMinted] = useState(false);
   const [isError, setError] = useState(false);
@@ -117,7 +118,7 @@ export default function ClaimTokenModal({
           </div>
         </Stack>
         <div style={{ marginTop: "24px" }}>Take part of the Family: XXX $BOSS (XXX DAI.e)</div>
-        <Button onClick={() => mint()}>Claim $BOSS</Button>
+        <Button disabled={!ownsNft} onClick={() => mint()}>Claim $BOSS</Button>
       </>
     )
   }

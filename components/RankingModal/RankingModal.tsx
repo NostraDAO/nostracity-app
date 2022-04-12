@@ -60,26 +60,12 @@ const tableItemsStyle = {
 }
 export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   const {chain, acc, active, activate, deactivate } = useConnectContext();
-  const { tomatoes, scissors, coffee } = useNftsContext();
+  const { tomatoes, scissors, coffee, ownsNft } = useNftsContext();
   const [barberScore, setBarberScore] = useState<Score>();
   const [groceryScore, setGroceryScore] = useState<Score>();
   const [dinerScore, setDinerScore] = useState<Score>();
   const [rankArray, setRankArray] = useState<Scores>([]);
-  const [ownsNft, setOwnsNft] = useState<boolean>(false);
-
-  async function getOwnedNfts() {
-    if (
-      tomatoes > 0 ||
-      coffee > 0 ||
-      scissors > 0
-    ) {
-      setOwnsNft(true);
-    } else {
-      setOwnsNft(false);
-    }
-    setOwnsNft(true)
-    
-  }
+ 
 
   async function getListScored() {
     let ar: Score[] = [];
@@ -146,7 +132,6 @@ export const RankingModal = ({ isOpen, handleClose, title }: any) => {
   useEffect(() => {
     let active = true;
     if (typeof window.ethereum != "undefined" && acc) {
-      getOwnedNfts();
       handleRanking();
     }
     return () => {

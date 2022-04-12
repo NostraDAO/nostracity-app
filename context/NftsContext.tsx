@@ -15,7 +15,8 @@ import {countCoffee, countTomatoes, countScissors} from "../utils/nftCountFuncti
 const defaultNfts: NftsContextType = {
     tomatoes: 0,
     coffee: 0,
-    scissors: 0
+    scissors: 0,
+    ownsNft: false
 }
 const web3 = new Web3(Web3.givenProvider);
 declare const window: any;
@@ -34,17 +35,30 @@ export const NftsProvider = ({children}) => {
     const [scissors, setScissors] = useState<number>(0);
     const [tomatoes, setTomatoes] = useState<number>(0);
     const [coffee, setCoffee] = useState<number>(0);
+    const [ownsNft, setOwnsNft] = useState<boolean>(false);
 
+    function getOwnsNft() {
+        if (
+          tomatoes > 0 ||
+          coffee > 0 ||
+          scissors > 0
+        ) {
+          setOwnsNft(true);
+        } else {
+          setOwnsNft(false);
+        }
+        setOwnsNft(true)
+      }
     useEffect(() => {
         if(window.ethereum !== undefined && account){
         countCoffee(account).then(coffee => setCoffee(coffee));
         countTomatoes(account).then(tomatoes => setTomatoes(tomatoes));
         countScissors(account).then(scissors => setScissors(scissors));
+        getOwnsNft()
         }
-        
-        
+       
     }, [account])
-    return <NftsContext.Provider value={{tomatoes,coffee, scissors}}>{children}</NftsContext.Provider>;
+    return <NftsContext.Provider value={{tomatoes,coffee, scissors, ownsNft}}>{children}</NftsContext.Provider>;
 
 }
 
