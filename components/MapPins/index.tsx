@@ -780,7 +780,7 @@ export default function MapPins() {
         subtitle="Colombo Family"
         handleMint={() => Mint("Barber")}
         buttonText={btnTextBarber}
-        isDisabled={isProcessing}
+        isDisabled={true}
         nftName="Barber"
         background={barberImg.src}
       >
@@ -824,7 +824,7 @@ export default function MapPins() {
         subtitle="Gambino family"
         handleMint={() => Mint("Grocery")}
         buttonText={btnTextGrocery}
-        isDisabled={isProcessing}
+        isDisabled={true}
         nftName="Tomatoes"
         background={groceryImg.src}
       >
@@ -868,7 +868,7 @@ export default function MapPins() {
         subtitle="Genovese family"
         handleMint={() => Mint("Diner")}
         buttonText={btnTextDiner}
-        isDisabled={isProcessing}
+        isDisabled={true}
         nftName="Coffee"
         background={dinerImg.src}
       >
