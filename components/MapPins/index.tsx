@@ -1,9 +1,8 @@
 
 //TODO: move the modals into a new component with the states 
-//TODO: a make the text into constants as well
 //TODO: check if one state could fit to all cases and then on the modals component 
 
-import React, { useState, useEffect, InputHTMLAttributes } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./MapPins.module.css";
 import IconButton from "@material-ui/core/IconButton";
 import FedoraIcon from "../../public/assets/icons/fedora.png";
@@ -11,6 +10,7 @@ import { CustomModal } from "../CustomModal/CustomModal";
 import { BankModal } from "../BankModal/BankModal";
 import { RankingModal } from "../RankingModal/RankingModal";
 import ClaimTokenModal from "../ClaimTokenModal"
+import BondView from "../BondView"
 import { makeStyles } from "@material-ui/core/styles";
 import daiContractAbi from "../../abi/DAIE.json";
 import barberContractAbi from "../../abi/BarberShopNFT.json";
@@ -22,27 +22,17 @@ import {
   grocery_address,
   dai_address,
 } from "../../constants/adresses/contracts";
-import { styled } from "@mui/material/styles";
 import NoSsr from "@material-ui/core/NoSsr";
-import  Web3  from "web3";
-import { useWeb3React } from "@web3-react/core";
+import Web3 from "web3";
 import { AlertModal } from "../AlertModal/AlertModal";
 import Input from "@mui/material/Input";
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-import {CustomTooltip} from "../CustomTooltip"
+import { CustomTooltip } from "../CustomTooltip"
 import barberImg from "../../public/assets/images/barber.png";
 import groceryImg from "../../public/assets/images/grocery.png";
 import dinerImg from "../../public/assets/images/diner.png";
-import {
-  styleFunctionSx,
-  compose,
-  palette,
-  spacing,
-} from "@material-ui/system";
-import {useConnectContext} from "../../context/ConnectContext"
-import { useMintContext} from "../../context/MintContext"
-import {barberText, groceryText, dinerText, bankText, rankText, claimText} from "../../constants/tooltipsText"
-const styleFunction = styleFunctionSx(compose(spacing, palette));
+import { useConnectContext } from "../../context/ConnectContext"
+import { useMintContext } from "../../context/MintContext"
+import { barberText, groceryText, dinerText, bankText, rankText, claimText, bondText } from "../../constants/tooltipsText"
 declare let window: any;
 
 const useStyles = makeStyles((theme) => ({
@@ -60,6 +50,7 @@ export default function MapPins() {
   const [isOpenBank, setIsOpenBank] = useState(false);
   const [isOpenRank, setIsOpenRank] = useState(false);
   const [isOpenClaim, setIsOpenClaim] = useState(false);
+  const [isOpenBond, setIsOpenBond] = useState(false);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -71,33 +62,32 @@ export default function MapPins() {
   const [btnTextBarber, setBtnTextBarber] = useState("Approve");
   const [btnTextGrocery, setBtnTextGrocery] = useState("Approve");
   const [btnTextDiner, setBtnTextDiner] = useState("Approve");
-  const [isApproving, setIsApproving] = useState(false);
-  const [isMinting, setIsMinting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [barberQuantity, setBarberQuantity] = useState<number>(0);
   const [groceryQuantity, setGroceryQuantity] = useState<number>(0);
   const [dinerQuantity, setDinerQuantity] = useState<number>(0);
+  const [bondQuantity, setBondQuantity] = useState<number>(0);
   const [lockInput, setLockInput] = useState(false);
-  
+
   let totalValueBarber: any;
   let totalValueGrocery: any;
   let totalValueDiner: any;
   const classes = useStyles();
- const {chain, acc, active} = useConnectContext();
- const {
-  barberPrice,
-  groceryPrice, 
-  dinerPrice,
-  barberAllowance, 
-  groceryAllowance,   
-  dinerAllowance, 
-  barberLimit,
-  groceryLimit,
-  dinerLimit,
-  barberRemain,
-  dinerRemain,
-  groceryRemain
-} = useMintContext();
+  const { chain, acc, active } = useConnectContext();
+  const {
+    barberPrice,
+    groceryPrice,
+    dinerPrice,
+    barberAllowance,
+    groceryAllowance,
+    dinerAllowance,
+    barberLimit,
+    groceryLimit,
+    dinerLimit,
+    barberRemain,
+    dinerRemain,
+    groceryRemain
+  } = useMintContext();
   const web3 = new Web3(Web3.givenProvider);
 
   function barberAllowanceChecker() {
@@ -124,7 +114,7 @@ export default function MapPins() {
     }
   }
 
-    function dinerAllowanceChecker() {
+  function dinerAllowanceChecker() {
     if (chain == 43114 || chain == 43113) {
       if (dinerAllowance! >= dinerPrice!) {
         setApprovedDiner(true);
@@ -181,6 +171,9 @@ export default function MapPins() {
     if (item == "claim") {
       setIsOpenClaim(true);
     }
+    if (item == "bond") {
+      setIsOpenBond(true);
+    }
   };
 
   const handleAlert = () => {
@@ -196,15 +189,17 @@ export default function MapPins() {
     item: string
   ) => {
     switch (item) {
-      case "barber": 
+      case "barber":
         setBarberQuantity(Number((event.target as HTMLInputElement).value));
-      break;      
-      case "grocery": 
+        break;
+      case "grocery":
         setGroceryQuantity(Number((event.target as HTMLInputElement).value));
-      break;
-      case "diner": 
+        break;
+      case "diner":
         setDinerQuantity(Number((event.target as HTMLInputElement).value));
-      break;
+        break;
+      case "bond":
+        setBondQuantity(Number((event.target as HTMLInputElement).value));
     }
     setIsError(false);
     setErrorMessage("");
@@ -243,6 +238,10 @@ export default function MapPins() {
     }
     if (item == "claim") {
       setIsOpenClaim(false);
+    }
+    if(item == "bond"){
+      setIsOpenBond(false);
+      setLockInput(false)
     }
   };
 
@@ -522,7 +521,7 @@ export default function MapPins() {
         setLockInput(false);
       }
     }
-    if (approvedDiner ) {
+    if (approvedDiner) {
       if (dinerQuantity <= dinerLimit!) {
         try {
           const mintTx = dinerContract.methods
@@ -621,7 +620,7 @@ export default function MapPins() {
     }
   }
 
-  
+
   return (
     <>
       <AlertModal isOpen={isOpenAlert} handleClose={() => handleAlertClose()}>
@@ -772,11 +771,11 @@ export default function MapPins() {
         title="Ranking"
       />
       <ClaimTokenModal
-       name="claim"
-       isOpen={isOpenClaim}
-       handleClose={() => handleClose("claim")}
-      >
-        </ClaimTokenModal>
+        name="claim"
+        isOpen={isOpenClaim}
+        handleClose={() => handleClose("claim")}
+      />
+      <BondView isOpen={isOpenBond} handleClose={() => handleClose("bond")} lockInput={lockInput} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => handleQuantity(e as any, "bond") }/>
       <NoSsr>
         <div className={styles.mapPins}>
           <CustomTooltip
@@ -836,8 +835,8 @@ export default function MapPins() {
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
           </CustomTooltip>
-          <CustomTooltip  title={claimText} arrow>
-          <IconButton
+          <CustomTooltip title={claimText} arrow>
+            <IconButton
               className={classes.root}
               onClick={() => handleOpen("claim")}
               color="primary"
@@ -845,7 +844,17 @@ export default function MapPins() {
             >
               <img src={FedoraIcon.src} width="64" />
             </IconButton>
-            </CustomTooltip>
+          </CustomTooltip>
+          <CustomTooltip title={bondText} arrow>
+            <IconButton
+              className={classes.root}
+              onClick={() => handleOpen("bond")}
+              color="primary"
+              name="bond"
+            >
+              <img src={FedoraIcon.src} width="64" />
+            </IconButton>
+          </CustomTooltip>
         </div>
       </NoSsr>
     </>

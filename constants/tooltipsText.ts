@@ -12,3 +12,5 @@ export const barberText =
 
     export const claimText =
     "Claim your $BOSS Token, take your bribe of the family";
+
+    export const bondText = "Bond with the $BOSS Token and help you help the family and yourself";
